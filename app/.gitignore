@@ -71,7 +71,8 @@ Thumbs.db
 
 #aplicacion files
 android/
-
+#informacion privada
+/src/assets/data.ts
 #enviroment files
 /src/environments/environment.prod.ts
 /src/environments/environment.ts
