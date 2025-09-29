@@ -70,7 +70,8 @@ testem.log
 Thumbs.db
 
 #aplicacion files
-/app/android/
+android/
+
 #enviroment files
 /src/environments/environment.prod.ts
 /src/environments/environment.ts
