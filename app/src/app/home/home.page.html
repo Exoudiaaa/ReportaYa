@@ -1,20 +1,53 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-tabs>
+  <ion-tab tab="home">
+    <ion-header>
+      <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+      <ion-toolbar style="--background: white; --color:white; border-bottom: 1px solid #ccc;">
+        <div
+          style="display: flex; align-items: center; justify-content: start; height: 100%; width: 100%; margin-left: 10px;">
+          <img src="assets/icono-app.png" alt="Logo" style="height: 40px; margin-right: 8px;">
+          <span style="font-size: 25px; font-weight: bold; color: black; font-family: 'League Spartan', sans-serif;">
+            ReportaYa
+          </span>
+        </div>
+      </ion-toolbar>
+    </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <ion-content>
+      <!-- Mapa -->
+      <div id="mapId"
+        style="height: 100%; width: 100%;"></div>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
-</ion-content>
+      <!-- Botón flotante -->
+      <div
+        style="position: fixed; left: 0; right: 0; bottom: 30px; display: flex; justify-content: center; z-index: 10; pointer-events: none;">
+        <ion-button expand="block"
+          style="border-radius: 12px; min-width: 180px; max-width: 240px; --background: #ff3131; --color: #ffffff; font-weight: bolder; text-transform: uppercase; pointer-events: auto;"
+          routerLink="/reportar">
+          Reportar
+        </ion-button>
+      </div>
+    </ion-content>
+  </ion-tab>
+
+  <!-- Tab Bar -->
+  <ion-tab-bar slot="bottom" style="--background: white; --color: black; border-top: 1px solid #ccc;">
+    <ion-tab-button tab="home" routerLink="/home" style="--color: #666666; border-right: 1px solid black;">
+      <ion-icon name="map-outline"></ion-icon>
+      <ion-label>Inicio</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="cameras" routerLink="/cameras" style="--color: #666666; border-right: 1px solid black;">
+      <span class="material-symbols-outlined">
+        speed_camera
+      </span>
+      <ion-label style="font-size: 10px;">Pedir Camaras</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="menu" routerLink="/menu" style="--color: #666666;">
+      <ion-icon name="menu-outline"></ion-icon>
+      <ion-label>Menu</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+
+</ion-tabs>

@@ -76,4 +76,8 @@ android/
 #enviroment files
 /src/environments/environment.prod.ts
 /src/environments/environment.ts
+<<<<<<< HEAD
 /src/environments/environment.dev.ts
+=======
+/src/environments/environment.dev.ts
+>>>>>>> feature/home
