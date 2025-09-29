@@ -1,0 +1,42 @@
+.material-symbols-outlined {
+  font-size: 50px;
+  color: black;
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 0
+}
+.auto-grid {
+  // Eliminar padding del grid para mejor control
+  --ion-grid-padding: 0;
+  --ion-grid-column-padding: 0;
+}
+
+.auto-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 16px; // Espacio equitativo entre elementos
+  justify-items: center; // Centrar horizontalmente
+  align-items: start; // Alinear al inicio verticalmente
+  height: 100px;
+  // O usando flexbox como alternativa:
+  // display: flex;
+  // flex-wrap: wrap;
+  // justify-content: space-around; // o space-evenly
+  // gap: 16px;
+}
+
+.icon-col {
+  // Quitar el tamaño fijo de Ionic
+  size: auto;
+  width: 100%;
+  max-width: 120px; // Ancho máximo para cada columna
+  padding: 8px;
+}
+  .icon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
