@@ -1,6 +1,8 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet.locatecontrol'; // Plugin para el botón de ubicación
+import { Auth } from '../services/auth';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -16,7 +18,7 @@ export class HomePage implements AfterViewInit {
   }
   private map!: L.Map;
 
-  constructor() {}
+  constructor(private authService: Auth, private router: Router) {}
 
   ngAfterViewInit() {
     this.getUserLocation();
@@ -58,5 +60,9 @@ export class HomePage implements AfterViewInit {
 
     // Forzar refresco del tamaño del mapa
     setTimeout(() => this.map.invalidateSize(), 500);
+  }
+    async logout() {
+    await this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

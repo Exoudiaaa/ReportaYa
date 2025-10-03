@@ -77,3 +77,8 @@ android/
 /src/environments/environment.prod.ts
 /src/environments/environment.ts
 /src/environments/environment.dev.ts
+
+# Firebase
+.firebase
+*-debug.log
+.runtimeconfig.json
