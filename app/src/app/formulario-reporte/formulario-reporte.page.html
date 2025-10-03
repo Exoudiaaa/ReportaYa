@@ -1,0 +1,65 @@
+<ion-header>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <ion-toolbar class="toolbar-header">
+    <ion-buttons slot="start" class="back-button">
+      <ion-back-button defaultHref="/home" text="" icon="arrow-back-outline"></ion-back-button>
+    </ion-buttons>
+    <div class="header-content">
+      <ion-icon 
+        class="icon-familia" 
+        [name]="iconoSeleccionado" 
+        [style.background-color]="colorSeleccionado">
+      </ion-icon>
+      <span class="header-title">
+        {{ nombreSeleccionado || 'Reportes' }}
+      </span>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding content-bg">
+
+  <ion-row class="top-row" style="margin-bottom: 3%;">
+    
+    <!-- Botón Cámara -->
+    <ion-col size="2" class="camera-col">
+      <div (click)="abrirCamara()" class="camera-btn">
+        <ion-icon name="camera" class="camera-icon"></ion-icon>
+      </div>
+    </ion-col>
+
+    <!-- Botón Ubicación -->
+    <ion-col size="10">
+      <div class="location-container">
+        <ion-icon name="location" class="location-icon"></ion-icon>
+        <span class="location-text">{{ ubicacionDisplay }}</span>
+      </div>
+    </ion-col>
+
+  </ion-row>
+
+  <!-- Mostrar la foto tomada -->
+  <ion-img *ngIf="foto" [src]="foto" class="foto-tomada"></ion-img>
+
+  <!-- Botón eliminar foto -->
+  <ion-button *ngIf="foto" color="danger" expand="block" (click)="confirmarEliminarFoto()" class="btn-eliminar">
+    Eliminar Foto
+  </ion-button>
+
+  <!-- Cuadro blanco tipo textarea -->
+  <div class="textarea-container">
+    <ion-textarea
+      placeholder="Escribe qué está pasando..."
+      autoGrow="true"
+      class="textarea-input">
+    </ion-textarea>
+  </div>
+
+  <!-- Botón Reportar fijo -->
+  <div class="report-btn-container">
+    <ion-button expand="block" class="btn-reportar" routerLink="">
+      Reportar
+    </ion-button>
+  </div>
+
+</ion-content>

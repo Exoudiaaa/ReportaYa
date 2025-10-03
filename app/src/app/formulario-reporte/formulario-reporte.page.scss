@@ -1,0 +1,149 @@
+.familia-btnn {
+  height: 8%;
+  width: 8%;
+  aspect-ratio: 1 / 1;        /* cuadrado */
+  display: flex;
+  flex-direction: column;     /* icono arriba, texto abajo */
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+       /* opcional: borde */
+  border-radius: 100%;         /* opcional: esquinas redondeadas */
+  transition: 0.2s all;
+}
+
+
+.toolbar-header {
+  --background: white;
+  --color: black;
+  border-bottom: 1px solid #ccc;
+}
+
+.back-button {
+  margin-left: 10px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+.icon-familia {
+  font-size: 2rem;
+  margin-right: 0.5rem;
+  border-radius: 50%;
+  padding: 0.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.header-title {
+  font-weight: bold;
+  font-family: 'League Spartan', sans-serif;
+  font-size: 1.2rem;
+  color: black;
+}
+
+.content-bg {
+  --background: hsl(0, 0%, 84%);
+}
+
+.top-row {
+  align-items: center;
+}
+
+.camera-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.camera-btn {
+  background-color: #b71c1c;
+  border-radius: 50%;
+  padding: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  aspect-ratio: 1 / 1; // Mantiene proporción cuadrada
+}
+
+.camera-icon {
+  color: white;
+  width: 70%;
+  height: 70%;
+}
+
+.location-container {
+  background-color: #f5f5f5;
+  border-radius: 25px;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.location-icon {
+  color: #b71c1c;
+  font-size: 3.5rem;
+  
+}
+
+.location-text {
+  color: black;
+  font-size: 1rem;
+  word-break: break-word;
+}
+
+.foto-tomada {
+  margin: 1rem 0;
+  width: 100%;
+  border-radius: 12px;
+}
+
+.btn-eliminar {
+  margin-bottom: 1rem;
+}
+
+.textarea-container {
+  background-color: white;
+  border-radius: 15px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 80px; // espacio para botón fijo
+}
+
+.textarea-input {
+  flex: 1;
+  font-size: 1.1rem;
+  color: black;
+  background-color: white;
+}
+
+.report-btn-container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 30px;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.btn-reportar {
+  border-radius: 12px;
+  width: 80%;
+  height: 100%;
+  --background: #ff3131;
+  --color: #ffffff;
+  font-weight: bolder;
+  text-transform: uppercase;
+  pointer-events: auto;
+}
+

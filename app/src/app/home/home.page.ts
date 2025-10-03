@@ -1,6 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet.locatecontrol'; // Plugin para el botón de ubicación
+import { LocationService } from '../services/location'; // ajusta la ruta si hace falta
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -16,7 +17,7 @@ export class HomePage implements AfterViewInit {
   }
   private map!: L.Map;
 
-  constructor() {}
+  constructor(private locationService: LocationService) {}
 
   ngAfterViewInit() {
     this.getUserLocation();
@@ -27,6 +28,8 @@ export class HomePage implements AfterViewInit {
         (position) => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
+          // Guardamos lat/lng en el servicio
+          this.locationService.setLocation({ lat, lng });
           this.initMap(lat, lng);
         },
         (error) => {

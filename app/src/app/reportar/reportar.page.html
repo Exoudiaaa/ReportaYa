@@ -1,79 +1,39 @@
 <ion-header>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <ion-toolbar style="--background: white; --color:white; border-bottom: 1px solid #ccc;">
-    <ion-buttons slot="start" style="margin-left: 10px;">
+  <ion-toolbar class="toolbar-header">
+    <ion-buttons slot="start" class="back-button">
       <ion-back-button defaultHref="/home" text="" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
-    <span
-      style="font-size: 25px; font-weight: bold; color: black; font-family: 'League Spartan', sans-serif;margin-left: 5px;">
-      Denuncias
+    <span class="header-title">
+      Reportes
     </span>
   </ion-toolbar>
 </ion-header>
-<ion-content style="--background-color: rgb(180, 180, 180);--background:rgb(180, 180, 180)">
-  <ion-grid class="auto-grid">
-    <ion-row class="auto-row">
-      <!-- Primer ítem -->
-      <ion-col size="4" class="icon-col" routerLink="/reportar/accidente"
-        style="display: flex; flex-direction: column; align-items: center; text-align: center; word-wrap: normal;">
-        <span class="material-symbols-outlined">
-          minor_crash
-        </span>
-        <ion-text style="font-size: 15px;font-weight: bolder; margin-top: 4px;color: black;">Accidente de
-          transito</ion-text>
-      </ion-col>
-      <ion-col size="4" class="icon-col"
-        style="display: flex; flex-direction: column; align-items: center; text-align: center; word-wrap: normal;">
-        <div class="icon-container">
-          <span class="material-symbols-outlined">
-            health_cross
-          </span>
-          <ion-text style="font-size: 15px;font-weight: bolder; margin-top: 4px;color: black;">Emergencia de
-            ambulancia</ion-text>
-        </div>
-      </ion-col>
-      <ion-col size="4" class="icon-col"
-        style="display: flex; flex-direction: column; align-items: center; text-align: center; word-wrap: normal;">
-        <div class="icon-container">
-          <span class="material-symbols-outlined">
-            local_fire_department
-          </span>
-          <ion-text style="font-size: 15px;font-weight: bolder; margin-top: 4px;color: black;">Emergencia de
-            bomberos</ion-text>
-        </div>
-      </ion-col>
-    </ion-row>
+
+<ion-content class="ion-padding content-bg">
+
+  <ion-grid>
     <ion-row>
-      <ion-col size="4" class="icon-col"
-        style="display: flex; flex-direction: column; align-items: center; text-align: center; word-wrap: normal;">
-        <div class="icon-container">
-          <span class="material-symbols-outlined">
-            health_cross
-          </span>
-          <ion-text style="font-size: 15px;font-weight: bolder; margin-top: 4px;color: black;">Emergencia de
-            ambulancia</ion-text>
+      <ion-col style="padding-bottom: 10%;" 
+        *ngFor="let familia of familias"
+        size="6"
+        size-xs="6"
+        size-sm="6"
+        size-md="6"
+        size-lg="6"
+        class="familia-col"
+      >
+        <div 
+          routerLink="/formulario-reporte" 
+          [style.background-color]="familia.color" 
+          class="familia-btn" 
+          (click)="selectFamilia(familia)"
+        >
+          <ion-icon [name]="familia.icon" class="familia-icon"></ion-icon>
         </div>
-      </ion-col>
-      <ion-col size="4" class="icon-col"
-        style="display: flex; flex-direction: column; align-items: center; text-align: center; word-wrap: normal;">
-        <div class="icon-container">
-          <span class="material-symbols-outlined">
-            health_cross
-          </span>
-          <ion-text style="font-size: 15px;font-weight: bolder; margin-top: 4px;color: black;">Emergencia de
-            ambulancia</ion-text>
-        </div>
-      </ion-col>
-      <ion-col size="4" class="icon-col"
-        style="display: flex; flex-direction: column; align-items: center; text-align: center; word-wrap: normal;">
-        <div class="icon-container">
-          <span class="material-symbols-outlined">
-            health_cross
-          </span>
-          <ion-text style="font-size: 15px;font-weight: bolder; margin-top: 4px;color: black;">Emergencia de
-            ambulancia</ion-text>
-        </div>
+        <div class="familia-name">{{ familia.nickname }}</div>
       </ion-col>
     </ion-row>
   </ion-grid>
+
 </ion-content>

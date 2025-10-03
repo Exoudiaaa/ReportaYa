@@ -14,6 +14,10 @@ const routes: Routes = [
     path: 'reportar',
     loadChildren: () => import('./reportar/reportar.module').then( m => m.ReportarPageModule)
   },
+  {
+    path: 'formulario-reporte',
+    loadChildren: () => import('./formulario-reporte/formulario-reporte.module').then( m => m.FormularioReportePageModule)
+  },
 
 
 ];
