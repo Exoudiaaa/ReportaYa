@@ -1,5 +1,7 @@
 <ion-header>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <ion-toolbar class="toolbar-header">
     <ion-buttons slot="start" class="back-button">
       <ion-back-button defaultHref="/home" text="" icon="arrow-back-outline"></ion-back-button>
@@ -11,6 +13,7 @@
 </ion-header>
 
 <ion-content class="ion-padding content-bg">
+
 
   <ion-grid>
     <ion-row>
@@ -28,6 +31,7 @@
           [style.background-color]="familia.color" 
           class="familia-btn" 
           (click)="selectFamilia(familia)"
+          [style.background]="familia.color"
         >
           <ion-icon [name]="familia.icon" class="familia-icon"></ion-icon>
         </div>

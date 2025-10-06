@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes, Router } from '@angular/router';
 import { AuthGuard } from './authguard/authguard';
 const routes: Routes = [
   {
@@ -14,11 +14,13 @@ const routes: Routes = [
   },
   {
     path: 'reportar',
-    loadChildren: () => import('./reportar/reportar.module').then( m => m.ReportarPageModule)
+    loadChildren: () => import('./reportar/reportar.module').then( m => m.ReportarPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'formulario-reporte',
-    loadChildren: () => import('./formulario-reporte/formulario-reporte.module').then( m => m.FormularioReportePageModule)
+    loadChildren: () => import('./formulario-reporte/formulario-reporte.module').then( m => m.FormularioReportePageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',

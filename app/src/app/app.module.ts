@@ -13,6 +13,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 
+
 @NgModule({
   declarations: [AppComponent],
   imports: [HttpClientModule,BrowserModule,FormsModule, IonicModule.forRoot(), AppRoutingModule,],
@@ -21,7 +22,8 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
   provideAuth(() => getAuth()), 
   provideFirestore(() => getFirestore()), 
   provideDatabase(() => getDatabase()), 
-  provideStorage(() => getStorage())],
+  provideStorage(() => getStorage()),FormsModule],
+  
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
