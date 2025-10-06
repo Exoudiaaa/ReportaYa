@@ -29,7 +29,13 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+    },
+  
+  {
+    path: 'phone-login',
+    loadChildren: () => import('./phone-login/phone-login.module').then( m => m.PhoneLoginPageModule)
   },
+
 
 
 

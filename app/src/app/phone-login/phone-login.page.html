@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login con Teléfono</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label position="floating">Número de teléfono (+569...)</ion-label>
+    <ion-input [(ngModel)]="phoneNumber" type="tel"></ion-input>
+  </ion-item>
+
+  <ion-button expand="full" (click)="loginWithPhone()" [disabled]="isLoading">
+    {{ isLoading ? 'Enviando...' : 'Iniciar sesión' }}
+  </ion-button>
+</ion-content>

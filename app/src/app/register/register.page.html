@@ -21,6 +21,42 @@
             overflow-x: hidden;
         }
         
+        .back-button {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .back-button:active {
+            transform: translateY(0);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .back-arrow {
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            line-height: 1;
+        }
+        
         .register-container {
             width: 100%;
             max-width: 100%;
@@ -30,11 +66,13 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(10px);
             margin: 0 auto;
+            position: relative;
         }
         
         .logo-section {
             text-align: center;
             margin-bottom: 25px;
+            margin-top: 10px;
         }
         
         .app-icon {
@@ -250,6 +288,13 @@
                 padding: 16px;
                 min-height: 50px;
             }
+            
+            .back-button {
+                top: 20px;
+                left: 20px;
+                width: 40px;
+                height: 40px;
+            }
         }
         
         /* Ajustes para landscape */
@@ -271,6 +316,31 @@
             .form-group {
                 margin-bottom: 12px;
             }
+            
+            .back-button {
+                top: 15px;
+                left: 15px;
+                width: 35px;
+                height: 35px;
+            }
+            
+            .back-arrow {
+                font-size: 16px;
+            }
+        }
+        
+        /* Ajustes para móviles pequeños */
+        @media (max-width: 360px) {
+            .back-button {
+                top: 15px;
+                left: 15px;
+                width: 40px;
+                height: 40px;
+            }
+            
+            .back-arrow {
+                font-size: 18px;
+            }
         }
         
         /* Prevenir zoom en inputs en iOS */
@@ -282,6 +352,11 @@
     </style>
 </head>
 <body>
+    <!-- Back Button -->
+    <div class="back-button" routerLink="/login">
+        <div class="back-arrow">←</div>
+    </div>
+
     <div class="register-container">
         <div class="form-content">
             <div class="logo-section">
@@ -330,5 +405,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Función para el back button
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 </body>
 </html>
