@@ -70,6 +70,20 @@ export class Auth {
   }
   async loginWithGoogle(idToken: string) {
     const credential = GoogleAuthProvider.credential(idToken);
-    return await signInWithCredential(this.auth, credential);
+    const result = await signInWithCredential(this.auth, credential);
+    const user = result.user;
+
+    const profile = result.user.providerData[0]; // viene de Google
+    console.log(profile);
+    await setDoc(doc(this.firestore, 'users', user.uid), {
+      firstName: profile.displayName?.split(' ')[0] || '',
+      lastName: profile.displayName?.split(' ').slice(1).join(' ') || '',
+      email: profile.email,
+      phone: user.phoneNumber || '',
+      photoURL: profile.photoURL || '',
+      createdAt: new Date()
+    }, { merge: true });
+
+    return user;
   }
 }

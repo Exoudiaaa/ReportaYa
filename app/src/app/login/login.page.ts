@@ -44,16 +44,9 @@ export class LoginPage implements OnInit {
         }
       });
 
-      // El idToken está dentro de result
       const idToken = res.result.idToken;
       const accessToken = res.result.accessToken.token;
       const userProfile = res.result.profile;
-
-      console.log('ID Token:', idToken);
-      console.log('Access Token:', accessToken);
-      console.log('User Profile:', userProfile);
-
-      // Aquí puedes usar el idToken para autenticar con tu backend
       if (idToken) {
         await this.authService.loginWithGoogle(idToken);
       }
