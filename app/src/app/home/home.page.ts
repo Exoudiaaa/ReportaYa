@@ -1,9 +1,11 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet.locatecontrol';
 import { LocationService, Ubicacion } from '../services/location';
 import { Auth } from '../services/auth';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Geolocation } from '@capacitor/geolocation';
 
 @Component({
   selector: 'app-home',
@@ -11,11 +13,11 @@ import { Router } from '@angular/router';
   styleUrls: ['home.page.scss'],
   standalone: false
 })
-export class HomePage implements AfterViewInit {
+export class HomePage implements AfterViewInit, OnDestroy {
   private map!: L.Map;
-  usuarioDisplay: string = '';   // Para mostrar nombre/email del usuario
+  usuarioDisplay: string = '';   
   ubicacionDisplay: string = 'Ubicación no disponible';
-  private LOCATIONIQ_KEY = 'pk.5b6df700376c8e94f79168a449497666'; // tu API Key de LocationIQ
+  private locSub?: Subscription;
 
   constructor(
     private locationService: LocationService,
@@ -24,55 +26,43 @@ export class HomePage implements AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
+    this.subscribeToLocation();
     this.getUserLocation();
   }
 
-  private async getUserLocation() {
-    if (!navigator.geolocation) {
-      alert('Tu navegador no soporta geolocalización.');
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-
-        // Guardamos lat/lng temporal en el servicio
-        this.locationService.setLocation({ lat, lng });
-
-        // Intentamos obtener dirección legible
-        await this.getAddressFromCoords(lat, lng);
-
-        // Inicializar mapa
-        this.initMap(lat, lng);
-
-      },
-      (error) => {
-        console.error('No se pudo obtener la ubicación:', error);
-        alert('No se pudo obtener tu ubicación. Asegúrate de permitir el acceso al GPS.');
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-    );
+  ngOnDestroy() {
+    this.locSub?.unsubscribe();
   }
 
-  private async getAddressFromCoords(lat: number, lng: number) {
+  private subscribeToLocation() {
+    this.locSub = this.locationService.location$.subscribe((loc: Ubicacion | null) => {
+      this.ubicacionDisplay = loc?.display ?? 'Ubicación no disponible';
+      // Actualizar popup si el mapa ya está inicializado
+      if (this.map && loc) {
+        const marker = L.marker([loc.lat!, loc.lng!]).bindPopup(this.ubicacionDisplay).openPopup();
+        marker.addTo(this.map);
+      }
+    });
+  }
+
+  private async getUserLocation() {
     try {
-      const response = await fetch(
-        `https://us1.locationiq.com/v1/reverse.php?key=${this.LOCATIONIQ_KEY}&lat=${lat}&lon=${lng}&format=json`
-      );
-      const data = await response.json();
-      const direccion = data.display_name || `Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`;
+      const coords = await Geolocation.getCurrentPosition();
+      const lat = coords.coords.latitude;
+      const lng = coords.coords.longitude;
 
-      // Guardamos en LocationService
-      this.locationService.setLocation({ lat, lng, display: direccion });
-      this.ubicacionDisplay = direccion;
-      console.log('Dirección obtenida:', direccion);
+      // Guardar coordenadas en LocationService
+      this.locationService.setLocation({ lat, lng });
 
-    } catch (error) {
-      console.error('Error geocoding inverso:', error);
-      this.ubicacionDisplay = `Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`;
-      this.locationService.setLocation({ lat, lng, display: this.ubicacionDisplay });
+      // Obtener dirección resumida desde LocationIQ
+      await this.locationService.fetchAddress(lat, lng);
+
+      // Inicializar mapa
+      this.initMap(lat, lng);
+
+    } catch (err) {
+      console.error('Error obteniendo GPS:', err);
+      this.ubicacionDisplay = 'Ubicación no disponible';
     }
   }
 
