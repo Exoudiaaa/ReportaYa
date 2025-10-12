@@ -36,6 +36,7 @@ export class PhoneLoginPage implements OnInit {
   }
 
   formatToChile(raw: string): string {
+    //Formateo numero para codigo chile +56
     if (!raw) return raw;
     let n = raw.replace(/[\s\-\.\(\)]/g, '');
     if (n.startsWith('+')) return n;
@@ -64,7 +65,7 @@ export class PhoneLoginPage implements OnInit {
       }
 
     } catch (error) {
-      console.error('❌ Error enviando OTP:', error);
+      console.error('Error enviando OTP:', error);
       alert('Error al enviar el código. Verifica el número e inténtalo de nuevo.');
     }
   }
@@ -87,12 +88,12 @@ export class PhoneLoginPage implements OnInit {
         createdAt: serverTimestamp()
       });
 
-      console.log('✅ Usuario web registrado en Firestore:', user.uid);
+      console.log('Usuario web registrado en Firestore:', user.uid);
       alert(`Inicio de sesión exitoso: ${user.phoneNumber}`);
       this.router.navigate(['/home']);
 
     } catch (error) {
-      console.error("❌ Error verificando OTP:", error);
+      console.error("Error verificando OTP:", error);
       alert('Código incorrecto o expirado.');
     }
   }
