@@ -1,49 +1,111 @@
-// phone-login.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Auth, signInWithPhoneNumber, RecaptchaVerifier, ConfirmationResult } from '@angular/fire/auth';
+import { Capacitor } from '@capacitor/core';
+import { Firestore, doc, setDoc, serverTimestamp } from '@angular/fire/firestore';
 import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
+import { Auth as FirebaseService } from "src/app/services/auth";
 
 @Component({
   selector: 'app-phone-login',
   templateUrl: './phone-login.page.html',
   styleUrls: ['./phone-login.page.scss'],
-  standalone: false,
+  standalone: false
 })
-export class PhoneLoginPage {
-  phoneNumber: string = ''; // Número completo con código de país, ej: +569XXXXXXXX
-  isLoading: boolean = false;
+export class PhoneLoginPage implements OnInit {
+  phoneNumber: string = '';
+  otp: string = '';
+  recaptchaVerifier!: RecaptchaVerifier;
+  confirmationResult?: ConfirmationResult; // Solo Web
+  isOTPSent: boolean = false;
+  resendTimer: number = 0;
+  resendDisabled: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: FirebaseService, private auth: Auth, private firestore: Firestore) { }
 
-  async loginWithPhone() {
-    if (!this.phoneNumber) {
-      alert('Ingresa un número de teléfono válido.');
-      return;
+  ngOnInit(): void {
+    if (!Capacitor.isNativePlatform()) {
+      // Solo Web necesitamos reCAPTCHA
+      this.recaptchaVerifier = new RecaptchaVerifier(this.auth, 'recaptcha-container', {
+        size: 'invisible',
+        callback: (response: any) => {
+          console.log('reCAPTCHA verificado:', response);
+        }
+      });
     }
+  }
 
-    this.isLoading = true;
+  formatToChile(raw: string): string {
+    if (!raw) return raw;
+    let n = raw.replace(/[\s\-\.\(\)]/g, '');
+    if (n.startsWith('+')) return n;
+    if (n.startsWith('56')) return '+' + n;
+    n = n.replace(/^0+/, '');
+    return '+56' + n;
+  }
+
+   async sendOTP() {
+    const formattedNumber = this.formatToChile(this.phoneNumber);
+    console.log("📤 Enviando SMS a:", formattedNumber);
 
     try {
-      // Envía el SMS al número
-      await FirebaseAuthentication.signInWithPhoneNumber({
-        phoneNumber: this.phoneNumber
-      });
+      this.isOTPSent = true;
+      this.startResendTimer();
 
-      // Obtiene el usuario actual
-      const user = await FirebaseAuthentication.getCurrentUser();
-
-      if (user) {
-        console.log('Usuario autenticado:', user);
-        // Redirige al home
+      if (Capacitor.isNativePlatform()) {
+        // Flujo nativo (Android/iOS)
+        const user = await this.authService.registerPhoneUserNative(formattedNumber);
+        alert(`Inicio de sesión exitoso: ${user.phoneNumber}`);
         this.router.navigate(['/home']);
       } else {
-        alert('No se pudo autenticar el usuario.');
+        // Flujo Web
+        this.confirmationResult = await this.authService.registerPhoneUserWeb(formattedNumber, this.recaptchaVerifier);
+        alert('Código SMS enviado. Ingresa el código para continuar.');
       }
-    } catch (error: any) {
-      console.error('Error en login con número:', error);
-      alert(`Error: ${error.message || error}`);
-    } finally {
-      this.isLoading = false;
+
+    } catch (error) {
+      console.error('❌ Error enviando OTP:', error);
+      alert('Error al enviar el código. Verifica el número e inténtalo de nuevo.');
     }
+  }
+
+  // Verificar OTP (solo web)
+  async verifyOTP() {
+    try {
+      if (!this.confirmationResult) {
+        alert("Primero envía el código SMS.");
+        return;
+      }
+
+      const result = await this.confirmationResult.confirm(this.otp);
+      const user = result.user;
+
+      // Guardar usuario en Firestore después de verificar
+      await setDoc(doc(this.firestore, 'users', user.uid), {
+        uid: user.uid,
+        phone: user.phoneNumber,
+        createdAt: serverTimestamp()
+      });
+
+      console.log('✅ Usuario web registrado en Firestore:', user.uid);
+      alert(`Inicio de sesión exitoso: ${user.phoneNumber}`);
+      this.router.navigate(['/home']);
+
+    } catch (error) {
+      console.error("❌ Error verificando OTP:", error);
+      alert('Código incorrecto o expirado.');
+    }
+  }
+  startResendTimer() {
+    this.resendTimer = 60;
+    this.resendDisabled = true;
+
+    const interval = setInterval(() => {
+      this.resendTimer--;
+      if (this.resendTimer <= 0) {
+        clearInterval(interval);
+        this.resendDisabled = false;
+      }
+    }, 1000);
   }
 }
