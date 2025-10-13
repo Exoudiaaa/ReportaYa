@@ -6,12 +6,12 @@
     </ion-buttons>
     <div  class="header-content">
       <div  class="familia-btn">
-        <ion-icon  [style.background]="colorSeleccionado" class="icon-familia" [name]="iconoSeleccionado" >
+        <ion-icon name="megaphone-outline"  class="icon-familia"  >
       </ion-icon>
       </div>
       
       <span class="header-title">
-        {{ nombreSeleccionado || 'Reportes' }}
+        Reporte
       </span>
     </div>
   </ion-toolbar>
@@ -21,9 +21,15 @@
 
   <ion-row class="top-row" style="margin-bottom: 3%;">
     
+
     <!-- Botón Cámara -->
     <ion-col size="2" class="camera-col">
-      <div (click)="abrirCamara()" class="camera-btn">
+      <div 
+        (click)="abrirCamara()" 
+        class="camera-btn" 
+        [class.disabled]="foto" 
+        [style.pointer-events]="foto ? 'none' : 'auto'"
+        [style.opacity]="foto ? '0.5' : '1'">
         <ion-icon name="camera" class="camera-icon"></ion-icon>
       </div>
     </ion-col>

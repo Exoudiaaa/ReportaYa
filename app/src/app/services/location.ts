@@ -15,14 +15,11 @@ export class LocationService {
   private locationSubject = new BehaviorSubject<Ubicacion | null>(null);
   location$ = this.locationSubject.asObservable();
 
-  private MAPBOX_TOKEN = 'TU_MAPBOX_KEY'; // 🔹 tu access token de Mapbox
+  private LOCATIONIQ_KEY = 'pk.5b6df700376c8e94f79168a449497666'; // 🔹 reemplaza con tu key de LocationIQ
 
   constructor() {}
 
-  /**
-   * Establece la ubicación en el BehaviorSubject.
-   * Si no se pasa display, intenta generarlo automáticamente.
-   */
+  // Establece la ubicación en el BehaviorSubject
   setLocation(loc: Ubicacion) {
     const display = loc.display ?? (
       (loc.lat !== undefined && loc.lng !== undefined)
@@ -41,26 +38,24 @@ export class LocationService {
   }
 
   /**
-   * Hace reverse geocoding con Mapbox para obtener dirección legible
+   * Hace reverse geocoding con LocationIQ
    */
   async fetchAddress(lat: number, lng: number) {
     try {
-      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${this.MAPBOX_TOKEN}`;
+      const url = `https://us1.locationiq.com/v1/reverse.php?key=${this.LOCATIONIQ_KEY}&lat=${lat}&lon=${lng}&format=json`;
       const res = await fetch(url);
       const data = await res.json();
 
-      if (!data || !data.features || data.features.length === 0) {
+      if (!data) {
         this.setLocation({ lat, lng, display: 'Ubicación no disponible' });
         return;
       }
 
-      const feature = data.features[0];
+      // Dirección completa
+      const fullAddress = data.display_name || '';
 
-      // dirección completa
-      const fullAddress = feature.place_name || '';
-
-      // dirección resumida (solo comuna + calle + número)
-      const simple = this.simplifyAddress(feature);
+      // Dirección resumida: calle + número + comuna
+      const simple = this.simplifyAddress(data.address);
 
       this.setLocation({
         lat,
@@ -70,41 +65,28 @@ export class LocationService {
       });
 
     } catch (err) {
-      console.error('Error geocoding inverso:', err);
+      console.error('Error geocoding inverso LocationIQ:', err);
       this.setLocation({ lat, lng, display: 'Ubicación no disponible' });
     }
   }
 
   /**
-   * Extrae solo comuna + calle + número de la feature de Mapbox
-   */
-  private simplifyAddress(feature: any): string {
-    if (!feature) return 'Ubicación no disponible';
+ * Extrae solo calle + número + comuna + región
+ */
+private simplifyAddress(addr: any): string {
+  if (!addr) return 'Ubicación no disponible';
 
-    let city = '';
-    let road = '';
-    let house_number = '';
+  const road = addr.road || '';
+  const house_number = addr.house_number || '';
+  const city = addr.city || addr.town || addr.village || '';
+  const state = addr.state || ''; // Región
 
-    // Mapbox devuelve "context" para partes de la dirección
-    if (feature.context) {
-      feature.context.forEach((c: any) => {
-        if (c.id.startsWith('place')) city = c.text;
-        if (c.id.startsWith('address')) {
-          const parts = c.text.split(' ');
-          house_number = parts.pop() || '';
-          road = parts.join(' ') || '';
-        }
-      });
-    }
+  let simple = '';
+  if (road) simple += road;
+  if (house_number) simple += ` ${house_number}`;
+  if (city) simple += city ? `, ${city}` : '';
+  if (state) simple += state ? `, ${state}` : '';
 
-    // A veces el feature mismo tiene road
-    if (feature.text && !road) road = feature.text;
-
-    let simpleAddress = '';
-    if (city) simpleAddress += city;
-    if (road) simpleAddress += ', ' + road;
-    if (house_number) simpleAddress += ' ' + house_number;
-
-    return simpleAddress.trim();
-  }
+  return simple.trim();
+}
 }
