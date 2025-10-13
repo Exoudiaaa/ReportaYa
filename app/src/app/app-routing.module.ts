@@ -13,11 +13,6 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'reportar',
-    loadChildren: () => import('./reportar/reportar.module').then( m => m.ReportarPageModule),
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'formulario-reporte',
     loadChildren: () => import('./formulario-reporte/formulario-reporte.module').then( m => m.FormularioReportePageModule),
     canActivate: [AuthGuard]

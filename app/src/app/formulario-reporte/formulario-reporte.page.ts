@@ -16,15 +16,19 @@ import { Geolocation } from '@capacitor/geolocation';
   standalone: false,
 })
 export class FormularioReportePage implements OnInit, OnDestroy {
-  nombreSeleccionado: string = '';
-  iconoSeleccionado: string = '';
-  colorSeleccionado: string = '';
 
-  descripcion: string = '';
+  visibilidad: boolean = false;     // visibilidad del reporte (público/privado)
+  descripcion: string = '';           // descripción del reporte
   foto: string | null = null;        // preview para <ion-img>
   fotoBase64: string | null = null;  // base64 pura
 
-  ubicacionDisplay: string = 'Ubicación no disponible';
+  pendiente: boolean = true;     // por defecto los reportes son pendientes
+  enProceso: boolean = false;     // por defecto los reportes no están en proceso
+  resuelto: boolean = false;      // por defecto los reportes no están resueltos
+
+  ubicacionDisplay: string = 'Ubicación no disponible';  // dirección legible
+  latitud: number | null = null;      // latitud GPS
+  longitud: number | null = null;       // longitud GPS
   private locSub?: Subscription;
 
   constructor(
@@ -118,12 +122,16 @@ export class FormularioReportePage implements OnInit, OnDestroy {
       const reporte = {
         descripcion: this.descripcion,
         fotoURL: this.foto,
-        ubicacion: this.ubicacionDisplay || null,
-        icono: this.iconoSeleccionado || null,
-        nombre: this.nombreSeleccionado || null,
-        color: this.colorSeleccionado || null,
-        estado: 'pendiente',
-        creadoEn: new Date(),
+        ubicacion: this.ubicacionDisplay || null, // dirección legible
+        visibilidad:this.visibilidad,
+        coordenadas: {
+          lat: this.latitud,
+          lng: this.longitud
+        },
+        pendiente: this.pendiente,
+        enProceso: this.enProceso,
+        resuelto: this.resuelto,
+        fecha: new Date(),
         usuarioUID: usuarioActual.uid,
         usuarioEmail: usuarioActual.email
       };
@@ -158,11 +166,6 @@ export class FormularioReportePage implements OnInit, OnDestroy {
 
   // 🔹 ngOnInit actualizado para obtener ubicación resumida automáticamente
   async ngOnInit() {
-    // Parámetros de navegación
-    this.nombreSeleccionado = this.route.snapshot.paramMap.get('nombre') || '';
-    this.iconoSeleccionado = this.route.snapshot.paramMap.get('icono') || '';
-    this.colorSeleccionado = this.route.snapshot.paramMap.get('color') || '';
-
     // Suscripción al BehaviorSubject
     this.locSub = this.locationService.location$.subscribe((loc: Ubicacion | null) => {
       this.ubicacionDisplay = loc?.display ?? 'Ubicación no disponible';
@@ -171,7 +174,10 @@ export class FormularioReportePage implements OnInit, OnDestroy {
     // Obtener coordenadas GPS y luego la dirección resumida
     try {
       const coords = await Geolocation.getCurrentPosition();
-      await this.locationService.fetchAddress(coords.coords.latitude, coords.coords.longitude);
+      this.latitud = coords.coords.latitude;
+      this.longitud = coords.coords.longitude;
+
+      await this.locationService.fetchAddress(this.latitud, this.longitud);
     } catch (err) {
       console.error('Error obteniendo GPS:', err);
       this.ubicacionDisplay = 'Ubicación no disponible';
