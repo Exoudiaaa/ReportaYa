@@ -15,7 +15,7 @@
         }
         
         body {
-            background-color: #a12424;
+            background-color: #074aad;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -111,7 +111,7 @@
         
         .btn-primary {
             background-color: white;
-            color: #a12424;
+            color: #000000;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
         
@@ -458,12 +458,14 @@
         <button class="btn btn-secondary" routerLink="/register">Crear Cuenta</button>
         <button class="btn btn-secondary" routerLink="/phone-login">Inicio con Número</button>
         <div class="alternative-login">
-            <a>También puedes iniciar sesión con</a>
+            <a style="color: white;">También puedes iniciar sesión con</a>
         </div>
         
         <div class="google-login">
             <a (click)="loginGoogle()"><img src="assets/google-logo.png" alt="Logo de Google"></a>
         </div>
+        
+        
     </div>
 </body>
 </html>

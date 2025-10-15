@@ -3,15 +3,21 @@
     <ion-header>
       <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
       <ion-toolbar style="--background: white; --color:white; border-bottom: 1px solid #ccc;">
-        <div
-          style="display: flex; align-items: center; justify-content: start; height: 100%; width: 100%; margin-left: 10px; padding-top: 30px;">
-          <img src="assets/icono-app.png" alt="Logo" style="height: 40px; margin-right: 8px;">
+        <div style="display: flex; align-items: center; justify-content: start; height: 100%; width: 100%;  padding-top: 30px;">
+          <img src="assets/icono-app.png" alt="Logo" style="height: 80px; margin-right: 8px;">
           <span style="font-size: 2.5rem; font-weight: bold; color: black; font-family: 'League Spartan', sans-serif ;">
             ReportaYa
           </span>
-          <div style="display: flex; align-items: end; justify-content: end; height: 100%; width: 100%; margin-right: 10px;">
+
+          <div style="margin-left: auto; display: flex; align-items: center;">
             <span class="material-symbols-outlined" style="color: rgb(141, 23, 23);" (click)="logout()"> Logout </span>
           </div>
+          
+          <!-- Contenedor del logo alineado a la derecha -->
+          <div style="margin-left: auto; display: flex; align-items: center;">
+            <img src="assets/logo_muni.png" alt="Logo" style="height: 80px; padding-right: 8px;">
+          </div>
+
         </div>
       </ion-toolbar>
     </ion-header>
@@ -40,11 +46,11 @@
       <ion-label>Inicio</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="cameras" routerLink="/cameras" style="--color: #666666; border-right: 1px solid black;">
+    <ion-tab-button tab="cameras" routerLink="/camaras" style="--color: #666666; border-right: 1px solid black;">
       <span class="material-symbols-outlined">
         speed_camera
       </span>
-      <ion-label style="font-size: 10px;">Pedir Camaras</ion-label>
+      <ion-label style="font-size: 10px;">Solicitar Camaras</ion-label>
     </ion-tab-button>
 
     <ion-tab-button tab="menu" routerLink="/menu" style="--color: #666666;">

@@ -1,0 +1,121 @@
+<ion-header>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <ion-toolbar class="toolbar-header">
+    <ion-buttons slot="start" class="back-button">
+      <ion-back-button defaultHref="/home" text="" icon="arrow-back-outline"></ion-back-button>
+    </ion-buttons>
+    <div class="header-content">
+      <div class="familia-btn">
+        <span
+          class="material-symbols-outlined"
+          style="font-size: 50px; border-radius: 100%; padding: 0.3rem; display: flex; justify-content: center; align-items: center; color: rgb(0, 0, 0);"
+        >
+          speed_camera
+        </span>
+      </div>
+      <span class="header-title"> Solicitar Cámara de Seguridad </span>
+      <div style="margin-left: auto; display: flex; align-items: center;">
+        <img src="assets/logo_muni.png" alt="Logo" style="height: 80px; padding-right: 8px;" />
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding content-bg">
+  <div class="container" style="padding-bottom: 100px;">
+
+    <!-- 🧍‍♂️ Datos Personales -->
+    <div class="card">
+      <h3 class="subtitulo">Datos Personales</h3>
+
+      <ion-input
+        [(ngModel)]="nombre"
+        label="Nombre"
+        labelPlacement="stacked"
+        placeholder="Ej: Juan"
+        fill="outline"
+        (ionInput)="validarLetras($event, 'nombre')"
+      ></ion-input>
+
+      <ion-input
+        [(ngModel)]="apellido"
+        label="Apellido"
+        labelPlacement="stacked"
+        placeholder="Ej: Pérez"
+        fill="outline"
+        (ionInput)="validarLetras($event, 'apellido')"
+      ></ion-input>
+
+      <ion-input
+        [(ngModel)]="rut"
+        label="RUT"
+        labelPlacement="stacked"
+        placeholder="Ej: 12345678-9"
+        fill="outline"
+        (ionInput)="validarRut($event)"
+      ></ion-input>
+
+      <ion-input
+        [(ngModel)]="telefono"
+        label="Teléfono"
+        labelPlacement="stacked"
+        placeholder="Ej: 912345678"
+        type="tel"
+        fill="outline"
+        (ionInput)="validarNumeros($event)"
+      ></ion-input>
+    </div>
+
+    <!-- 📷 Datos de Solicitud -->
+    <div class="card">
+      <h3 class="subtitulo">Datos de Solicitud de Cámara</h3>
+
+      <ion-input
+        [(ngModel)]="calle"
+        label="Calle / Referencias"
+        labelPlacement="stacked"
+        placeholder="Ej: Av. Principal 123, cerca de la plaza"
+        fill="outline"
+        (ionInput)="validarDireccion($event)"
+      ></ion-input>
+
+      <ion-textarea
+        [(ngModel)]="motivo"
+        label="Motivo de la petición"
+        labelPlacement="stacked"
+        placeholder="Describe brevemente el motivo"
+        fill="outline"
+        auto-grow="true"
+        (ionInput)="validarLetras($event, 'motivo')"
+      ></ion-textarea>
+
+      <!-- Datetime -->
+      <div class="datetime-container">
+        <ion-input
+          [value]="displayFechaHora"
+          readonly
+          label="Fecha y hora de solicitud"
+          labelPlacement="stacked"
+          placeholder="Seleccionar fecha y hora"
+          class="datetime-input"
+        ></ion-input>
+
+        <ion-datetime
+          id="dt"
+          (ionChange)="onDatetimeChange($event)"
+          presentation="date-time"
+          locale="es-ES"
+          hour-cycle="h23"
+          class="datetime-centro"
+        ></ion-datetime>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón Reportar -->
+  <div class="report-btn-container">
+    <ion-button expand="block" (click)="guardarSolicitud()" class="btn-reportar">
+      Solicitar Cámara
+    </ion-button>
+  </div>
+</ion-content>

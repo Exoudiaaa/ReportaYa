@@ -1,0 +1,222 @@
+
+  ion-input, ion-textarea {
+  margin-bottom: 12px;
+  --placeholder-color: #777;
+  --color: #000;
+  font-size: 16px;
+}
+
+.subtitulo {
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.datetime-container {
+  margin-top: 12px;
+}
+
+.datetime-input {
+  margin-bottom: 8px;
+}
+
+
+
+/* =============================
+   ENCABEZADO
+============================= */
+.toolbar-header {
+  --background: white;
+  --color: black;
+  border-bottom: 1px solid #000;
+  padding-top: 30px;
+}
+
+.back-button {
+  margin-left: 10px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+.header-title {
+  font-family: 'League Spartan', sans-serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: black;
+  margin-left: 5px;
+}
+
+/* =============================
+   FONDO Y CONTENEDOR
+============================= */
+.content-bg {
+  --background: linear-gradient(135deg, #074aad, #9abef5, #074aad);
+}
+
+ion-content {
+  --background: #f4f6fb;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 25px 0;
+}
+
+.container {
+  width: 90%;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* =============================
+   TARJETAS
+============================= */
+.card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px 15px 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  transition: all 0.25s ease-in-out;
+}
+
+.subtitulo {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 5px;
+  padding-bottom: 10px;
+}
+
+/* =============================
+   CAMPOS DE FORMULARIO
+============================= */
+ion-input,
+ion-textarea {
+  --background: #f9fafb;
+  --color: #111827;
+  --placeholder-color: #323233;
+  --border-color: #868686;
+  --border-radius: 12px;
+  --highlight-color-focused: #6296ff;
+  font-size: 15px;
+  padding: 2px;
+}
+
+ion-input::part(native),
+ion-textarea::part(native) {
+  background-color: #f9fafb;
+}
+
+/* =============================
+   DATETIME COMPLETO (fecha + hora)
+============================= */
+.datetime-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.datetime-label {
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.datetime-centro {
+  --background: #ffffff;
+  --color: #000000;
+  --border-color: #000000;
+  --border-radius: 12px;
+  --highlight-color-focused: #074aad;
+  font-size: 15px;
+  width: 95%;
+  text-align: center;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #bcbcbc;
+  padding: 8px;
+}
+
+.datetime-centro::part(native) {
+  color: #000000;
+  font-weight: 500;
+}
+
+.datetime-centro::part(calendar-day),
+.datetime-centro::part(time-button) {
+  color: #000000;
+}
+
+.datetime-centro::part(calendar-day today) {
+  background: #074aad;
+  color: white;
+  border-radius: 50%;
+}
+
+.datetime-centro::part(title) {
+  color: #011a4e;
+  font-weight: bold;
+}
+
+
+ion-datetime::part(time-button) {
+  color: #ffffff;        /* texto */
+  background-color: #074aad;  /* fondo */
+  border-radius: 8px;    /* opcional */
+  padding: 4px 8px;      /* opcional */
+}
+
+/* =============================
+   BOTÓN FIJO
+============================= */
+.report-btn-container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 30px;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.btn-reportar {
+  border-radius: 12px;
+  width: 80%;
+  --background: #ff3131;
+  --color: #ffffff;
+  font-weight: bolder;
+  text-transform: uppercase;
+  pointer-events: auto;
+}
+
+/* =============================
+   RESPONSIVE
+============================= */
+@media (max-width: 480px) {
+  .card {
+    padding: 15px 12px 20px;
+  }
+
+  .header-title {
+    font-size: 1.3rem;
+  }
+
+  .datetime-centro {
+    width: 100%;
+  }
+
+
+
+
+  
+}
