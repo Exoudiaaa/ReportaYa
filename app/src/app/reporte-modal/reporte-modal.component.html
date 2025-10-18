@@ -1,0 +1,40 @@
+<div class="modal-overlay" (click)="cerrar()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-title">Detalle del Reporte</h2>
+      <button class="close-button" (click)="cerrar()">
+        <span class="close-icon">×</span>
+      </button>
+    </div>
+
+    <div class="modal-content">
+      <div class="detail-section">
+        <div class="detail-item">
+          <span class="detail-label">Descripción</span>
+          <p class="detail-value">{{ reporte.descripcion }}</p>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Ubicación</span>
+          <p class="detail-value">{{ reporte.ubicacion }}</p>
+        </div>
+
+        <div class="detail-item" *ngIf="reporte.tipo">
+          <span class="detail-label">Tipo</span>
+          <p class="detail-value">{{ reporte.tipo }}</p>
+        </div>
+
+        <div class="photo-section" *ngIf="reporte.fotoURL">
+          <span class="detail-label">Foto del Reporte</span>
+          <div class="photo-container">
+            <img [src]="reporte.fotoURL" alt="Foto del reporte" class="report-photo" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-primary" (click)="cerrar()">Cerrar</button>
+    </div>
+  </div>
+</div>

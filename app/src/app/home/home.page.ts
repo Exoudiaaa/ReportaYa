@@ -6,6 +6,9 @@ import { Auth } from '../services/auth';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Geolocation } from '@capacitor/geolocation';
+import { Reporte } from '../services/reporte';
+import { ModalController, ViewDidEnter } from '@ionic/angular';
+import { ReporteModalComponent } from '../reporte-modal/reporte-modal.component';
 
 @Component({
   selector: 'app-home',
@@ -13,25 +16,37 @@ import { Geolocation } from '@capacitor/geolocation';
   styleUrls: ['home.page.scss'],
   standalone: false
 })
-export class HomePage implements AfterViewInit, OnDestroy {
+export class HomePage implements AfterViewInit, OnDestroy, ViewDidEnter {
   private map!: L.Map;
-  usuarioDisplay: string = '';   
+  private reportMarkers: L.Marker[] = [];
+  usuarioDisplay: string = '';
   ubicacionDisplay: string = 'Ubicación no disponible';
   private locSub?: Subscription;
-
+  private reportRefreshInterval?: any;
   constructor(
     private locationService: LocationService,
-    private authService: Auth, 
-    private router: Router
-  ) {}
+    private authService: Auth,
+    private router: Router,
+    private reportesService: Reporte,
+    private modalCtrl: ModalController 
+  ) { }
 
   ngAfterViewInit() {
     this.subscribeToLocation();
     this.getUserLocation();
+    this.startRefreshingReportes(10000); // cada 10 segundos
   }
 
   ngOnDestroy() {
     this.locSub?.unsubscribe();
+    this.stopRefreshingReportes();
+  }
+
+  ionViewDidEnter() {
+    // Aseguramos que el mapa se redibuje correctamente al volver a la página
+    if (this.map) {
+      this.map.invalidateSize();
+    }
   }
 
   private subscribeToLocation() {
@@ -51,13 +66,9 @@ export class HomePage implements AfterViewInit, OnDestroy {
       const lat = coords.coords.latitude;
       const lng = coords.coords.longitude;
 
-      // Guardar coordenadas en LocationService
       this.locationService.setLocation({ lat, lng });
-
-      // Obtener dirección resumida desde LocationIQ
       await this.locationService.fetchAddress(lat, lng);
 
-      // Inicializar mapa
       this.initMap(lat, lng);
 
     } catch (err) {
@@ -67,29 +78,90 @@ export class HomePage implements AfterViewInit, OnDestroy {
   }
 
   private initMap(lat: number, lng: number) {
-    this.map = L.map('mapId').setView([lat, lng], 16);
+    // Solo inicializamos el mapa si no existe
+    if (!this.map) {
+      this.map = L.map('mapId').setView([lat, lng], 16);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-    }).addTo(this.map);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+      }).addTo(this.map);
 
-    // Marcador con icono Ionicon
-    const userIcon = L.divIcon({
-      html: `<ion-icon name="person-circle" style="font-size: 50px; color: #ff0015ff;"></ion-icon>`,
-      className: '',
-      iconSize: [40, 40],
-      iconAnchor: [20, 35],
-      popupAnchor: [0, -35]
-    });
+      const userIcon = L.divIcon({
+        html: `<ion-icon name="person-circle" style="font-size: 50px; color: #ff0015ff;"></ion-icon>`,
+        className: '',
+        iconSize: [40, 40],
+        iconAnchor: [20, 35],
+        popupAnchor: [0, -35]
+      });
 
-    L.marker([lat, lng], { icon: userIcon })
-      .addTo(this.map)
-      .bindPopup(this.ubicacionDisplay)
-      .openPopup();
+      L.marker([lat, lng], { icon: userIcon })
+        .addTo(this.map)
+        .bindPopup(this.ubicacionDisplay)
+        .openPopup();
+    } else {
+      // Si ya existe, solo movemos el centro
+      this.map.setView([lat, lng], 16);
+    }
 
-    setTimeout(() => this.map.invalidateSize(), 500);
+    this.cargarReportes();
   }
 
+  private cargarReportes() {
+    this.reportesService.obtenerReportes().subscribe(reportes => {
+      // Eliminamos marcadores anteriores
+      this.reportMarkers.forEach(m => this.map.removeLayer(m));
+      this.reportMarkers = [];
+
+      reportes
+        .filter(r => r.visibilidad === true && r.coordenadas)
+        .forEach(reporte => {
+          let lat: number;
+          let lng: number;
+
+          if ('lat' in reporte.coordenadas && 'lng' in reporte.coordenadas) {
+            lat = reporte.coordenadas.lat;
+            lng = reporte.coordenadas.lng;
+          } else if (Array.isArray(reporte.coordenadas) && reporte.coordenadas.length === 2) {
+            [lat, lng] = reporte.coordenadas;
+          } else {
+            console.warn('Coordenadas inválidas para el reporte:', reporte);
+            return;
+          }
+
+          const reporteIcon = L.divIcon({
+            html: `<span class="material-symbols-outlined" style="font-size: 40px; color: #FF5722;">report_problem</span>`,
+            className: '',
+            iconSize: [40, 40],
+            iconAnchor: [20, 35],
+            popupAnchor: [0, -35]
+          });
+          const marker = L.marker([lat, lng], { icon: reporteIcon }).addTo(this.map);
+          marker.bindPopup(`<b>${reporte.titulo || 'Reporte sin título'}</b>`);
+          this.reportMarkers.push(marker);
+          marker.on('click', async () => {
+            const modal = await this.modalCtrl.create({
+              component: ReporteModalComponent,
+              componentProps: { reporte },
+              cssClass: 'custom-modal',
+              backdropDismiss: true
+            });
+            await modal.present();
+          });
+        });
+    });
+  }
+  private startRefreshingReportes(intervalMs: number) {
+  this.reportRefreshInterval = setInterval(() => {
+    this.cargarReportes();
+  }, intervalMs);
+}
+
+private stopRefreshingReportes() {
+  if (this.reportRefreshInterval) {
+    clearInterval(this.reportRefreshInterval);
+    this.reportRefreshInterval = undefined;
+  }
+}
   async logout() {
     await this.authService.logout();
     this.router.navigate(['/login']);

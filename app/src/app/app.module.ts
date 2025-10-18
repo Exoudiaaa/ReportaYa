@@ -12,10 +12,10 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { getStorage, provideStorage } from '@angular/fire/storage';
-
+import { ReporteModalComponent } from './reporte-modal/reporte-modal.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent,ReporteModalComponent ],
   imports: [HttpClientModule,BrowserModule,FormsModule, IonicModule.forRoot(), AppRoutingModule,],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, 
   provideFirebaseApp(() => initializeApp(environment.firebaseConfig )), 
