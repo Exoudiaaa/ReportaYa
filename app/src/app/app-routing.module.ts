@@ -33,6 +33,18 @@ const routes: Routes = [
     path: 'camaras',
     loadChildren: () => import('./camaras/camaras.module').then( m => m.CamarasPageModule)
   },
+  {
+    path: 'menu',
+    loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule)
+  },
+  {
+    path: 'historial',
+    loadChildren: () => import('./historial/historial.module').then( m => m.HistorialPageModule)
+  },
+  {
+    path: 'historial-camaras',
+    loadChildren: () => import('./historial-camaras/historial-camaras.module').then( m => m.HistorialCamarasPageModule)
+  },
 
 
 

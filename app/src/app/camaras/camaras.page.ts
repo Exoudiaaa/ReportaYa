@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-camaras',
@@ -22,7 +23,8 @@ export class CamarasPage implements OnInit {
   constructor(
     private firestore: Firestore,
     private alertCtrl: AlertController,
-    private router: Router
+    private router: Router,
+    private auth: Auth   // <-- Agregado
   ) {}
 
   ngOnInit() {}
@@ -82,59 +84,60 @@ export class CamarasPage implements OnInit {
   }
 
   async guardarSolicitud() {
-    // ⚠️ 1️⃣ Primero verifica caracteres inválidos
-    if (!this.camposValidos()) {
-      const alert = await this.alertCtrl.create({
-        header: 'Datos inválidos',
-        message: 'Verifica que todos los campos contengan caracteres válidos y en el formato correcto.',
-        buttons: ['OK']
-      });
-      await alert.present();
-      return;
-    }
+  const usuario = (await this.auth.currentUser);
+  if (!usuario) return;
 
-    // ⚠️ 2️⃣ Luego verifica campos vacíos
-    if (!this.nombre || !this.apellido || !this.rut || !this.telefono || !this.calle || !this.motivo || !this.displayFechaHora) {
-      const alert = await this.alertCtrl.create({
-        header: 'Campos incompletos',
-        message: 'Todos los campos son obligatorios.',
-        buttons: ['OK']
-      });
-      await alert.present();
-      return;
-    }
-
-    // ✅ Si pasa las validaciones, se guarda
-    try {
-      const colRef = collection(this.firestore, 'camaras');
-      await addDoc(colRef, {
-        nombre: this.nombre,
-        apellido: this.apellido,
-        rut: this.rut,
-        telefono: this.telefono,
-        calle: this.calle,
-        motivo: this.motivo,
-        fecha: this.displayFechaHora
-      });
-
-      const alert = await this.alertCtrl.create({
-        header: 'Solicitud enviada',
-        message: 'La solicitud de cámara fue registrada correctamente.',
-        buttons: [{
-          text: 'OK',
-          handler: () => this.router.navigate(['/home'])
-        }]
-      });
-      await alert.present();
-
-    } catch (err) {
-      console.error('Error guardando solicitud:', err);
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'No se pudo guardar la solicitud. Intente nuevamente.',
-        buttons: ['OK']
-      });
-      await alert.present();
-    }
+  if (!this.camposValidos()) {
+    const alert = await this.alertCtrl.create({
+      header: 'Datos inválidos',
+      message: 'Verifica que todos los campos contengan caracteres válidos y en el formato correcto.',
+      buttons: ['OK']
+    });
+    await alert.present();
+    return;
   }
+
+  if (!this.nombre || !this.apellido || !this.rut || !this.telefono || !this.calle || !this.motivo || !this.displayFechaHora) {
+    const alert = await this.alertCtrl.create({
+      header: 'Campos incompletos',
+      message: 'Todos los campos son obligatorios.',
+      buttons: ['OK']
+    });
+    await alert.present();
+    return;
+  }
+
+  try {
+    const colRef = collection(this.firestore, 'camaras');
+    await addDoc(colRef, {
+      nombre: this.nombre,
+      apellido: this.apellido,
+      rut: this.rut,
+      telefono: this.telefono,
+      calle: this.calle,
+      motivo: this.motivo,
+      fecha: this.displayFechaHora,
+      usuarioUID: usuario.uid // <-- Agregado
+    });
+
+    const alert = await this.alertCtrl.create({
+      header: 'Solicitud enviada',
+      message: 'La solicitud de cámara fue registrada correctamente.',
+      buttons: [{
+        text: 'OK',
+        handler: () => this.router.navigate(['/home'])
+      }]
+    });
+    await alert.present();
+
+  } catch (err) {
+    console.error('Error guardando solicitud:', err);
+    const alert = await this.alertCtrl.create({
+      header: 'Error',
+      message: 'No se pudo guardar la solicitud. Intente nuevamente.',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+}
 }

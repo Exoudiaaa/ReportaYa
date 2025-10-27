@@ -1,0 +1,54 @@
+<ion-header>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <ion-toolbar class="toolbar-header">
+    <ion-buttons slot="start" class="back-button">
+      <ion-back-button defaultHref="/menu" text="" icon="arrow-back-outline"></ion-back-button>
+    </ion-buttons>
+    <div class="header-content">
+      <span class="header-title">
+        Historial de Reportes
+      </span>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Mostrar mientras carga -->
+
+  <!-- <ion-spinner *ngIf="cargando" name="crescent" class="spinner-center"></ion-spinner> -->
+<ion-spinner name="crescent" class="spinner-center"></ion-spinner>
+
+  <!-- Mostrar lista cuando ya cargó -->
+  <ion-list *ngIf="!cargando && reportes.length > 0" style="background: transparent;">
+    <ion-card *ngFor="let reporte of reportes; let i = index" class="reporte-card">
+      <ion-card-header>
+        <ion-card-title class="titulo">{{ reporte.titulo || ('Reporte ' + (reportes.length - i)) }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="campo">
+          <label>Fecha</label>
+          <p>{{ convertirFecha(reporte.fecha) }}</p>
+        </div>
+
+        <div class="campo" *ngIf="reporte.ubicacion">
+          <label>Ubicación</label>
+          <p>{{ reporte.ubicacion }}</p>
+        </div>
+
+        <div class="campo" *ngIf="reporte.descripcion">
+          <label>Descripción</label>
+          <p>{{ reporte.descripcion }}</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <!-- Si no hay reportes -->
+  <div *ngIf="!cargando && reportes.length === 0" class="no-reportes">
+    <ion-icon name="archive-outline"></ion-icon>
+    <p>No hay reportes registrados aún.</p>
+  </div>
+
+</ion-content>

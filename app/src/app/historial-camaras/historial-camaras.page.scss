@@ -1,0 +1,116 @@
+/* --- ENCABEZADO --- */
+.toolbar-header {
+  --background: white;
+  --color: black;
+  border-bottom: 1px solid #000000;
+  padding-top: 30px;
+}
+
+.back-button {
+  margin-left: 10px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+.header-title {
+  font-family: 'League Spartan', sans-serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: black;
+  margin-left: 5px;
+}
+
+/* --- FONDO GENERAL --- */
+ion-content {
+  --background: linear-gradient(135deg, #074aad, #9abef5, #074aad);
+  padding: 16px;
+}
+
+.spinner-center {
+  position: fixed;           /* Se queda centrado sobre la pantalla */
+  top: 50%;                  /* Centrado vertical */
+  left: 50%;                 /* Centrado horizontal */
+  transform: translate(-50%, -50%); /* Ajuste exacto al centro */
+  z-index: 9999;             /* Encima de todo */
+}
+
+ion-spinner {
+  width: 48px;               /* Tamaño del spinner */
+  height: 48px;
+  color: white;              /* Puedes cambiar el color */
+}
+
+/* --- TARJETAS --- */
+.reporte-card {
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+  margin-bottom: 16px;
+  transition: transform 0.2s ease;
+  background: #f5f8ff; /* 🔹 Color sólido (azul muy claro) */
+  color: #1b1b1b; /* texto oscuro */
+  border: 1px solid #cfd9ff;
+}
+
+.reporte-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+.titulo {
+  font-weight: 700;
+  color: #023499;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+  font-size: 1.2rem;
+}
+
+/* --- CAMPOS --- */
+.campo {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.campo label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #0a1d52;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.campo p {
+  font-size: 0.95rem;
+  color: #333;
+  margin: 0;
+  line-height: 1.4;
+  word-wrap: break-word;
+  background: #ffffff;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border-left: 3px solid #023499;
+}
+
+/* --- NO HAY REGISTROS --- */
+.no-reportes {
+  text-align: center;
+  color: white;
+  margin-top: 40vh;
+  opacity: 0.8;
+}
+
+.no-reportes ion-icon {
+  font-size: 3rem;
+  display: block;
+  margin: 0 auto 10px;
+  color: #ffffff;
+}
+
+.no-reportes p {
+  font-size: 1.1rem;
+  font-weight: 500;
+}

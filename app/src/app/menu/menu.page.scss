@@ -1,0 +1,120 @@
+
+.toolbar-header {
+  --background: white;
+  --color: black;
+  border-bottom: 1px solid #000000;
+  padding-top: 30px;
+}
+
+.back-button {
+  margin-left: 10px;
+
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+
+.icon-familia {
+  font-size: 50px;
+  
+  border-radius: 80px;
+  padding: 0.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(0, 0, 0);
+  //border: 4px solid #ffffff;
+}
+
+.header-title {
+  font-family: 'League Spartan', sans-serif;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: black;
+  font-family: 'League Spartan', sans-serif;
+  margin-left: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+ion-content {
+  --background: linear-gradient(135deg, #074aad, #9abef5, #074aad);
+  padding: 16px;
+}
+
+/* Contenedor general para separar los items del borde */
+ion-list {
+  background: transparent;
+  margin-top: 2px;
+}
+
+/* Estilo general de los ítems del menú */
+ion-item {
+  --padding-start: 16px;
+  --inner-padding-end: 8px;
+  border-radius: 12px;
+  margin-bottom: 5px;
+
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.342);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Efecto hover/touch */
+ion-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Íconos del menú */
+ion-icon {
+  font-size: 1.8rem;
+  margin-right: 6px;
+}
+
+/* Texto del ítem */
+ion-label {
+  font-weight: 500;
+
+}
+
+/* Ítem especial para cerrar sesión */
+ion-item[color="danger"] {
+  --color: #b71c1c;
+  
+  ion-label {
+    color: #e9e9e9;
+    font-weight: 600;
+  }
+}
+
+/* Título */
+ion-title {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Animación sutil al abrir la página */
+ion-content::part(scroll) {
+  animation: fadeIn 0.4s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

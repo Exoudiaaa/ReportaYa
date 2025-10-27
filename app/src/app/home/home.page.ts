@@ -162,8 +162,6 @@ private stopRefreshingReportes() {
     this.reportRefreshInterval = undefined;
   }
 }
-  async logout() {
-    await this.authService.logout();
-    this.router.navigate(['/login']);
-  }
+
+
 }

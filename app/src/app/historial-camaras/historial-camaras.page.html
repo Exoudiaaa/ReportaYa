@@ -1,0 +1,64 @@
+<ion-header>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <ion-toolbar class="toolbar-header">
+    <ion-buttons slot="start" class="back-button">
+      <ion-back-button defaultHref="/menu" text="" icon="arrow-back-outline"></ion-back-button>
+    </ion-buttons>
+    <div class="header-content">
+      <span class="header-title">Historial de Cámaras</span>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-spinner *ngIf="cargando" name="crescent" class="spinner-center"></ion-spinner>
+
+  <ion-list *ngIf="!cargando && camaras.length > 0" style="background: transparent;">
+    <ion-card *ngFor="let camara of camaras; let i = index" class="reporte-card">
+      <ion-card-header>
+        <ion-card-title class="titulo">
+          {{ camara.titulo || ('Cámara ' + (camaras.length - i)) }}
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="campo">
+          <label>Nombre</label>
+          <p>{{ camara.nombre }} {{ camara.apellido }}</p>
+        </div>
+
+        <div class="campo">
+          <label>RUT</label>
+          <p>{{ camara.rut }}</p>
+        </div>
+
+        <div class="campo">
+          <label>Teléfono</label>
+          <p>{{ camara.telefono }}</p>
+        </div>
+
+        <div class="campo">
+          <label>Fecha</label>
+          <p>{{ convertirFecha(camara.fecha) }}</p>
+        </div>
+
+        <div class="campo">
+          <label>Calle</label>
+          <p>{{ camara.calle }}</p>
+        </div>
+
+        <div class="campo">
+          <label>Motivo</label>
+          <p>{{ camara.motivo }}</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <div *ngIf="!cargando && camaras.length === 0" class="no-reportes">
+    <ion-icon name="videocam-outline"></ion-icon>
+    <p>No hay cámaras registradas aún.</p>
+  </div>
+
+</ion-content>
