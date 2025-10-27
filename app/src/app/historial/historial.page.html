@@ -16,8 +16,7 @@
 
   <!-- Mostrar mientras carga -->
 
-  <!-- <ion-spinner *ngIf="cargando" name="crescent" class="spinner-center"></ion-spinner> -->
-<ion-spinner name="crescent" class="spinner-center"></ion-spinner>
+  <ion-spinner *ngIf="cargando" name="crescent" class="spinner-center"></ion-spinner>
 
   <!-- Mostrar lista cuando ya cargó -->
   <ion-list *ngIf="!cargando && reportes.length > 0" style="background: transparent;">
