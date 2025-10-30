@@ -1,7 +1,7 @@
-// src/app/register/register.page.ts
 import { Component } from '@angular/core';
 import { Auth } from '../services/auth';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -27,7 +27,17 @@ export class RegisterPage {
       return;
     }
 
-    const user = await this.authService.registerUser({ firstName, lastName, email, phone, password });
+    // 👇 Agregamos el rango por defecto
+    const rango = 'ciudadano';
+
+    const user = await this.authService.registerUser({
+      firstName,
+      lastName,
+      email,
+      phone,
+      password,
+      rango,
+    });
 
     if (user) {
       alert('Usuario creado con éxito');

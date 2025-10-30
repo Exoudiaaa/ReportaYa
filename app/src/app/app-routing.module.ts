@@ -45,6 +45,10 @@ const routes: Routes = [
     path: 'historial-camaras',
     loadChildren: () => import('./historial-camaras/historial-camaras.module').then( m => m.HistorialCamarasPageModule)
   },
+  {
+    path: 'partes',
+    loadChildren: () => import('./partes/partes.module').then( m => m.PartesPageModule)
+  },
 
 
 
