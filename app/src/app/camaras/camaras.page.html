@@ -5,16 +5,17 @@
       <ion-back-button defaultHref="/home" text="" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
     <div class="header-content">
-      <div class="familia-btn">
-        <span
-          class="material-symbols-outlined"
-          style="font-size: 50px; border-radius: 100%; padding: 0.3rem; display: flex; justify-content: center; align-items: center; color: rgb(0, 0, 0);"
-        >
-          speed_camera
-        </span>
-      </div>
-      <span class="header-title"> Solicitar Cámara de Seguridad </span>
+      
+      <span  style="font-size: 130%; font-weight: bold; color: black; font-family: 'Quicksand', sans-serif ;" class="header-title"> Solicitar Cámara de Seguridad </span>
+
+
+
     </div>
+
+
+
+
+    
   </ion-toolbar>
 </ion-header>
 
@@ -66,6 +67,17 @@
     <!-- 📷 Datos de Solicitud -->
     <div class="card">
       <h3 class="subtitulo">Datos de Solicitud de Cámara</h3>
+
+      <ion-input
+        [(ngModel)]="nRegistro"
+        label="Número de registro PDI/Carabineros"
+        labelPlacement="stacked"
+        placeholder="Ej: 2387456"
+        fill="outline"
+       
+      ></ion-input>
+
+
 
       <ion-input
         [(ngModel)]="calle"

@@ -62,5 +62,14 @@ export class HistorialPage implements OnInit {
   return 'Fecha no disponible';
 }
 
+obtenerEstadoTexto(estado: any): string {
+  if (!estado) return 'Estado desconocido';
+
+  if (estado.pendiente) return 'Su reporte está pendiente.';
+  if (estado.enProceso) return 'Su reporte está en proceso.';
+  if (estado.resuelto) return 'Su reporte fue resuelto.';
+
+  return 'Estado no definido';
+}
 
 }

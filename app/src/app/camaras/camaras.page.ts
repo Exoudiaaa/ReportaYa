@@ -16,8 +16,10 @@ export class CamarasPage implements OnInit {
   apellido: string = '';
   rut: string = '';
   telefono: string = '';
+  nRegistro: string = '';
   calle: string = '';
   motivo: string = '';
+  
   displayFechaHora: string = '';
 
   constructor(
@@ -97,7 +99,7 @@ export class CamarasPage implements OnInit {
     return;
   }
 
-  if (!this.nombre || !this.apellido || !this.rut || !this.telefono || !this.calle || !this.motivo || !this.displayFechaHora) {
+  if (!this.nombre || !this.apellido || !this.rut || !this.telefono || !this.nRegistro || !this.calle || !this.motivo || !this.displayFechaHora) {
     const alert = await this.alertCtrl.create({
       header: 'Campos incompletos',
       message: 'Todos los campos son obligatorios.',
@@ -114,10 +116,11 @@ export class CamarasPage implements OnInit {
       apellido: this.apellido,
       rut: this.rut,
       telefono: this.telefono,
+      nRegistro: this.nRegistro,
       calle: this.calle,
       motivo: this.motivo,
       fecha: this.displayFechaHora,
-      usuarioUID: usuario.uid // <-- Agregado
+      usuarioUID: usuario.uid 
     });
 
     const alert = await this.alertCtrl.create({

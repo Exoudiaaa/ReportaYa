@@ -40,6 +40,21 @@
           <label>Descripción</label>
           <p>{{ reporte.descripcion }}</p>
         </div>
+
+        <div class="campo" *ngIf="reporte.descripcion">
+          <label>Estado</label>
+          <p>{{  obtenerEstadoTexto(reporte.estado) }}</p>
+        </div>
+
+        <div class="campo" *ngIf="reporte.fotoURL">
+          <label>Imagen</label>
+          <div class="imagen-container">
+            <img [src]="reporte.fotoURL" alt="Imagen del reporte" />
+          </div>
+        </div>
+
+        
+
       </ion-card-content>
     </ion-card>
   </ion-list>

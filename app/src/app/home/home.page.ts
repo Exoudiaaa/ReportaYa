@@ -86,22 +86,23 @@ export class HomePage implements AfterViewInit, OnDestroy, ViewDidEnter {
         attribution: '© OpenStreetMap contributors',
       }).addTo(this.map);
 
-      const userIcon = L.divIcon({
-        html: `<ion-icon name="person-circle" style="font-size: 50px; color: #ff0015ff;"></ion-icon>`,
-        className: '',
-        iconSize: [40, 40],
-        iconAnchor: [20, 35],
-        popupAnchor: [0, -35]
+      // 👇 Aquí usamos una imagen local como icono
+      const userIcon = L.icon({
+        iconUrl: 'assets/icono-usuario.png', // ruta de la imagen local
+        iconSize: [50, 50], // tamaño del icono
+        iconAnchor: [25, 45], // punto del icono que se ubicará en la coordenada
+        popupAnchor: [0, -45] // posición del popup respecto al icono
       });
 
-      L.marker([lat, lng], { icon: userIcon })
-        .addTo(this.map)
-        .bindPopup(this.ubicacionDisplay)
-        .openPopup();
-    } else {
-      // Si ya existe, solo movemos el centro
-      this.map.setView([lat, lng], 16);
-    }
+          // Agregar marcador con el nuevo icono
+        L.marker([lat, lng], { icon: userIcon })
+          .addTo(this.map)
+          .bindPopup(this.ubicacionDisplay)
+          .openPopup();
+      } else {
+        // Si ya existe, solo movemos el centro
+        this.map.setView([lat, lng], 16);
+      }
 
     this.cargarReportes();
   }

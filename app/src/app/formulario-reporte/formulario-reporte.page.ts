@@ -122,15 +122,17 @@ export class FormularioReportePage implements OnInit, OnDestroy {
       const reporte = {
         descripcion: this.descripcion,
         fotoURL: this.foto,
-        ubicacion: this.ubicacionDisplay || null, // dirección legible
-        visibilidad:this.visibilidad,
+        ubicacion: this.ubicacionDisplay || null,
+        visibilidad: this.visibilidad,
         coordenadas: {
           lat: this.latitud,
           lng: this.longitud
         },
-        pendiente: this.pendiente,
-        enProceso: this.enProceso,
-        resuelto: this.resuelto,
+        estado: {
+          pendiente: this.pendiente,
+          enProceso: this.enProceso,
+          resuelto: this.resuelto
+        },
         fecha: new Date(),
         usuarioUID: usuarioActual.uid,
         usuarioEmail: usuarioActual.email

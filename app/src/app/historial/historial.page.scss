@@ -117,3 +117,22 @@ ion-spinner {
   font-size: 1.1rem;
   font-weight: 500;
 }
+
+
+.imagen-container {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  margin-top: 6px;
+}
+
+.imagen-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 10px;
+}
