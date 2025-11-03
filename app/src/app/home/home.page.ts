@@ -50,15 +50,25 @@ export class HomePage implements AfterViewInit, OnDestroy, ViewDidEnter {
   }
 
   private subscribeToLocation() {
-    this.locSub = this.locationService.location$.subscribe((loc: Ubicacion | null) => {
-      this.ubicacionDisplay = loc?.display ?? 'Ubicación no disponible';
-      // Actualizar popup si el mapa ya está inicializado
-      if (this.map && loc) {
-        const marker = L.marker([loc.lat!, loc.lng!]).bindPopup(this.ubicacionDisplay).openPopup();
-        marker.addTo(this.map);
-      }
-    });
-  }
+  this.locSub = this.locationService.location$.subscribe((loc: Ubicacion | null) => {
+    this.ubicacionDisplay = loc?.display ?? 'Ubicación no disponible';
+    if (this.map && loc) {
+      // 👇 Definimos el mismo icono personalizado aquí también
+      const userIcon = L.icon({
+        iconUrl: 'assets/icono-usuario.png',
+        iconSize: [50, 50],
+        iconAnchor: [25, 45],
+        popupAnchor: [0, -45]
+      });
+
+      // 👇 Reemplaza el marcador default con este
+      const marker = L.marker([loc.lat!, loc.lng!], { icon: userIcon })
+        .bindPopup(this.ubicacionDisplay)
+        .openPopup();
+      marker.addTo(this.map);
+    }
+  });
+}
 
   private async getUserLocation() {
     try {
