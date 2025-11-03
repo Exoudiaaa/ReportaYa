@@ -87,35 +87,90 @@ export class HomePage implements AfterViewInit, OnDestroy, ViewDidEnter {
     }
   }
 
-  private initMap(lat: number, lng: number) {
-    // Solo inicializamos el mapa si no existe
-    if (!this.map) {
-      this.map = L.map('mapId').setView([lat, lng], 16);
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
-      }).addTo(this.map);
 
-      // 👇 Aquí usamos una imagen local como icono
-      const userIcon = L.icon({
-        iconUrl: 'assets/icono-usuario.png', // ruta de la imagen local
-        iconSize: [50, 50], // tamaño del icono
-        iconAnchor: [25, 45], // punto del icono que se ubicará en la coordenada
-        popupAnchor: [0, -45] // posición del popup respecto al icono
-      });
 
-          // Agregar marcador con el nuevo icono
-        L.marker([lat, lng], { icon: userIcon })
-          .addTo(this.map)
-          .bindPopup(this.ubicacionDisplay)
-          .openPopup();
-      } else {
-        // Si ya existe, solo movemos el centro
-        this.map.setView([lat, lng], 16);
-      }
 
-    this.cargarReportes();
+
+      private async initMap(lat: number, lng: number) {
+if (!this.map) {
+this.map = L.map('mapId').setView([lat, lng], 16);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors',
+}).addTo(this.map);
+
+const userIcon = L.icon({
+  iconUrl: 'assets/icono-usuario.png', 
+  iconSize: [50, 50], 
+  iconAnchor: [25, 45], 
+  popupAnchor: [0, -45] 
+});
+
+L.marker([lat, lng], { icon: userIcon })
+  .addTo(this.map)
+  .bindPopup(this.ubicacionDisplay)
+  .openPopup();
+
+// Cargar GeoJSON de la comuna
+const response = await fetch('assets/PRC_San_Bernardo.geojson');
+const comunaGeoJson = await response.json();
+
+// Crear capa de la comuna con color azul
+const comunaLayer = L.geoJSON(comunaGeoJson, {
+  style: {
+    color: '#40ff00ff',
+    weight: 0,
+    fillColor: '#ffffff',
+    fillOpacity: 0.5
   }
+}).addTo(this.map);
+
+this.map.fitBounds(comunaLayer.getBounds());
+
+// 🔹 Máscara gris afuera
+const worldBounds: L.LatLngExpression[] = [
+  [-90, -180], [-90, 180], [90, 180], [90, -180], [-90, -180]
+];
+
+// Extraer polígonos de la comuna (MultiPolygons soportados)
+const comunaPolygons: L.LatLngTuple[][] = [];
+comunaLayer.getLayers().forEach((layer: any) => {
+  const latlngs = layer.getLatLngs();
+  latlngs.forEach((poly: any) => {
+    poly.forEach((p: L.LatLng) => {
+      // convertir a LatLngTuple
+    });
+  });
+});
+
+// Convertir todos los polígonos a LatLngTuple arrays
+comunaLayer.getLayers().forEach((layer: any) => {
+  const latlngs = layer.getLatLngs();
+  latlngs.forEach((multi: any) => {
+    multi.forEach((poly: L.LatLng[]) => {
+      const hole: L.LatLngTuple[] = poly.map(p => [p.lat, p.lng]);
+      comunaPolygons.push(hole);
+    });
+  });
+});
+
+// Crear polígono con “agujeros” para máscara gris
+L.polygon([worldBounds, ...comunaPolygons], {
+  color: 'gray',
+  fillColor: 'gray',
+  fillOpacity: 0.5,
+  stroke: false
+}).addTo(this.map);
+
+} else {
+this.map.setView([lat, lng], 16);
+}
+
+this.cargarReportes();
+}
+
+
 
   private cargarReportes() {
     this.reportesService.obtenerReportes().subscribe(reportes => {
