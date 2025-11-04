@@ -49,6 +49,14 @@ const routes: Routes = [
     path: 'partes',
     loadChildren: () => import('./partes/partes.module').then( m => m.PartesPageModule)
   },
+  {
+    path: 'asignaciones',
+    loadChildren: () => import('./asignaciones/asignaciones.module').then( m => m.AsignacionesPageModule)
+  },
+  {
+    path: 'detalleasignacion',
+    loadChildren: () => import('./detalleasignacion/detalleasignacion.module').then( m => m.DetalleasignacionPageModule)
+  },
 
 
 

@@ -40,7 +40,7 @@
         <ion-label>Partes</ion-label>
       </ion-tab-button>
 
-      <ion-tab-button tab="asignaciones"
+      <ion-tab-button tab="asignaciones" routerLink="/asignaciones"
         style="--color: #000000; --color-selected: #ff0000; border-right: 1px solid black;">
         <ion-icon name="map-outline"></ion-icon>
         <ion-label>Asignaciones</ion-label>
@@ -51,7 +51,7 @@
         <ion-label>Menu</ion-label>
       </ion-tab-button>
     </ng-container>
-    <ng-container *ngIf="rango === 'vecino'">
+    <ng-container *ngIf="rango === 'ciudadano'">
       <ion-tab-button tab="home" routerLink="/home"
         style="--color: #000000; --color-selected: #ff0000; border-right: 1px solid black;">
         <ion-icon name="map-outline"></ion-icon>

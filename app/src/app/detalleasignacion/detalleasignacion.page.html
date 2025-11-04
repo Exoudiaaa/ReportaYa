@@ -1,0 +1,79 @@
+<ion-header>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <ion-toolbar class="toolbar-header">
+    <ion-buttons slot="start" class="back-button">
+      <ion-back-button defaultHref="/home" text="" icon="arrow-back-outline"></ion-back-button>
+    </ion-buttons>
+    <div class="header-content">
+      <span style="font-size: 200%; font-weight: bold; color: black; font-family: 'Quicksand', sans-serif ;"
+        class="header-title">
+        Detalle de Asignación
+      </span>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="content-bg">
+  <div class="ion-padding">
+    <ion-card class="detalle-card">
+      <div class="estado-container">
+        <ion-chip [color]="obtenerColorEstado(reporte?.estado)" class="estado-chip">
+          {{ obtenerEstadoTexto(reporte?.estado) }}
+        </ion-chip>
+      </div>
+
+      <ion-card-header class="card-header">
+        <ion-card-title class="card-title">
+          <ion-icon name="location" class="title-icon"></ion-icon>
+          {{ reporte?.ubicacion }}
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content class="card-content">
+        <div class="info-row">
+          <ion-icon name="finger-print" class="info-icon"></ion-icon>
+          <div class="info-text">
+            <strong>ID:</strong> {{ reporte?.id }}
+          </div>
+        </div>
+
+        <div class="info-row">
+          <ion-icon name="alert-circle" class="info-icon"></ion-icon>
+          <div class="info-text">
+            <strong>Prioridad:</strong> {{ reporte?.prioridad }}
+          </div>
+        </div>
+
+        <div class="descripcion-container">
+          <ion-icon name="document-text" class="descripcion-icon"></ion-icon>
+          <div class="descripcion-text">
+            <strong>Descripción:</strong> <br> {{ reporte?.descripcion }}
+          </div>
+        </div>
+
+        <ion-item lines="none" class="terreno-item">
+          <span class="material-symbols-outlined">
+            parking_valet
+          </span>
+          <ion-label class="terreno-label">En Terreno</ion-label>
+          <ion-checkbox slot="end" [checked]="enTerreno" (ionChange)="actualizarEnTerreno($event)"
+            class="terreno-checkbox">
+          </ion-checkbox>
+        </ion-item>
+
+        <div *ngIf="reporte?.fotoURL" class="imagen-container">
+          <ion-img [src]="reporte.fotoURL" class="reporte-imagen"></ion-img>
+        </div>
+
+        <ion-item class="comentarios-item">
+          <ion-label position="stacked" class="comentarios-label">Comentarios</ion-label>
+          <ion-textarea rows="4" placeholder="Describe lo ocurrido" class="comentarios-textarea" [(ngModel)]="comentariosInspector"></ion-textarea>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+    <ion-button class="save-button" (click)="guardarCambios()">
+      <ion-icon name="save" slot="start"></ion-icon>
+      Pedir Termino
+    </ion-button>
+  </div>
+</ion-content>

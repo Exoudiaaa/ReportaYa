@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth as FirebaseAuth, createUserWithEmailAndPassword, User, signInWithEmailAndPassword, signInWithPhoneNumber, getAuth, setPersistence, browserLocalPersistence, signOut, GoogleAuthProvider, signInWithCredential } from '@angular/fire/auth';
-import { Firestore, doc, setDoc,getDoc, serverTimestamp } from '@angular/fire/firestore';
+import { Firestore, doc, setDoc, getDoc, serverTimestamp, collection, getDocs, query, where } from '@angular/fire/firestore';
 import { set } from 'firebase/database';
 import { Capacitor } from '@capacitor/core';
 import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
@@ -32,7 +32,7 @@ export class Auth {
     email: string;
     phone: string;
     password: string;
-    rango:string;
+    rango: string;
   }): Promise<User | null> {
     try {
       const userCredential = await createUserWithEmailAndPassword(this.auth, data.email, data.password);
@@ -129,24 +129,44 @@ export class Auth {
     }
   }
   async getCurrentUserData(): Promise<any | null> {
-  try {
-    const currentUser = this.auth.currentUser;
-    if (!currentUser) {
-      console.warn('No hay usuario autenticado.');
-      return null;
-    }
+    try {
+      const currentUser = this.auth.currentUser;
+      if (!currentUser) {
+        console.warn('No hay usuario autenticado.');
+        return null;
+      }
 
-    const userRef = doc(this.firestore, 'users', currentUser.uid);
-    const snap = await getDoc(userRef);
-    if (snap.exists()) {
-      return snap.data();
-    } else {
-      console.warn('El documento del usuario no existe en Firestore.');
+      const userRef = doc(this.firestore, 'users', currentUser.uid);
+      const snap = await getDoc(userRef);
+      if (snap.exists()) {
+        return snap.data();
+      } else {
+        console.warn('El documento del usuario no existe en Firestore.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error al obtener los datos del usuario:', error);
       return null;
     }
-  } catch (error) {
-    console.error('Error al obtener los datos del usuario:', error);
-    return null;
   }
-}
+  async obtenerReportesAsignados(): Promise<any[]> {
+    const user = this.auth.currentUser;
+    if (!user) return [];
+
+    try {
+      const reportesRef = collection(this.firestore, 'reportes');
+      const q = query(reportesRef, where('inspectorAsignado', '==', user.uid));
+      const querySnapshot = await getDocs(q);
+
+      const reportes: any[] = [];
+      querySnapshot.forEach((doc) => {
+        reportes.push({ id: doc.id, ...doc.data() });
+      });
+
+      return reportes;
+    } catch (error) {
+      console.error('Error al obtener reportes del inspector:', error);
+      return [];
+    }
+  }
 }

@@ -1,0 +1,53 @@
+<ion-header>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <ion-toolbar class="toolbar-header">
+    <ion-buttons slot="start" class="back-button">
+      <ion-back-button defaultHref="/home" text="" icon="arrow-back-outline"></ion-back-button>
+    </ion-buttons>
+    <div class="header-content">
+      <span style="font-size: 200%; font-weight: bold; color: black; font-family: 'Quicksand', sans-serif ;"
+        class="header-title">
+        Mis Reportes Asignados
+      </span>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding content-bg">
+
+  <ion-list *ngIf="reportes.length > 0; else sinReportes" class="reportes-list">
+    <ion-item *ngFor="let reporte of reportes" class="reporte-item"  (click)="verDetalle(reporte)">
+      <ion-label class="reporte-label">
+        <h2 class="reporte-descripcion">{{ reporte.descripcion }}</h2>
+        <div class="reporte-details">
+          <div class="detail-row">
+            <ion-icon name="location" class="detail-icon"></ion-icon>
+            <span class="detail-text">{{ reporte.ubicacion }}</span>
+          </div>
+          <div class="detail-row">
+            <ion-icon name="time" class="detail-icon"></ion-icon>
+            <span class="detail-text">
+              {{ reporte.fecha?.toDate ? (reporte.fecha.toDate() | date:'short') : (reporte.fecha | date:'short') }}
+            </span>
+          </div>
+          <div class="detail-row">
+            <ion-icon name="flag" class="detail-icon"></ion-icon>
+            <ion-badge [color]="obtenerColorEstado(reporte.estado)" class="estado-badge">
+              {{ obtenerEstadoTexto(reporte.estado) }}
+            </ion-badge>
+          </div>
+        </div>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #sinReportes>
+    <div class="sin-reportes-container">
+      <ion-icon name="document-text" class="sin-reportes-icon"></ion-icon>
+      <ion-text color="medium" class="sin-reportes-text">
+        <p>No tienes reportes asignados</p>
+      </ion-text>
+    </div>
+  </ng-template>
+
+</ion-content>
