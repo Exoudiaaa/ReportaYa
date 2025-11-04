@@ -3,13 +3,14 @@
     <ion-header>
       <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
       <ion-toolbar style="--background: white; --color:white; border-bottom: 1px solid #ccc;">
-        <div style="display: flex; align-items: center; justify-content: start; height: 100%; width: 100%;  padding-top: 30px;">
+        <div
+          style="display: flex; align-items: center; justify-content: start; height: 100%; width: 100%;  padding-top: 30px;">
           <img src="assets/icono-app.png" alt="Logo" style="height: 80px; margin-right: 8px;">
           <span style="font-size: 200%; font-weight: bold; color: black; font-family: 'Quicksand', sans-serif ;">
             ReportaYa
           </span>
 
-      
+
 
         </div>
       </ion-toolbar>
@@ -17,8 +18,7 @@
 
     <ion-content>
       <!-- Mapa -->
-      <div id="mapId"
-        style="height: 100%; width: 100%;"></div>
+      <div id="mapId" style="height: 100%; width: 100%;"></div>
 
       <!-- Botón flotante -->
       <div
@@ -34,29 +34,41 @@
 
   <!-- Tab Bar -->
   <ion-tab-bar slot="bottom" style="--background: white; --color: black; border-top: 1px solid #ccc;">
-  <ion-tab-button 
-    tab="home" 
-    routerLink="/home"
-    style="--color: #000000; --color-selected: #ff0000; border-right: 1px solid black;">
-    <ion-icon name="map-outline"></ion-icon>
-    <ion-label style="font-size: 80%;">Inicio</ion-label>
-  </ion-tab-button>
+    <ng-container *ngIf="rango === 'inspector'">
+      <ion-tab-button tab="partes" routerLink="/partes" style="--color: #000000; --color-selected: #ff0000; border-right: 1px solid black;">
+        <ion-icon name="clipboard-outline"></ion-icon>
+        <ion-label>Partes</ion-label>
+      </ion-tab-button>
 
-  <ion-tab-button 
-    tab="cameras" 
-    routerLink="/camaras"
-    style="--color: #000000; --color-selected: #ff0000;  border-right: 1px solid black;">
-    <span class="material-symbols-outlined">speed_camera</span>
-    <ion-label style="font-size: 80%;">Solicitar Cámaras</ion-label>
-  </ion-tab-button>
+      <ion-tab-button tab="asignaciones" routerLink="/asignaciones"
+        style="--color: #000000; --color-selected: #ff0000; border-right: 1px solid black;">
+        <ion-icon name="map-outline"></ion-icon>
+        <ion-label>Asignaciones</ion-label>
+      </ion-tab-button>
 
-  <ion-tab-button 
-    tab="menu" 
-    routerLink="/menu"
-    style="--color: #000000; --color-selected: #ff0000;">
-    <ion-icon name="menu-outline"></ion-icon>
-    <ion-label style="font-size: 80%;">Menú</ion-label>
-  </ion-tab-button>
-</ion-tab-bar>
+      <ion-tab-button tab="menu" routerLink="/menu" style="--color: #000000; --color-selected: #ff0000;">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Menu</ion-label>
+      </ion-tab-button>
+    </ng-container>
+    <ng-container *ngIf="rango === 'ciudadano'">
+      <ion-tab-button tab="home" routerLink="/home"
+        style="--color: #000000; --color-selected: #ff0000; border-right: 1px solid black;">
+        <ion-icon name="map-outline"></ion-icon>
+        <ion-label style="font-size: 80%;">Inicio</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="cameras" routerLink="/camaras"
+        style="--color: #000000; --color-selected: #ff0000;  border-right: 1px solid black;">
+        <span class="material-symbols-outlined">speed_camera</span>
+        <ion-label style="font-size: 80%;">Solicitar Cámaras</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="menu" routerLink="/menu" style="--color: #000000; --color-selected: #ff0000;">
+        <ion-icon name="menu-outline"></ion-icon>
+        <ion-label style="font-size: 80%;">Menú</ion-label>
+      </ion-tab-button>
+    </ng-container>
+  </ion-tab-bar>
 
 </ion-tabs>

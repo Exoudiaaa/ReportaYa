@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet.locatecontrol';
 import { LocationService, Ubicacion } from '../services/location';
@@ -16,7 +16,8 @@ import { ReporteModalComponent } from '../reporte-modal/reporte-modal.component'
   styleUrls: ['home.page.scss'],
   standalone: false
 })
-export class HomePage implements AfterViewInit, OnDestroy, ViewDidEnter {
+export class HomePage implements AfterViewInit,OnInit, OnDestroy, ViewDidEnter {
+  rango: string ="";
   private map!: L.Map;
   private reportMarkers: L.Marker[] = [];
   usuarioDisplay: string = '';
@@ -30,7 +31,12 @@ export class HomePage implements AfterViewInit, OnDestroy, ViewDidEnter {
     private reportesService: Reporte,
     private modalCtrl: ModalController 
   ) { }
-
+  async ngOnInit(): Promise<void> {
+    const userData = await this.authService.getCurrentUserData();
+      console.log(userData.nombre);
+      this.rango = userData?.rango || 'ciudadano';
+      console.log(this.rango)
+  }
   ngAfterViewInit() {
     this.subscribeToLocation();
     this.getUserLocation();

@@ -42,7 +42,33 @@
 body {
   font-family: 'League Spartan', sans-serif !important;
 }
+/* Asegurar safe area en toda la aplicación */
+ion-content {
+  --padding-bottom: calc(env(safe-area-inset-bottom) + 16px);
+  --padding-top: env(safe-area-inset-top);
+  --padding-start: env(safe-area-inset-left);
+  --padding-end: env(safe-area-inset-right);
+}
 
+/* Para headers y footers fijos */
+ion-header {
+  padding-top: env(safe-area-inset-top);
+}
+
+ion-footer {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Para elementos fijos en la parte inferior */
+.fixed-bottom {
+  margin-bottom: env(safe-area-inset-bottom);
+}
+
+/* Para botones de acción en la parte inferior */
+.report-btn-container,
+.btn-fixed-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
 
 
 

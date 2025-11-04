@@ -1,0 +1,310 @@
+/* Asegurar el fondo gradient en toda la página */
+.toolbar-header {
+    --background: white;
+    --color: black;
+    border-bottom: 1px solid #000000;
+    padding-top: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.content-bg {
+    --background: linear-gradient(135deg, #074aad, #9abef5, #074aad);
+    background: linear-gradient(135deg, #074aad, #9abef5, #074aad);
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/* Resto de tus estilos específicos para esta página */
+.detalle-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.detalle-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+.estado-container {
+    padding: 15px 20px 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.estado-chip {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    border-radius: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card-header {
+    padding: 0 20px 10px;
+}
+
+.card-title {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #333;
+    display: flex;
+    align-items: center;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.title-icon {
+    color: #b71c1c;
+    font-size: 1.6rem;
+    margin-right: 10px;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+}
+
+.card-content {
+    padding: 0 20px 20px;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 12px 15px;
+    background: rgba(183, 28, 28, 0.05);
+    border-radius: 12px;
+    border-left: 4px solid #b71c1c;
+}
+
+.info-icon {
+    color: #b71c1c;
+    font-size: 1.4rem;
+    margin-right: 12px;
+    min-width: 24px;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+}
+
+.info-text {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    color: #333;
+    font-weight: 500;
+    flex: 1;
+}
+
+.descripcion-container {
+    display: flex;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(7, 74, 173, 0.05);
+    border-radius: 12px;
+    border-left: 4px solid #074aad;
+}
+
+.descripcion-icon {
+    color: #074aad;
+    font-size: 1.4rem;
+    margin-right: 12px;
+    min-width: 24px;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+}
+
+.descripcion-text {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    color: #333;
+    font-weight: 500;
+    flex: 1;
+    line-height: 1.5;
+}
+
+.terreno-item {
+    --background: transparent;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    border: 1px solid rgba(183, 28, 28, 0.2);
+}
+
+.terreno-icon {
+    color: #b71c1c;
+    font-size: 1.6rem;
+    margin-right: 10px;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+}
+
+.terreno-label {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.terreno-checkbox {
+    --size: 24px;
+    --checkbox-background-checked: #b71c1c;
+    --border-radius: 6px;
+    --border-width: 2px;
+    --border-color: #b71c1c;
+}
+
+.imagen-container {
+    margin: 20px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.reporte-imagen {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.comentarios-item {
+    --background: rgba(255, 255, 255, 0.7);
+    --border-radius: 12px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.comentarios-label {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    color: #333 !important;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.comentarios-textarea {
+    min-height: 120px;
+    border-radius: 8px;
+    --padding-start: 8px;
+    color: #000000;
+}
+
+/* Colores para los chips de estado */
+ion-chip[color="success"] {
+    --background: #28a745;
+    --color: white;
+}
+
+ion-chip[color="warning"] {
+    --background: #ffc107;
+    --color: black;
+}
+
+ion-chip[color="danger"] {
+    --background: #b71c1c;
+    --color: white;
+}
+
+ion-chip[color="primary"] {
+    --background: #074aad;
+    --color: white;
+}
+
+ion-chip[color="medium"] {
+    --background: #6c757d;
+    --color: white;
+}
+
+/* Efectos de focus */
+.terreno-item.item-has-focus {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 20px rgba(183, 28, 28, 0.2);
+    border: 1px solid #b71c1c;
+}
+
+.comentarios-item.item-has-focus {
+    --background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 20px rgba(183, 28, 28, 0.2);
+    border: 1px solid #b71c1c;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .card-title {
+        font-size: 1.2rem;
+    }
+
+    .info-text,
+    .descripcion-text {
+        font-size: 0.95rem;
+    }
+
+    .estado-chip {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+
+    .material-symbols-outlined {
+        color: #b71c1c;
+        font-size: 1.6rem;
+        margin-right: 10px;
+        filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+        font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+    }
+
+    .save-button {
+        --background: linear-gradient(145deg, #b71c1c, #9a1616);
+        --color: white;
+        --border-radius: 12px;
+        --box-shadow: 0 4px 15px rgba(183, 28, 28, 0.3);
+        --padding-top: 20px;
+        --padding-bottom: 20px;
+        margin: 25px 0 15px 0;
+        font-weight: 700;
+        font-family: 'Quicksand', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        height: 50px;
+        display: block;
+        margin: 25px auto 15px auto;
+    }
+
+    .save-button:hover {
+        --background: linear-gradient(145deg, #c71f1f, #ab1818);
+        --box-shadow: 0 6px 20px rgba(183, 28, 28, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .save-button:active {
+        transform: translateY(1px);
+        --box-shadow: 0 2px 8px rgba(183, 28, 28, 0.3);
+    }
+
+    .save-button:focus {
+        --background: linear-gradient(145deg, #b71c1c, #9a1616);
+        --box-shadow: 0 0 0 3px rgba(183, 28, 28, 0.3);
+    }
+
+    /* Estado disabled */
+    .save-button:disabled {
+        --background: linear-gradient(145deg, #cccccc, #aaaaaa);
+        --color: #666666;
+        --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transform: none;
+        opacity: 0.7;
+    }
+}
