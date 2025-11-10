@@ -32,6 +32,9 @@
         <span class="foto-confirmacion" style="text-align: right !important;">
           {{ parte.fotoURL1 ? 'Parte-papel.png ✅' : 'Ingresar foto de parte en papel' }}
         </span>
+            <ion-button *ngIf="parte.fotoURL1" color="danger" size="small" (click)="eliminarFoto(1)">
+      Eliminar
+    </ion-button>
     </div>
   </ion-col>
   <ion-col class="camera-col" size="12">
@@ -43,6 +46,9 @@
       <span class="foto-confirmacion">
         {{ parte.fotoURL2 ? 'vehiculo.png ✅' : 'Ingresar imagen de vehiculo' }}
       </span>
+          <ion-button *ngIf="parte.fotoURL2" color="danger" size="small" (click)="eliminarFoto(2)">
+      Eliminar
+    </ion-button>
     </div>
   </ion-col>
 
@@ -55,6 +61,9 @@
       <span class="foto-confirmacion">
         {{ parte.fotoURL3? 'patente.png ✅' : 'Ingresar imagen de patente' }}
       </span>
+          <ion-button *ngIf="parte.fotoURL3" color="danger" size="small" (click)="eliminarFoto(3)">
+      Eliminar
+    </ion-button>
     </div>
   </ion-col>
 <ion-item>

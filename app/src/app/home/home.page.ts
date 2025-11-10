@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Geolocation } from '@capacitor/geolocation';
 import { Reporte } from '../services/reporte';
-import { ModalController, ViewDidEnter } from '@ionic/angular';
+import { ModalController, ViewDidEnter, Platform, AlertController } from '@ionic/angular';
 import { ReporteModalComponent } from '../reporte-modal/reporte-modal.component';
 
 @Component({
@@ -29,13 +29,40 @@ export class HomePage implements AfterViewInit,OnInit, OnDestroy, ViewDidEnter {
     private authService: Auth,
     private router: Router,
     private reportesService: Reporte,
-    private modalCtrl: ModalController 
+    private modalCtrl: ModalController ,
+    private platform: Platform,
+    private alertController: AlertController
   ) { }
-  async ngOnInit(): Promise<void> {
-    const userData = await this.authService.getCurrentUserData();
+  async ngOnInit() {
+	    const userData = await this.authService.getCurrentUserData();
       console.log(userData.nombre);
       this.rango = userData?.rango || 'ciudadano';
       console.log(this.rango)
+      
+      this.platform.backButton.subscribeWithPriority(10, async () => {
+      const currentPath = window.location.pathname;
+
+      if (currentPath === '/home') {
+        const alert = await this.alertController.create({
+          header: 'Salir',
+          message: '¿Estás seguro de que deseas salir de la aplicación?',
+          buttons: [
+            {
+              text: 'Cancelar',
+              role: 'cancel',
+            },
+            {
+              text: 'Salir',
+              handler: () => {
+                (navigator as any).app.exitApp(); // ✅ ya no da error
+              },
+            },
+          ],
+        });
+
+        await alert.present();
+      }
+    });
   }
   ngAfterViewInit() {
     this.subscribeToLocation();
@@ -76,22 +103,37 @@ export class HomePage implements AfterViewInit,OnInit, OnDestroy, ViewDidEnter {
   });
 }
 
-  private async getUserLocation() {
-    try {
-      const coords = await Geolocation.getCurrentPosition();
-      const lat = coords.coords.latitude;
-      const lng = coords.coords.longitude;
+ private async getUserLocation() {
+  try {
+    // 🔹 1. Verificar y solicitar permisos correctamente
+    const perm = await Geolocation.checkPermissions();
 
-      this.locationService.setLocation({ lat, lng });
-      await this.locationService.fetchAddress(lat, lng);
-
-      this.initMap(lat, lng);
-
-    } catch (err) {
-      console.error('Error obteniendo GPS:', err);
-      this.ubicacionDisplay = 'Ubicación no disponible';
+    if (perm.location !== 'granted') {
+      await Geolocation.requestPermissions();
     }
+
+    // 🔹 2. Obtener posición con alta precisión
+    const coords = await Geolocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 10000,
+    });
+
+    const lat = coords.coords.latitude;
+    const lng = coords.coords.longitude;
+
+    // 🔹 3. Guardar y traducir dirección
+    this.locationService.setLocation({ lat, lng });
+    await this.locationService.fetchAddress(lat, lng);
+
+    this.initMap(lat, lng);
+
+    console.log('📍 Coordenadas precisas:', lat, lng);
+
+  } catch (err) {
+    console.error('Error obteniendo GPS:', err);
+    this.ubicacionDisplay = 'Ubicación no disponible';
   }
+}
 
 
 
