@@ -16,12 +16,11 @@ export class AuthGuard implements CanActivate {
     return new Promise((resolve) => {
       this.auth.onAuthStateChanged((user) => {
         if (user) {
-          // Usuario AUTENTICADO - permitir acceso
-          resolve(true);
+          resolve(true)
         } else {
           // Usuario NO autenticado - redirigir al login
           this.router.navigate(['/login']);
-          resolve(false);
+          resolve(false)
         }
       });
     });

@@ -29,7 +29,7 @@ export class LoginPage implements OnInit {
     const user = await this.authService.loginUser(email, password);
 
     if (user) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/home']),{replaceUrl: true};
       console.log("login exitoso");
     } else {
       alert('Hubo un error al iniciar sesión');
