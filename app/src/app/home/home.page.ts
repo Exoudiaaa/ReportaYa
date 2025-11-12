@@ -128,7 +128,7 @@ const comunaLayer = L.geoJSON(comunaGeoJson, {
     color: '#40ff00ff',
     weight: 0,
     fillColor: '#ffffff',
-    fillOpacity: 0.5
+    fillOpacity: 0.0
   }
 }).addTo(this.map);
 
