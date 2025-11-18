@@ -1,0 +1,141 @@
+.register-bg {
+  --background: linear-gradient(135deg, #074aad, #9abef5, #074aad);
+  padding: 0;
+}
+
+.register-container {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 50px;
+  min-height: 100%;
+  position: relative;
+  box-sizing: border-box;
+
+}
+
+.back-button-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px 10px 0 10px;
+  z-index: 10;
+}
+
+.back-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.back-icon {
+  font-size: 24px;
+  color: white;
+}
+
+.logo-section {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.app-icon {
+  width: clamp(80px, 20vw, 100px);
+  height: clamp(80px, 20vw, 100px);
+  margin: 0 auto 15px;
+  display: block;
+  border-radius: 24px;
+  object-fit: cover;
+  padding: 8px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.app-title {
+  color: white;
+  font-size: clamp(24px, 6vw, 32px);
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin: 0;
+}
+
+.app-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: clamp(14px, 4vw, 16px);
+  margin-bottom: 25px;
+}
+
+.register-form {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  color: white;
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.password-requirements {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+.btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 10px;
+  box-sizing: border-box;
+}
+
+.btn-primary {
+  background-color: white;
+  color: #000;
+  border: none;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.login-link a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.login-link a:hover,
+.login-link a:active {
+  color: white;
+  text-decoration: underline;
+}

@@ -1,0 +1,145 @@
+.login-bg {
+  --background: linear-gradient(135deg, #074aad, #9abef5, #074aad);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  min-height: 100%;
+  box-sizing: border-box;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 50px;
+  padding-top: 50px;
+}
+
+.logo-section {
+  text-align: center;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.logos-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.app-icon {
+  width: clamp(80px, 20vw, 100px);
+  height: auto;
+  border-radius: 16px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.app-title {
+  color: white;
+  font-size: clamp(40px, 8vw, 50px);
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin: 0;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  color: white;
+  margin-bottom: 8px;
+  font-size: 14px;
+  display: block;
+}
+
+.form-input {
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.btn-primary {
+  background-color: white;
+  color: #000;
+  border: none;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.alternative-login {
+  text-align: center;
+  margin: 15px 0;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.google-login {
+  display: flex;
+  justify-content: center;
+}
+
+.google-login img {
+  width: 40px;
+  height: 40px;
+}
+
+.password-field {
+  position: relative;
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 16px;
+  top: 65%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  font-size: 28px;
+  padding: 0;
+  margin: 0;
+  z-index: 10; /* 🔥 Esto lo pone encima del input */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.toggle-password-btn:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}

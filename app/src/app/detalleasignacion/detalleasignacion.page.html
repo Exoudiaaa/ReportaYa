@@ -1,19 +1,26 @@
 <ion-header>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <ion-toolbar class="toolbar-header">
+  <ion-toolbar class="toolbar-header" style="padding-top:25px;">
     <ion-buttons slot="start" class="back-button">
       <ion-back-button defaultHref="/home" text="" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
-    <div class="header-content">
-      <span style="font-size: 200%; font-weight: bold; color: black; font-family: 'Quicksand', sans-serif ;"
-        class="header-title">
-        Detalle de Asignación
-      </span>
-    </div>
+    
+
+    <div style="display:flex; align-items:center; width:100%;">
+        <span style="font-size: clamp(26px, 6vw, 40px); font-weight: bold; color:black; font-family:'Quicksand',sans-serif;">
+          Detalle Asignación
+        </span>
+
+        <img src="assets/icono-app.png" alt="Logo" 
+            style="height:50px; margin-left:auto;">
+      </div>
+
+
+
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="content-bg">
+<ion-content fullscreen="false" style="padding-top: 0; padding-bottom: calc(16px + var(--app-safe-area-bottom));" class="content-bg">
   <div class="ion-padding">
     <ion-card class="detalle-card">
       <div class="estado-container">

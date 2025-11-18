@@ -1,28 +1,41 @@
 <ion-tabs>
   <ion-tab tab="home">
-    <ion-header>
+    <ion-header  fullscreen="false">
       <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-      <ion-toolbar style="--background: white; --color:white; border-bottom: 1px solid #ccc;">
-        <div
-          style="display: flex; align-items: center; justify-content: start; height: 100%; width: 100%;  padding-top: 30px;">
-          <img src="assets/icono-app.png" alt="Logo" style="height: 80px; margin-right: 8px;">
-          <span style="font-size: 200%; font-weight: bold; color: black; font-family: 'Quicksand', sans-serif ;">
+      <ion-toolbar style="--background: white; --color: black; border-bottom: 1px solid #ccc;">
+        <div style="display:flex; align-items:center; width:100%; padding-top:25px;">
+          <span style="font-size: clamp(32px, 7vw, 48px); font-weight: bold; color:black; font-family:'Quicksand',sans-serif; padding-left: 5px;">
             ReportaYa
           </span>
-
-
-
+          <img src="assets/icono-app.png" alt="Logo" style="height:50px; margin-left:auto;">
+        </div>
+        <div style="border-top: 2px solid #dcdcdc; padding-top: 6px; margin-top: 4px; padding-left: 5px;">
+          <span style="font-size:15px; color:#444444; font-weight:600;"> 
+            Bienvenido/a {{ usuarioNombre }}
+          </span>
         </div>
       </ion-toolbar>
     </ion-header>
 
     <ion-content>
-      <!-- Mapa -->
-      <div id="mapId" style="height: 100%; width: 100%;"></div>
 
-      <!-- Botón flotante -->
-      <div
-        style="position: fixed; left: 0; right: 0; bottom: 30px; display: flex; justify-content: center; z-index: 10; pointer-events: none;">
+      <div *ngIf="!ubicacionHabilitada" class="location-disabled-overlay">
+      <div class="location-message">
+        <ion-icon name="location-outline" class="location-icon"></ion-icon>
+        <h3>Ubicación desactivada</h3>
+        <p>Activa la ubicación en tu dispositivo para ver el mapa y reportar incidentes.</p>
+        <ion-button fill="outline" (click)="solicitarUbicacion()">
+          Intentar nuevamente
+        </ion-button>
+      </div>
+    </div>
+
+
+      <!-- Mapa: ahora ocupa todo el contenido disponible -->
+      <div id="mapId" class="map-container"></div>
+
+      <!-- Botón flotante con clase segura -->
+      <div class="report-btn-container fixed-bottom" style="position: fixed; left: 0; right: 0; display: flex; justify-content: center; z-index: 10; pointer-events: none;">
         <ion-button expand="block"
           style="border-radius: 12px; min-width: 180px; max-width: 240px; --background: #ff3131; --color: #ffffff; font-weight: bolder; text-transform: uppercase; pointer-events: auto;"
           routerLink="/formulario-reporte">
@@ -51,6 +64,8 @@
         <ion-label>Menu</ion-label>
       </ion-tab-button>
     </ng-container>
+
+    
     <ng-container *ngIf="rango === 'ciudadano'">
       <ion-tab-button tab="home" routerLink="/home"
         style="--color: #000000; --color-selected: #ff0000; border-right: 1px solid black;">
@@ -61,7 +76,7 @@
       <ion-tab-button tab="cameras" routerLink="/camaras"
         style="--color: #000000; --color-selected: #ff0000;  border-right: 1px solid black;">
         <span class="material-symbols-outlined">speed_camera</span>
-        <ion-label style="font-size: 80%;">Solicitar Cámaras</ion-label>
+        <ion-label style="font-size: 80%;">Solicitar Grabaciones </ion-label>
       </ion-tab-button>
 
       <ion-tab-button tab="menu" routerLink="/menu" style="--color: #000000; --color-selected: #ff0000;">

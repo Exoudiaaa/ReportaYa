@@ -1,55 +1,43 @@
-.phone-login-content {
-  --background: #074aad;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
+.phone-login-bg {
+  --background: linear-gradient(135deg, #074aad, #9abef5, #074aad);
+  padding: 0;
+}
 
-  @media (max-width: 480px) {
-    padding: 15px;
-    align-items: flex-start;
-  }
+.phone-login-container {
+  padding: 30px;
+  min-height: 100%;
+  position: relative;
+  box-sizing: border-box;
+
+  /* ✅ Esto empuja todo el contenido debajo del safe area superior */
+  padding-top: calc(30px + env(safe-area-inset-top, 0px));
+}
+
+.back-button-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px 10px 0 10px;
+  z-index: 10;
 }
 
 .back-button {
-  position: absolute;
-  top: 25px;
-  left: 25px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   background: rgba(255, 255, 255, 0.15);
   border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 12px;
-  width: 45px;
-  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
   backdrop-filter: blur(10px);
-  z-index: 10;
-
-  &:active {
-    transform: translateY(0);
-    background: rgba(255, 255, 255, 0.2);
-  }
 }
 
-.back-arrow {
+.back-icon {
+  font-size: 24px;
   color: white;
-  font-size: 20px;
-  font-weight: bold;
-  line-height: 1;
-}
-
-.login-container {
-  width: 100%;
-  max-width: 400px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  margin: 0 auto;
 }
 
 .logo-section {
@@ -58,8 +46,8 @@
 }
 
 .app-icon {
-  width: 100px;
-  height: 100px;
+  width: clamp(80px, 20vw, 100px);
+  height: clamp(80px, 20vw, 100px);
   margin: 0 auto 15px;
   display: block;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
@@ -67,18 +55,23 @@
 
 .app-title {
   color: white;
-  font-size: 28px;
+  font-size: clamp(24px, 6vw, 28px);
   font-weight: 700;
-  margin-bottom: 5px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin: 0;
 }
 
 .app-subtitle {
   color: rgba(255, 255, 255, 0.8);
-  font-size: 16px;
-  font-weight: 500;
+  font-size: clamp(14px, 4vw, 16px);
   margin-bottom: 20px;
 }
+
+.phone-login-form {
+  width: 100%;
+}
+
+/* --- Estilos de formulario (igual que en register) --- */
 
 .form-group {
   margin-bottom: 20px;
@@ -100,7 +93,7 @@
   background-color: rgba(255, 255, 255, 0.1);
   color: white;
   font-size: 16px;
-  transition: all 0.3s ease;
+  box-sizing: border-box;
 
   &:focus {
     outline: none;
@@ -119,7 +112,6 @@
   font-size: 12px;
   margin-top: 8px;
   line-height: 1.4;
-  padding: 0 5px;
 }
 
 .btn {
@@ -130,20 +122,19 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
   margin-bottom: 15px;
   min-height: 50px;
+  box-sizing: border-box;
 
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    transform: none !important;
   }
 }
 
 .btn-primary {
   background-color: white;
-  color: #a12424;
+  color: #000;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 
   &:active:not(:disabled) {
@@ -180,7 +171,6 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
 
   &:disabled {
     opacity: 0.5;
@@ -203,7 +193,6 @@
     color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
     font-size: 14px;
-    transition: color 0.3s ease;
 
     &:active {
       color: white;
@@ -216,63 +205,37 @@
   margin-bottom: 20px;
   display: flex;
   justify-content: center;
+  min-height: 80px;
 }
 
-/* Estilos responsive */
+/* Responsive */
 @media (max-width: 480px) {
-  .login-container {
+  .phone-login-container {
     padding: 25px 20px;
-  }
-
-  .app-title {
-    font-size: 26px;
-  }
-
-  .app-icon {
-    width: 90px;
-    height: 90px;
-  }
-
-  .back-button {
-    top: 20px;
-    left: 20px;
-    width: 40px;
-    height: 40px;
   }
 }
 
 @media (max-width: 360px) {
-  .login-container {
-    padding: 20px 15px;
-  }
-
-  .app-title {
-    font-size: 24px;
-  }
-
   .back-button {
-    top: 15px;
-    left: 15px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .back-icon {
+    font-size: 20px;
   }
 }
 
-/* Estados hover para dispositivos con soporte */
+/* Hover solo en desktop */
 @media (hover: hover) {
   .back-button:hover {
     background: rgba(255, 255, 255, 0.25);
     border-color: rgba(255, 255, 255, 0.5);
-    transform: translateY(-2px);
   }
 
-  .btn-primary:hover:not(:disabled) {
-    background-color: #f0f0f0;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
-  }
-
+  .btn-primary:hover:not(:disabled),
   .btn-resend:hover:not(:disabled) {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
   }
 
   .alternative-login a:hover {

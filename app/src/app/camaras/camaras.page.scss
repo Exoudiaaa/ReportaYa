@@ -28,7 +28,7 @@
   --background: white;
   --color: black;
   border-bottom: 1px solid #000;
-  padding-top: 30px;
+  padding-top: 5px;
 }
 
 .back-button {
@@ -59,7 +59,7 @@ ion-content {
 }
 
 .container {
-  width: 90%;
+  width: 100%;
   max-width: 600px;
   margin: 0 auto;
   display: flex;
@@ -171,27 +171,22 @@ ion-datetime::part(time-button) {
 }
 
 /* =============================
-   BOTÓN FIJO
+   BOTÓN AL FINAL (NO FIJO)
 ============================= */
 .report-btn-container {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 30px;
+  margin-top: 10px;
+  /* espacio inferior para safe area y respirar */
   display: flex;
   justify-content: center;
-  z-index: 10;
-  pointer-events: none;
 }
 
 .btn-reportar {
-  border-radius: 12px;
-  width: 80%;
+  width: 100%;
+  max-width: 500px;
   --background: #ff3131;
   --color: #ffffff;
   font-weight: bolder;
   text-transform: uppercase;
-  pointer-events: auto;
 }
 
 /* =============================

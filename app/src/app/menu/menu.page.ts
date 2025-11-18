@@ -12,6 +12,11 @@ import { AlertController } from '@ionic/angular';
 })
 export class MenuPage implements OnInit {
 
+
+  username: string = '';
+  userEmail: string = '';
+
+
   constructor(
     private router: Router,
     private auth: Auth,
@@ -19,6 +24,18 @@ export class MenuPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    const user = this.auth.currentUser;
+
+    if (user) {
+      // Nombre (si no hay displayName, usamos parte del correo)
+      this.username = user.displayName || user.email?.split('@')[0] || 'Usuario';
+
+      // Correo
+      this.userEmail = user.email || '';
+    } else {
+      this.username = 'Usuario';
+      this.userEmail = '';
+    }
   }
 
    async cerrarSesion() {

@@ -1,30 +1,47 @@
 <ion-header>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <ion-toolbar class="toolbar-header">
+  <ion-toolbar class="toolbar-header" style="padding-top:25px;">
     <ion-buttons slot="start" class="back-button">
       <ion-back-button defaultHref="/home" text="" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
-    <div  class="header-content">
-      
-      <span style="font-size: 200%; font-weight: bold; color: black; font-family: 'Quicksand', sans-serif ;" class="header-title" class="header-title">
-        Menu
-      </span>
-    </div>
+
+    <div style="display:flex; align-items:center; width:100%; ">
+        <span style="font-size: clamp(26px, 6vw, 40px); font-weight: bold; color:black; font-family:'Quicksand',sans-serif;">
+          Menu
+        </span>
+
+        <img src="assets/icono-app.png" alt="Logo" 
+            style="height:50px; margin-left:auto;">
+      </div>
+
+
+  
+
+
   </ion-toolbar>
 </ion-header>
 
-<ion-content  class="ion-padding">
+<ion-content fullscreen="false" style="padding-top: 0; padding-bottom: calc(16px + var(--app-safe-area-bottom));"  class="ion-padding">
 
   <ion-list  lines="full">
 
+
+    <ion-item>
+      <ion-icon name="person-outline" slot="start" color="medium"></ion-icon>
+      <ion-label>
+        <h2>{{ username }}</h2>
+        <p>{{ userEmail }}</p>
+      </ion-label>
+    </ion-item>
+
     <ion-item button (click)="abrirHistorial()" >
       <ion-icon name="time-outline" slot="start" color="medium"></ion-icon>
-      <ion-label>Historial de reportes</ion-label>
+      <ion-label>Historial de Reportes</ion-label>
     </ion-item>
 
     <ion-item button (click)="abrirMenuPrincipal()" >
       <ion-icon name="time-outline" slot="start" color="medium"></ion-icon>
-      <ion-label>Historial de solicitud de camaras</ion-label>
+      <ion-label>Historial de solicitud de Grabaciones</ion-label>
     </ion-item>
 
     <ion-item button disabled class="item-disabled">

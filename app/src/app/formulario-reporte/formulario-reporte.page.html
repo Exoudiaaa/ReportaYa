@@ -1,23 +1,23 @@
 <ion-header>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <ion-toolbar class="toolbar-header">
+  <ion-toolbar class="toolbar-header" style="padding-top:25px;">
     <ion-buttons slot="start" class="back-button">
       <ion-back-button defaultHref="/home" text="" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
-    <div  class="header-content">
-      
-      
-      <span style="font-size: 200%; font-weight: bold; color: black; font-family: 'Quicksand', sans-serif ;" class="header-title">
-        Reporte 
-      </span>
 
+    <div style="display:flex; align-items:center; width:100%;">
+        <span style="font-size: clamp(26px, 6vw, 40px); font-weight: bold; color:black; font-family:'Quicksand',sans-serif;">
+          Reporte
+        </span>
 
+        <img src="assets/icono-app.png" alt="Logo" 
+            style="height:50px; margin-left:auto;">
+      </div>
 
-    </div>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding content-bg">
+<ion-content fullscreen="false" style="padding-bottom: 50px;" class="ion-padding content-bg">
 
   <ion-row class="top-row" style="margin-bottom: 3%;">
     
@@ -69,7 +69,7 @@
 
   <!-- Botón Reportar fijo -->
   <div class="report-btn-container">
-  <ion-button expand="block" class="btn-reportar" (click)="submitReport()">
+  <ion-button style="padding-bottom: 30px;" expand="block" class="btn-reportar" (click)="submitReport()">
     Reportar
   </ion-button>
 </div>

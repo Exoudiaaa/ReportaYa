@@ -1,74 +1,73 @@
 /*
  * App Global CSS
  * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
+ * Estilos globales para toda la app.
  */
 
-/* Core CSS required for Ionic components to work properly */
+/* Core CSS requerido */
 @import "@ionic/angular/css/core.css";
 @import "~leaflet/dist/leaflet.css";
-/* Basic CSS for apps built with Ionic */
+
+/* Estilos básicos recomendados */
 @import "@ionic/angular/css/normalize.css";
 @import "@ionic/angular/css/structure.css";
 @import "@ionic/angular/css/typography.css";
 @import "@ionic/angular/css/display.css";
 
-/* Optional CSS utils that can be commented out */
+/* Utilidades opcionales */
 @import "@ionic/angular/css/padding.css";
 @import "@ionic/angular/css/float-elements.css";
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+/* Dark mode basado en sistema */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+/* Variables de safe area (estándar del navegador) */
 :root {
-  --ion-font-family: 'League Spartan', sans-serif;
+  --app-safe-area-top: env(safe-area-inset-top, 0px);
+  --app-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --app-safe-area-left: env(safe-area-inset-left, 0px);
+  --app-safe-area-right: env(safe-area-inset-right, 0px);
 }
 
+/* Fuente global */
 body {
   font-family: 'League Spartan', sans-serif !important;
 }
-/* Asegurar safe area en toda la aplicación */
-ion-content {
-  --padding-bottom: calc(env(safe-area-inset-bottom) + 16px);
-  --padding-top: env(safe-area-inset-top);
-  --padding-start: env(safe-area-inset-left);
-  --padding-end: env(safe-area-inset-right);
-}
 
-/* Para headers y footers fijos */
+/*
+ * ✅ Safe Area: Reglas globales
+ */
+
+/* Asegura que todos los headers respeten el safe area superior */
 ion-header {
-  padding-top: env(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top, 0);
 }
 
 ion-footer {
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
-/* Para elementos fijos en la parte inferior */
+/*
+ * NO sobrescribas --padding-* en ion-content globalmente
+ * porque eso rompe el comportamiento por página.
+ * En su lugar, déjalo por defecto y ajusta por página si es necesario.
+ */
+
+/*
+ * Clases utilitarias (opcional, pero útiles)
+ */
+.safe-padding-top {
+  padding-top: env(safe-area-inset-top, 0);
+}
+
+.safe-padding-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* Para botones flotantes fijos */
 .fixed-bottom {
-  margin-bottom: env(safe-area-inset-bottom);
+  bottom: calc(16px + env(safe-area-inset-bottom, 0)) !important;
 }
-
-/* Para botones de acción en la parte inferior */
-.report-btn-container,
-.btn-fixed-bottom {
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-
-

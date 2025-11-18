@@ -55,16 +55,16 @@ export class Auth {
     }
   }
   async loginUser(email: string, password: string): Promise<User | null> {
-    try {
-      const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
-      const user = userCredential.user;
-      console.log('Usuario logueado:', user.uid);
-      return user;
-    } catch (err) {
-      console.error('Error en loginUser:', err);
-      return null;
-    }
+  try {
+    const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+    return userCredential.user;
+  } catch (err) {
+    console.error('Error en loginUser:', err);
+    return null;
   }
+}
+
+
   async logout() {
     try {
       await signOut(this.auth);

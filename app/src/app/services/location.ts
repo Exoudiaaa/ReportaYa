@@ -85,7 +85,6 @@ private simplifyAddress(addr: any): string {
   if (road) simple += road;
   if (house_number) simple += ` ${house_number}`;
   if (city) simple += city ? `, ${city}` : '';
-  if (state) simple += state ? `, ${state}` : '';
 
   return simple.trim();
 }

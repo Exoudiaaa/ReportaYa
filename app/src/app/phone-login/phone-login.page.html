@@ -1,24 +1,37 @@
-<ion-content [fullscreen]="true" class="phone-login-content">
-  <!-- Back Button -->
-  <div class="back-button" routerLink="/login">
-    <div class="back-arrow">←</div>
-  </div>
+<ion-header style="padding-top: 20px;" class="ion-no-border">
+  <!-- Reserva espacio del safe area superior -->
+</ion-header>
 
-  <div class="login-container">
+<ion-content class="phone-login-bg" fullscreen="true">
+  <div class="phone-login-container">
+    <!-- Botón de retroceso dentro del espacio seguro -->
+    <div class="back-button-wrapper">
+      <div class="back-button" routerLink="/login">
+        <ion-icon name="arrow-back-outline" class="back-icon"></ion-icon>
+      </div>
+    </div>
+
     <div class="logo-section">
-      <img src="assets/icono-app.png" alt="Icono de ReportaYa" class="app-icon">
+      <img src="assets/icono-app.png" alt="Icono de ReportaYa" class="app-icon" />
       <h1 class="app-title">ReportaYa</h1>
       <p class="app-subtitle">Iniciar Sesión con Teléfono</p>
     </div>
 
-    <!-- El contenedor que usará RecaptchaVerifier -->
+    <!-- Contenedor para Recaptcha (Firebase lo inyecta aquí) -->
     <div id="recaptcha-container" class="recaptcha-container"></div>
 
-    <form (ngSubmit)="sendOTP()">
+    <form (ngSubmit)="sendOTP()" class="phone-login-form">
       <div class="form-group">
         <label class="form-label" for="phoneNumber">Número de Teléfono</label>
-        <input type="tel" id="phoneNumber" class="form-input" [(ngModel)]="phoneNumber" name="phoneNumber"
-          placeholder="+56 9 1234 5678" required>
+        <input
+          type="tel"
+          id="phoneNumber"
+          class="form-input"
+          [(ngModel)]="phoneNumber"
+          name="phoneNumber"
+          placeholder="+56 9 1234 5678"
+          required
+        />
         <div class="phone-hint">
           Ingresa tu número con código de país (+56 para Chile)
         </div>
@@ -32,8 +45,16 @@
     <div *ngIf="isOTPSent" class="otp-section">
       <div class="form-group">
         <label class="form-label" for="otp">Código de Verificación</label>
-        <input type="text" id="otp" class="form-input" [(ngModel)]="otp" name="otp"
-          placeholder="Ingresa el código de 6 dígitos" maxlength="6" required>
+        <input
+          type="text"
+          id="otp"
+          class="form-input"
+          [(ngModel)]="otp"
+          name="otp"
+          placeholder="Ingresa el código de 6 dígitos"
+          maxlength="6"
+          required
+        />
         <div class="otp-hint">
           Te enviamos un código SMS al {{ phoneNumber }}
         </div>

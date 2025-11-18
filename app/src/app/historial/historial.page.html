@@ -1,18 +1,25 @@
 <ion-header>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <ion-toolbar class="toolbar-header">
+  <ion-toolbar class="toolbar-header" style="padding-top:25px;">
     <ion-buttons slot="start" class="back-button">
       <ion-back-button defaultHref="/menu" text="" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
-    <div class="header-content">
-      <span class="header-title">
-        Historial de Reportes
-      </span>
-    </div>
+
+    <div style="display:flex; align-items:center; width:100%;">
+        <span style="font-size: clamp(26px, 6vw, 40px); font-weight: bold; color:black; font-family:'Quicksand',sans-serif;">
+          Historial de Reportes
+
+        </span>
+
+        <img src="assets/icono-app.png" alt="Logo" 
+            style="height:50px; margin-left:auto;">
+      </div>
+
+
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content fullscreen="false" style="padding-top: 0; padding-bottom: calc(16px + var(--app-safe-area-bottom));" class="ion-padding">
 
   <!-- Mostrar mientras carga -->
 
