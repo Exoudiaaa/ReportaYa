@@ -5,12 +5,14 @@ ion-content,
   width: 100% !important;
 }
 
-#mapId {
-  /* Altura dinámica: ocupa todo menos el header y el safe area */
-  height: calc(100vh - var(--ion-safe-area-top, 0px) - 140px); /* ajusta 140px según la altura real de tu header */
-  width: 100%;
-  z-index: 1;
 
+#mapId {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
 .material-symbols-outlined {

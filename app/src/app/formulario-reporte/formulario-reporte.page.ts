@@ -8,6 +8,7 @@ import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
 import { Geolocation } from '@capacitor/geolocation';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-formulario-reporte',
@@ -39,8 +40,15 @@ export class FormularioReportePage implements OnInit, OnDestroy {
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private router: Router,  
-    private auth: Auth  
+    private auth: Auth,
+    private modalCtrl: ModalController,
+  
   ) {}
+
+
+
+
+
 
   // Abrir cámara y guardar base64
   async abrirCamara() {

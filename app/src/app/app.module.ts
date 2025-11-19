@@ -15,7 +15,8 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { ReporteModalComponent } from './reporte-modal/reporte-modal.component';
 
 @NgModule({
-  declarations: [AppComponent,ReporteModalComponent ],
+  declarations: [AppComponent,ReporteModalComponent,  ],
+
   imports: [HttpClientModule,BrowserModule,FormsModule, IonicModule.forRoot(), AppRoutingModule,],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, 
   provideFirebaseApp(() => initializeApp(environment.firebaseConfig )), 

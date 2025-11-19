@@ -21,8 +21,7 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-/* Dark mode basado en sistema */
-@import "@ionic/angular/css/palettes/dark.system.css";
+
 
 /* Variables de safe area (estándar del navegador) */
 :root {
@@ -70,4 +69,10 @@ ion-footer {
 /* Para botones flotantes fijos */
 .fixed-bottom {
   bottom: calc(16px + env(safe-area-inset-bottom, 0)) !important;
+}
+
+
+.modal-wrapper {
+  --backdrop-opacity: 0.3;
+  backdrop-filter: blur(8px);
 }
