@@ -21,13 +21,28 @@
 
 <ion-content fullscreen="false" style="padding-bottom: 50px;" class="ion-padding content-bg">
 
-  <ion-row class="top-row">
 
-    
-    
 
+
+
+  <div class="ayuda-trigger-container">
+  <div class="ayuda-trigger" (click)="mostrarAyuda()">
+    <ion-icon name="help-circle-outline"></ion-icon>
+    <span>¿Cómo reportar? Click acá</span>
+  </div>
+  </div>
+  
+  <div style="background: #ffffffbe; border-radius: 20px;display: flex; flex-direction: column; padding: 0px 10px 0px; border: solid 2px white;">
+      <h3 style="color: rgb(34, 34, 34); font-size: 19px; font-size: 18px; text-align: center;" class="subtitulo">Que es esto?</h3>
+      <p style="color: rgb(34, 34, 34);">La funcion de este apartado es reportar un incidente dentro de la comuna, Dependiendo de la sensibilidad del reporte este se mostrará o no en el mapa.</p>
+      <p style="color: rgb(34, 34, 34);">IMPORTANTE: El reporte es anonimo, ningun residente podrá ver tus datos.</p>
+      
+    </div>
+
+
+  <ion-row style="padding-top: 10px;" class="top-row">
     <!-- Botón Cámara -->
-    <ion-col size="2" class="camera-col">
+    <ion-col size="3" class="camera-col">
       <div 
         (click)="abrirCamara()" 
         class="camera-btn" 
@@ -39,7 +54,7 @@
     </ion-col>
 
     <!-- Botón Ubicación -->
-    <ion-col size="10">
+    <ion-col size="9">
       <div class="location-container">
         <ion-icon name="location" class="location-icon"></ion-icon>
         <span class="location-text">{{ ubicacionDisplay }}</span>
@@ -74,30 +89,7 @@
 
 
 
-  <div style="padding-bottom: 10px;" class="ayuda-container">
-    <div>
-      <h2>¿Cómo reportar un incidente?</h2>
-      <p>Sigue estos sencillos pasos:</p>
-    </div>
-    
-    <div class="paso">
-      <h3>1. Subir foto</h3>
-      <ul>
-        <li>Presiona el boton de camara para tomar una foto y adjuntarla al formulario</li>
-      </ul>
-    </div>
-
-    <div class="paso">
-      <h3>2. Completa la descripcion</h3>
-      <ul>
-        <li>Escribe en el espacio en blanco lo que esta pasando, lo mas detallado posible.</li>
-      </ul>
-    </div>
-
-    <div class="paso">
-      <h3>3. Presiona "Reportar"</h3>
-    </div>
-  </div>
+  
 
   <!-- Botón Reportar fijo -->
   <div class="report-btn-container">

@@ -208,5 +208,37 @@ ion-datetime::part(time-button) {
 
 
 
+
+.ayuda-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 16px 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.ayuda-trigger ion-icon {
+  font-size: 20px;
+}
+
+.ayuda-trigger:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+
+.ayuda-trigger-container {
+  text-align: center;
+}
+
   
 }

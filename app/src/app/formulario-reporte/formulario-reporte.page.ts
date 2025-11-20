@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
 import { Geolocation } from '@capacitor/geolocation';
 import { ModalController } from '@ionic/angular';
-
+import { AyudaReporteModalComponent } from '../ayuda-reporte-modal/ayuda-reporte-modal.component';
 @Component({
   selector: 'app-formulario-reporte',
   templateUrl: './formulario-reporte.page.html',
@@ -42,12 +42,20 @@ export class FormularioReportePage implements OnInit, OnDestroy {
     private router: Router,  
     private auth: Auth,
     private modalCtrl: ModalController,
+    
   
   ) {}
 
 
 
 
+  async mostrarAyuda() {
+  const modal = await this.modalCtrl.create({
+    component: AyudaReporteModalComponent,
+    cssClass: 'custom-modal'
+  });
+  await modal.present();
+}
 
 
   // Abrir cámara y guardar base64

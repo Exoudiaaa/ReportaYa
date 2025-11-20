@@ -3,7 +3,8 @@ import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Auth } from '@angular/fire/auth';
-
+import { AyudaCamaraModalComponent } from '../ayuda-camara-modal/ayuda-camara-modal.component';
+import { ModalController } from '@ionic/angular';
 @Component({
   selector: 'app-camaras',
   templateUrl: './camaras.page.html',
@@ -19,6 +20,9 @@ export class CamarasPage implements OnInit {
   nRegistro: string = '';
   calle: string = '';
   motivo: string = '';
+
+  pendiente: boolean = true;   
+  resuelto: boolean = false;   
   
   displayFechaHora: string = '';
 
@@ -26,10 +30,20 @@ export class CamarasPage implements OnInit {
     private firestore: Firestore,
     private alertCtrl: AlertController,
     private router: Router,
-    private auth: Auth   // <-- Agregado
+    private auth: Auth ,  // <-- Agregado
+    private modalCtrl: ModalController,
   ) {}
 
   ngOnInit() {}
+
+  async mostrarAyuda() {
+    const modal = await this.modalCtrl.create({
+      component: AyudaCamaraModalComponent,
+      cssClass: 'custom-modal'
+    });
+    await modal.present();
+  }
+
 
   onDatetimeChange(event: any) {
     this.displayFechaHora = event.detail.value;
@@ -120,7 +134,11 @@ export class CamarasPage implements OnInit {
       calle: this.calle,
       motivo: this.motivo,
       fecha: this.displayFechaHora,
-      usuarioUID: usuario.uid 
+      usuarioUID: usuario.uid,
+      estado: {
+          pendiente: this.pendiente,
+          resuelto: this.resuelto
+        },
     });
 
     const alert = await this.alertCtrl.create({

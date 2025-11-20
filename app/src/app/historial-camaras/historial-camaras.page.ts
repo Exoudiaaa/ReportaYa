@@ -51,4 +51,14 @@ export class HistorialCamarasPage implements OnInit {
       minute: '2-digit',
     });
   }
+
+
+  obtenerEstadoTexto(estado: any): string {
+  if (!estado) return 'Estado desconocido';
+
+  if (estado.pendiente) return 'Su solicitud está pendiente de revisión.';
+  if (estado.resuelto) return 'Su grabacion fue guardada.';
+
+  return 'Estado no definido';
+}
 }

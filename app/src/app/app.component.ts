@@ -3,6 +3,10 @@ import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { SocialLogin } from '@capgo/capacitor-social-login';
+
+
+import { Platform } from '@ionic/angular';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -11,8 +15,12 @@ import { SocialLogin } from '@capgo/capacitor-social-login';
 })
 export class AppComponent {
   private auth = inject(Auth);
-  constructor(private router: Router) {
 
+  constructor(private router: Router,private platform: Platform,private location: Location) {
+
+    this.initializeBackButtonCustomHandler();
+    
+    
     this.initSocialLogin();
 
     onAuthStateChanged(this.auth, (user) => {
@@ -25,6 +33,14 @@ export class AppComponent {
       }
     });
   }
+
+  initializeBackButtonCustomHandler() {
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      this.location.back();  // <-- vuelve atrás
+    });
+  }
+
+  
    async initSocialLogin() {
     await SocialLogin.initialize({
       google: {

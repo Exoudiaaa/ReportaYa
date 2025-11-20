@@ -233,7 +233,7 @@ export class HomePage implements AfterViewInit, OnInit, OnDestroy, ViewDidEnter 
           });
 
           const marker = L.marker([lat, lng], { icon: reporteIcon }).addTo(this.map);
-          marker.bindPopup(`<b>${reporte.categoria}</b>`);
+          marker.bindPopup(`<b>${reporte.categoria} </b>`);
           this.reportMarkers.push(marker);
 
           marker.on('click', async () => {

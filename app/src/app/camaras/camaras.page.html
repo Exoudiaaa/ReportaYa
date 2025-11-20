@@ -26,7 +26,25 @@
 </ion-header>
 
 <ion-content fullscreen="false" style="padding-top: 0; padding-bottom:calc(16px + var(--app-safe-area-bottom));" class="ion-padding content-bg">
+
+  <div class="ayuda-trigger-container">
+  <div class="ayuda-trigger" (click)="mostrarAyuda()">
+    <ion-icon name="help-circle-outline"></ion-icon>
+    <span>¿Como Solicitar Grabaciones? Click acá</span>
+  </div>
+  </div>
+
+  
   <div class="container" style="padding-bottom: 100px;">
+
+
+    <div style="background: #ffffffbe; border-radius: 20px;display: flex; flex-direction: column; padding: 0px 10px 0px; border: solid 2px white;">
+      <h3 style="color: rgb(34, 34, 34);" class="subtitulo">Que es esto?</h3>
+      <p style="color: rgb(34, 34, 34);">La funcion de este apartado es solicitar grabaciones de algun incidente dentro de la comuna.</p>
+      <p style="color: rgb(34, 34, 34);">IMPORTANTE: Para la entrega de grabaciones se necesita una denuncia legal, ese apartado es solo para que la seguridad publica guarde tus grabaciones.</p>
+      
+    </div>
+
 
     <!-- 🧍‍♂️ Datos Personales -->
     <div class="card">
@@ -72,7 +90,7 @@
 
     <!-- 📷 Datos de Solicitud -->
     <div class="card">
-      <h3 class="subtitulo">Datos de Solicitud de Cámara</h3>
+      <h3 class="subtitulo">Datos Necesarios y Legales</h3>
 
       <ion-input
         [(ngModel)]="nRegistro"
@@ -128,7 +146,7 @@
     <!-- Botón Reportar -->
   <div class="report-btn-container">
     <ion-button expand="block" (click)="guardarSolicitud()" class="btn-reportar">
-      Solicitar Cámara
+      Solicitar Grabación
     </ion-button>
   </div>
   </div>
