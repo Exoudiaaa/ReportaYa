@@ -66,16 +66,20 @@ const routes: Routes = [
 
   // 👇 Redirección por defecto
   {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
+  path: '',
+  redirectTo: '/login', // 👈 Redirección inicial SIEMPRE a login
+  pathMatch: 'full'
+},
 
   // 👇 Si intenta ir a una ruta inexistente
   {
     path: '**',
     redirectTo: 'home'
-  }
+  },
+
+
+
+
 ];
 
 @NgModule({

@@ -1,179 +1,106 @@
-.toolbar-header {
-  --background: white;
-  --color: black;
-  border-bottom: 1px solid #000000;
-  padding-top: 5px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
+/* =============================
+   ESTILOS COHERENTES CON TU DISEÑO
+============================= */
 
-.back-button {
-  margin-left: 10px;
-}
-
-.header-content {
+/* Tarjeta principal */
+.card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px 15px 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
   display: flex;
-  padding-left: 15px;
+  flex-direction: column;
+  gap: 15px;
+  transition: all 0.25s ease-in-out;
 }
 
-.icon-familia {
-  font-size: 220%;
-  border-radius: 80px;
-  padding: 0.3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: rgb(0, 0, 0);
+/* Ubicación: estilo como un input deshabilitado */
+.ubicacion-display {
+  background: #f9fafb;
+  color: #111827;
+  border: 1px solid #868686;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 15px;
+  word-break: break-word;
+  line-height: 1.4;
 }
 
+/* Estilos para los elementos del formulario */
+ion-item {
+  --highlight-color-focused: #074aad; /* ✅ Color azul de tu app */
+}
+
+/* Opcional: también para el textarea */
+ion-textarea {
+  --highlight-color-focused: #074aad;
+}
+
+ion-label {
+  font-weight: 600 !important;
+  color: #333 !important;
+  font-family: 'Quicksand', sans-serif;
+}
+
+ion-input, ion-textarea {
+  --padding-start: 8px;
+  font-family: 'Quicksand', sans-serif;
+  color: #000;
+}
+
+/* Botón de guardar */
+ion-button {
+  --border-radius: 12px;
+  --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  --padding-top: 20px;
+  --padding-bottom: 20px;
+  margin-top: 10px;
+  font-weight: 700;
+  font-family: 'Quicksand', sans-serif;
+  transition: all 0.3s ease;
+}
+
+ion-button:active {
+  transform: translateY(2px);
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Fondo general */
 .content-bg {
   --background: linear-gradient(135deg, #074aad, #9abef5, #074aad);
 }
 
-.top-row {
-  align-items: center;
-  margin-bottom: 20px;
+ion-content {
+  --background: #f4f6fb;
+  padding: 25px 0;
 }
 
-.camera-col {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-.camera-btn {
-  background: linear-gradient(145deg, #b71c1c, #9a1616);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 70px;
-  height: 70px;
-  border-bottom: 4px solid #3b3b3b;
-  box-shadow: 0 4px 12px rgba(183, 28, 28, 0.3);
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.camera-btn:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 6px rgba(183, 28, 28, 0.3);
-}
-
-.camera-icon {
-  color: white;
-  width: 55%;
-  height: 55%;
-  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
-}
-
-.location-container {
-  background-color: rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
-  padding: 1rem 1.5rem;
-  display: flex;
-  align-items: center;
-  height: 100%;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
-}
-
-.location-icon {
-  color: #b71c1c;
-  font-size: 2.5rem;
-  margin-right: 15px;
-  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
-}
-
-.location-text {
-  color: black;
-  font-size: 1.1rem;
-  word-break: break-word;
-  font-weight: 600;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-}
-
-.foto-tomada {
-  margin: 1rem 0;
-  width: 70%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  border: 2px solid #000000;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.btn-eliminar {
-  margin-bottom: 1rem;
-  --background: #b71c1c;
-  --color: #ffffff;
-  --border-radius: 10px;
-}
-
-.textarea-container {
-  background-color: white;
-  border-radius: 15px;
-  padding: 1rem;
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  margin-bottom: 80px;
+  gap: 25px;
 }
 
-.textarea-input {
-  flex: 1;
-  font-size: 1.1rem;
-  color: black;
-  background-color: white;
-}
-
+/* Botón reportar */
 .report-btn-container {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 30px;
+  margin-top: 10px;
   display: flex;
   justify-content: center;
-  z-index: 10;
-  pointer-events: none;
 }
 
 .btn-reportar {
-  border-radius: 12px;
-  width: 80%;
-  height: 100%;
+  width: 100%;
+  max-width: 500px;
   --background: #ff3131;
   --color: #ffffff;
   font-weight: bolder;
   text-transform: uppercase;
-  pointer-events: auto;
 }
 
-.custom-alert {
-  --background: #ffffff;
-  --color: #000;
-  text-align: center;
-}
-
-.cancel-button {
-  color: #666;
-}
-
-ion-alert button {
-  font-weight: bold;
-}
-
-ion-alert button:nth-child(2) {
-  color: #e74c3c;
-}
-
-.camera-btn.disabled {
-  opacity: 0.5;
-  transform: none;
-  box-shadow: 0 2px 6px rgba(183, 28, 28, 0.2);
-}
-
+/* Sección de cámaras */
 .camera-wrapper {
   display: flex;
   align-items: center;
@@ -194,77 +121,34 @@ ion-alert button:nth-child(2) {
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
 }
 
-.foto-confirmacion {
+.camera-btn {
+  background: linear-gradient(145deg, #e01414, #bd1313);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+}
+
+.camera-btn:active {
+  transform: translateY(2px);
+
+}
+
+.camera-icon {
   color: white;
-  text-align: right;
+  font-size: 28px;
+}
+
+.foto-confirmacion {
+  color: rgb(46, 46, 46);
   font-weight: 700;
+  padding-left: 15px;
   font-size: 1.1rem;
   font-family: 'Quicksand', sans-serif;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+  text-shadow: 1px 1px 1px rgba(241, 33, 33, 0.233);
   flex: 1;
-  letter-spacing: 0.3px;
-}
-
-/* Estilos para los elementos del formulario */
-ion-item {
-  --background: rgba(255, 255, 255, 0.95);
-  --border-radius: 12px;
-  --padding-start: 16px;
-  --padding-end: 16px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-}
-
-ion-label {
-  font-weight: 600 !important;
-  color: #333 !important;
-  font-family: 'Quicksand', sans-serif;
-}
-
-ion-input, ion-textarea,ion-input::placeholder {
-  --padding-start: 8px;
-  font-family: 'Quicksand', sans-serif;
-  color: #000;
-}
-
-ion-checkbox {
-  --size: 22px;
-  --checkbox-background-checked: #b71c1c;
-  margin-right: 8px;
-}
-
-ion-checkbox::part(container) {
-  border-radius: 6px;
-  border: 2px solid #b71c1c;
-}
-
-/* Botón de guardar mejorado */
-ion-button {
-  --border-radius: 12px;
-  --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  --padding-top: 20px;
-  --padding-bottom: 20px;
-  margin-top: 10px;
-  font-weight: 700;
-  font-family: 'Quicksand', sans-serif;
-  transition: all 0.3s ease;
-}
-
-ion-button:active {
-  transform: translateY(2px);
-  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Mejoras específicas para el textarea */
-ion-textarea {
-  min-height: 100px;
-  border-radius: 8px;
-}
-
-/* Efectos de focus para inputs */
-ion-item.item-has-focus {
-  --background: rgba(255, 255, 255, 0.98);
-  box-shadow: 0 4px 20px rgba(183, 28, 28, 0.2);
-  border: 1px solid #b71c1c;
+  text-align: left;
 }

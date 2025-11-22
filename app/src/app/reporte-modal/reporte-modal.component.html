@@ -1,40 +1,39 @@
-<div class="modal-overlay" (click)="cerrar()">
-  <div class="modal-container" (click)="$event.stopPropagation()">
-    <div class="modal-header">
-      <h2 class="modal-title">Detalle del Reporte</h2>
-      <button class="close-button" (click)="cerrar()">
-        <span class="close-icon">×</span>
-      </button>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()" aria-label="Cerrar">
+        <ion-icon style="color: black;" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title style="font-family: 'Poppins'"   style="color: black;">Detalles del Reporte</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="reporte-bg">
+  <div class="reporte-container">
+
+    <!-- Ubicación -->
+    <div class="paso">
+      <h3>Ubicación</h3>
+      <p>{{ reporte.ubicacion || 'No especificada' }}</p>
     </div>
 
-    <div class="modal-content">
-      <div class="detail-section">
-        <div class="detail-item">
-          <span class="detail-label">Ubicación</span>
-          <p class="detail-value">{{ reporte.ubicacion }}</p>
-        </div>
-
-        <div class="detail-item">
-          <span class="detail-label">Descripción</span>
-          <p class="detail-value">{{ reporte.descripcion }}</p>
-        </div>
-
-        <div class="detail-item" *ngIf="reporte.tipo">
-          <span class="detail-label">Tipo</span>
-          <p class="detail-value">{{ reporte.tipo }}</p>
-        </div>
-
-        <div class="photo-section" *ngIf="reporte.fotoURL">
-          <span class="detail-label">Foto del Reporte</span>
-          <div class="photo-container">
-            <img [src]="reporte.fotoURL" alt="Foto del reporte" class="report-photo" />
-          </div>
-        </div>
-      </div>
+    <!-- Descripción -->
+    <div class="paso">
+      <h3>Descripción</h3>
+      <p>{{ reporte.descripcion || 'Sin descripción' }}</p>
     </div>
 
-    <div class="modal-actions">
-      <button class="btn-primary" (click)="cerrar()">Cerrar</button>
+    <!-- Foto -->
+    <div class="paso" *ngIf="reporte.fotoURL">
+      <h3>Foto</h3>
+    
+        <img class="photo" [src]="reporte.fotoURL" alt="Foto del reporte" loading="lazy" />
+  
     </div>
+
   </div>
-</div>
+</ion-content>

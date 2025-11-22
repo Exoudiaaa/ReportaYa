@@ -1,12 +1,13 @@
 <ion-header>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
   <ion-toolbar class="toolbar-header" style="padding-top:22px;">
     <ion-buttons slot="start" class="back-button">
       <ion-back-button defaultHref="/home" text="" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
 
     <div style="display:flex; align-items:center; width:100%; ">
-        <span style="font-size: clamp(26px, 6vw, 40px); font-weight: bold; color:black; font-family:'Quicksand',sans-serif;">
+        <span style="font-size: clamp(26px, 6vw, 40px); font-weight: bold; color:black; font-family:'Poppins',sans-serif;">
           Menu
         </span>
 
@@ -29,8 +30,7 @@
     <ion-item>
       <ion-icon name="person-outline" slot="start" color="medium"></ion-icon>
       <ion-label>
-        <h2>{{ username }}</h2>
-        <p style="font-size: 13px;">{{ userEmail }}</p>
+        <ion-label>{{ userEmail }}</ion-label>
       </ion-label>
     </ion-item>
 
@@ -56,5 +56,10 @@
 
   </ion-list>
 
+  
+  <div class="footer-credit">
+  By ReportaYa
+    </div>
 
+    
 </ion-content>

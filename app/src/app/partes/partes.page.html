@@ -1,118 +1,159 @@
-<ion-header>
+<ion-header style="padding-top: env(safe-area-inset-top, 0);">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
   <ion-toolbar class="toolbar-header" style="padding-top:22px;">
     <ion-buttons slot="start" class="back-button">
       <ion-back-button defaultHref="/home" text="" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
 
     <div style="display:flex; align-items:center; width:100%;">
-        <span style="font-size: clamp(26px, 6vw, 40px); font-weight: bold; color:black; font-family:'Quicksand',sans-serif;">
-          Parte
-        </span>
-
-        <img src="assets/icono-app.png" alt="Logo" 
-            style="height:50px; margin-left:auto;">
-      </div>
-
-
-
-
-
-
+      <span style="font-size: clamp(26px, 6vw, 40px); font-weight: bold; color:black; font-family:'Poppins',sans-serif;">
+        Parte
+      </span>
+      <img src="assets/icono-app.png" alt="Logo" style="height:50px; margin-left:auto;">
+    </div>
   </ion-toolbar>
 </ion-header>
 
+<ion-content fullscreen="false" style="padding-bottom: 50px;" class="ion-padding content-bg">
+  <div class="container">
 
-<ion-content fullscreen="false" style="padding-top: 0; padding-bottom: calc(16px + var(--app-safe-area-bottom));" class="ion-padding content-bg">
+    <!-- 🔒 VISTA USUARIO BLOQUEADO (opcional) -->
+    
+    <div *ngIf="usuarioBloqueado" class="bloqueado-container">
+      <ion-icon name="lock-closed" class="bloqueado-icon"></ion-icon>
+      <h2 style="font-weight: bold; margin-top: 10px;">Has sido bloqueado temporalmente</h2>
+      <p style="margin-top: 10px;">No puedes realizar nuevos partes debido a un uso incorrecto del sistema.</p>
+      <p>Serás desbloqueado luego de 24 horas.</p>
+      <ion-button expand="block" color="danger" routerLink="/home">
+        Volver al inicio
+      </ion-button>
+    </div>
+    
 
-  <ion-row class="top-row" style="margin-bottom: 3%;">
-    <ion-col size="12">
-      <div class="location-container">
-        <ion-icon name="location" class="location-icon"></ion-icon>
-        <span class="location-text">{{ ubicacionDisplay }}</span>
-      </div>
-    </ion-col>
-  </ion-row>
-  <ion-col size="12" class="camera-col">
+    <!-- 📝 FORMULARIO COMPLETO -->
+    <div>
 
-    <div class="camera-wrapper">
-      <div (click)="abrirCamara(1)" class="camera-btn" [class.disabled]="parte.fotoURL1"
-        [style.pointer-events]="parte.fotoURL1 ? 'none' : 'auto'" [style.opacity]="parte.fotoURL1 ? '0.5' : '1'">
-        <ion-icon name="camera" class="camera-icon"></ion-icon>
-      </div>
-        <span class="foto-confirmacion" style="padding-left: 8px;text-align: left !important; ">
-          {{ parte.fotoURL1 ? 'Parte-papel.png ✅' : 'Ingresar foto de parte en papel' }}
-        </span>
+      <!-- Tarjeta principal -->
+      <div class="card" style="background:#ffffff; padding:20px 15px 25px; margin-top: 20px;">
+
+
+        <!-- Ubicación automática -->
+        <div style="margin-bottom: 20px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <ion-icon name="location" style="color:#ff0000; font-size:18px;"></ion-icon>
+            <span style="font-weight:700; color:#000; font-size:16px;">1. Ubicación (Automática)</span>
+          </div>
+          <div class="ubicacion-display">{{ ubicacionDisplay }}</div>
+        </div>
+
+
+        <!-- Fotos obligatorias -->
+        <div style="margin-bottom: 20px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <ion-icon name="camera" style="color:#ff0000; font-size:18px;"></ion-icon>
+            <span style="font-weight:700; color:#000; font-size:16px;">2. Fotos obligatorias</span>
+          </div>
+
+          <!-- Foto 1 -->
+          <div class="camera-wrapper">
+            <div (click)="abrirCamara(1)" class="camera-btn" [class.disabled]="parte.fotoURL1"
+                 [style.pointer-events]="parte.fotoURL1 ? 'none' : 'auto'">
+              <ion-icon name="camera" class="camera-icon"></ion-icon>
+            </div>
+            <span class="foto-confirmacion">
+              {{ parte.fotoURL1 ? '✅ Parte en papel' : 'Ingresar foto de parte en papel' }}
+            </span>
             <ion-button *ngIf="parte.fotoURL1" color="danger" size="small" (click)="eliminarFoto(1)">
-      Eliminar
-    </ion-button>
-    </div>
-  </ion-col>
-  <ion-col class="camera-col" size="12">
-    <div class="camera-wrapper">
-      <div (click)="abrirCamara(2)" class="camera-btn" [class.disabled]="parte.fotoURL2"
-        [style.pointer-events]="parte.fotoURL2 ? 'none' : 'auto'">
-        <ion-icon name="camera" class="camera-icon"></ion-icon>
+              Eliminar
+            </ion-button>
+          </div>
+
+          <!-- Foto 2 -->
+          <div class="camera-wrapper" style="margin-top: 15px;">
+            <div (click)="abrirCamara(2)" class="camera-btn" [class.disabled]="parte.fotoURL2"
+                 [style.pointer-events]="parte.fotoURL2 ? 'none' : 'auto'">
+              <ion-icon name="camera" class="camera-icon"></ion-icon>
+            </div>
+            <span class="foto-confirmacion">
+              {{ parte.fotoURL2 ? '✅ Vehículo' : 'Ingresar imagen de vehiculo' }}
+            </span>
+            <ion-button *ngIf="parte.fotoURL2" color="danger" size="small" (click)="eliminarFoto(2)">
+              Eliminar
+            </ion-button>
+          </div>
+
+          <!-- Foto 3 -->
+          <div class="camera-wrapper" style="margin-top: 15px;">
+            <div (click)="abrirCamara(3)" class="camera-btn" [class.disabled]="parte.fotoURL3"
+                 [style.pointer-events]="parte.fotoURL3 ? 'none' : 'auto'">
+              <ion-icon name="camera" class="camera-icon"></ion-icon>
+            </div>
+            <span class="foto-confirmacion">
+              {{ parte.fotoURL3 ? '✅ Patente' : 'Ingresar imagen de patente' }}
+            </span>
+            <ion-button *ngIf="parte.fotoURL3" color="danger" size="small" (click)="eliminarFoto(3)">
+              Eliminar
+            </ion-button>
+          </div>
+        </div>
+
+
+        <!-- Datos del vehículo -->
+        <div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <ion-icon name="car" style="color:#ff0000; font-size:18px;"></ion-icon>
+            <span style="font-weight:700; color:#000; font-size:16px;">3. Datos del vehículo</span>
+          </div>
+
+          <ion-item >
+            <ion-label  position="stacked">Patente</ion-label>
+            <ion-input [(ngModel)]="parte.patente" placeholder="Ej: ABCD12"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Marca</ion-label>
+            <ion-input [(ngModel)]="parte.marca" placeholder="Ingrese la marca del vehículo"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Color</ion-label>
+            <ion-input [(ngModel)]="parte.color" placeholder="Ingrese el color del vehículo"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Tipo de vehículo</ion-label>
+            <ion-input [(ngModel)]="parte.tipo" placeholder="Auto, moto, camión..."></ion-input>
+          </ion-item>
+        </div>
+
+        <!-- Comentarios e infracción -->
+        <div style="margin-top: 20px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <ion-icon name="document-text" style="color:#ff0000; font-size:18px;"></ion-icon>
+            <span style="font-weight:700; color:#000; font-size:16px;">4. Detalles</span>
+          </div>
+
+          <ion-item>
+            <ion-label position="stacked">Comentarios</ion-label>
+            <ion-textarea [(ngModel)]="parte.comentarios" rows="4" placeholder="Describe lo ocurrido"></ion-textarea>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Infracción</ion-label>
+            <ion-textarea [(ngModel)]="parte.infraccion" rows="4" placeholder="Ingresar el tipo de infracción"></ion-textarea>
+          </ion-item>
+        </div>
+
       </div>
-      <span class="foto-confirmacion" style="padding-left: 8px;text-align: left !important; ">
-        {{ parte.fotoURL2 ? 'vehiculo.png ✅' : 'Ingresar imagen de vehiculo' }}
-      </span>
-          <ion-button *ngIf="parte.fotoURL2" color="danger" size="small" (click)="eliminarFoto(2)">
-      Eliminar
-    </ion-button>
-    </div>
-  </ion-col>
 
-  <ion-col class="camera-col" size="12">
-    <div class="camera-wrapper">
-      <div (click)="abrirCamara(3)" class="camera-btn" [class.disabled]="parte.fotoURL3"
-        [style.pointer-events]="parte.fotoURL3 ? 'none' : 'auto'">
-        <ion-icon name="camera" class="camera-icon"></ion-icon>
+      <!-- Botón Guardar Parte -->
+      <div style="padding-bottom:50px;" class="report-btn-container">
+        <ion-button expand="block" (click)="guardarParte()" class="btn-reportar">
+          Guardar Parte
+        </ion-button>
       </div>
-      <span class="foto-confirmacion" style="padding-left: 8px;text-align: left !important; ">
-        {{ parte.fotoURL3? 'patente.png ✅' : 'Ingresar imagen de patente' }}
-      </span>
-          <ion-button *ngIf="parte.fotoURL3" color="danger" size="small" (click)="eliminarFoto(3)">
-      Eliminar
-    </ion-button>
+
     </div>
-  </ion-col>
-<ion-item>
-  <ion-label position="stacked">Patente</ion-label>
-  <ion-input [(ngModel)]="parte.patente" placeholder="Ej: ABCD12"></ion-input>
-</ion-item>
-
-<!-- Marca -->
-<ion-item>
-  <ion-label position="stacked">Marca</ion-label>
-  <ion-input [(ngModel)]="parte.marca" placeholder="Ingrese la marca del vehiculo"></ion-input>
-</ion-item>
-
-<!-- Color -->
-<ion-item>
-  <ion-label position="stacked">Color</ion-label>
-  <ion-input [(ngModel)]="parte.color" placeholder="Ingrese el color del vehiculo"></ion-input>
-</ion-item>
-
-<!-- Tipo -->
-<ion-item>
-  <ion-label position="stacked">Tipo de vehículo</ion-label>
-  <ion-input [(ngModel)]="parte.tipo" placeholder="Auto, moto, camión..."></ion-input>
-</ion-item>
-
-  <!-- Comentarios -->
-  <ion-item>
-    <ion-label position="stacked">Comentarios</ion-label>
-    <ion-textarea [(ngModel)]="parte.comentarios" rows="4" placeholder="Describe lo ocurrido"></ion-textarea>
-  </ion-item>
-
-<ion-item>
-    <ion-label position="stacked">Infraccion</ion-label>
-    <ion-textarea [(ngModel)]="parte.infraccion" rows="4" placeholder="Ingresar el tipo de infraccion"></ion-textarea>
-  </ion-item>
-
-  <!-- Botón para guardar -->
-  <ion-button style="padding-bottom: 30px;" expand="block" color="primary" (click)="guardarParte()">
-    Guardar Parte
-  </ion-button>
+  </div>
 </ion-content>

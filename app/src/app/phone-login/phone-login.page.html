@@ -1,79 +1,78 @@
-<ion-header style="padding-top: 20px;" class="ion-no-border">
-  <!-- Reserva espacio del safe area superior -->
-</ion-header>
+
 
 <ion-content class="phone-login-bg" fullscreen="true">
-  <div class="phone-login-container">
-    <!-- Botón de retroceso dentro del espacio seguro -->
-    <div class="back-button-wrapper">
-      <div class="back-button" routerLink="/login">
-        <ion-icon name="arrow-back-outline" class="back-icon"></ion-icon>
-      </div>
-    </div>
-
-    <div class="logo-section">
-      <img src="assets/icono-app.png" alt="Icono de ReportaYa" class="app-icon" />
-      <h1 class="app-title">ReportaYa</h1>
-      <p class="app-subtitle">Iniciar Sesión con Teléfono</p>
-    </div>
-
-    <!-- Contenedor para Recaptcha (Firebase lo inyecta aquí) -->
-    <div id="recaptcha-container" class="recaptcha-container"></div>
-
-    <form (ngSubmit)="sendOTP()" class="phone-login-form">
-      <div class="form-group">
-        <label class="form-label" for="phoneNumber">Número de Teléfono</label>
-        <input
-          type="tel"
-          id="phoneNumber"
-          class="form-input"
-          [(ngModel)]="phoneNumber"
-          name="phoneNumber"
-          placeholder="+56 9 1234 5678"
-          required
-        />
-        <div class="phone-hint">
-          Ingresa tu número con código de país (+56 para Chile)
+  <!-- Contenedor glass -->
+  <div class="glass-container">
+    <div class="phone-login-container">
+      <!-- Botón de retroceso -->
+      <div class="back-button-wrapper">
+        <div class="back-button" routerLink="/login">
+          <ion-icon name="arrow-back-outline" class="back-icon"></ion-icon>
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary" [disabled]="!phoneNumber">
-        {{ isOTPSent ? 'Reenviar Código' : 'Enviar Código SMS' }}
-      </button>
-    </form>
-
-    <div *ngIf="isOTPSent" class="otp-section">
-      <div class="form-group">
-        <label class="form-label" for="otp">Código de Verificación</label>
-        <input
-          type="text"
-          id="otp"
-          class="form-input"
-          [(ngModel)]="otp"
-          name="otp"
-          placeholder="Ingresa el código de 6 dígitos"
-          maxlength="6"
-          required
-        />
-        <div class="otp-hint">
-          Te enviamos un código SMS al {{ phoneNumber }}
-        </div>
+      <div class="logo-section">
+        <img src="../../assets/logo_muni.png" alt="Icono de ReportaYa" class="app-icon" />
+        <h1 class="app-title">Crear Cuenta</h1>
       </div>
 
-      <button class="btn btn-primary" (click)="verifyOTP()" [disabled]="!otp || otp.length < 6">
-        Verificar Código
-      </button>
+      <div id="recaptcha-container" class="recaptcha-container"></div>
 
-      <div class="resend-section">
-        <p>¿No recibiste el código?</p>
-        <button class="btn-resend" (click)="sendOTP()" [disabled]="resendDisabled">
-          {{ resendTimer > 0 ? 'Reenviar en ' + resendTimer + 's' : 'Reenviar código' }}
+      <form (ngSubmit)="sendOTP()" class="phone-login-form">
+        <div class="form-group">
+          <label class="form-label" for="phoneNumber">Número de Teléfono</label>
+          <input
+            type="tel"
+            id="phoneNumber"
+            class="form-input"
+            [(ngModel)]="phoneNumber"
+            name="phoneNumber"
+            placeholder="+56 9 1234 5678"
+            required
+          />
+          <div class="phone-hint">
+            Ingresa tu número con código de país (+56 para Chile)
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="!phoneNumber">
+          {{ isOTPSent ? 'Reenviar Código' : 'Enviar Código SMS' }}
         </button>
-      </div>
-    </div>
+      </form>
 
-    <div class="alternative-login">
-      <a routerLink="/login">¿Prefieres iniciar con email?</a>
+      <div *ngIf="isOTPSent" class="otp-section">
+        <div class="form-group">
+          <label class="form-label" for="otp">Código de Verificación</label>
+          <input
+            type="text"
+            id="otp"
+            class="form-input"
+            [(ngModel)]="otp"
+            name="otp"
+            placeholder="Ingresa el código de 6 dígitos"
+            maxlength="6"
+            required
+          />
+          <div class="otp-hint">
+            Te enviamos un código SMS al {{ phoneNumber }}
+          </div>
+        </div>
+
+        <button class="btn btn-primary" (click)="verifyOTP()" [disabled]="!otp || otp.length < 6">
+          Verificar Código
+        </button>
+
+        <div class="resend-section">
+          <p>¿No recibiste el código?</p>
+          <button class="btn-resend" (click)="sendOTP()" [disabled]="resendDisabled">
+            {{ resendTimer > 0 ? 'Reenviar en ' + resendTimer + 's' : 'Reenviar código' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="alternative-login">
+        <a routerLink="/login">¿Prefieres iniciar con email?</a>
+      </div>
     </div>
   </div>
 </ion-content>

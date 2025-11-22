@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 import { Reporte } from '../services/reporte';
 import { Reporte as report } from '../interfaces/reporte';
 @Component({
@@ -9,11 +9,16 @@ import { Reporte as report } from '../interfaces/reporte';
   standalone: false
 })
 export class ReporteModalComponent {
-  @Input() reporte!: report;
+  reporte: any;
 
-  constructor(private modalCtrl: ModalController) {}
+  constructor(private modalCtrl: ModalController,
+    private navParams: NavParams) {}
 
-  cerrar() {
+  ngOnInit() {
+    this.reporte = this.navParams.get('reporte') || {};
+  }
+
+  close() {
     this.modalCtrl.dismiss();
   }
 }

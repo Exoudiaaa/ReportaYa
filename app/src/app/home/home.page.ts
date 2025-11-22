@@ -9,12 +9,13 @@ import { Geolocation } from '@capacitor/geolocation';
 import { Reporte } from '../services/reporte';
 import { ModalController, ViewDidEnter, Platform, AlertController } from '@ionic/angular';
 import { ReporteModalComponent } from '../reporte-modal/reporte-modal.component';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  standalone: false
+  standalone: false,
 })
 export class HomePage implements AfterViewInit, OnInit, OnDestroy, ViewDidEnter {
 
@@ -33,6 +34,14 @@ export class HomePage implements AfterViewInit, OnInit, OnDestroy, ViewDidEnter 
 
   ubicacionHabilitada = false; // 🔹 Nuevo: control de estado de ubicación
 
+  presentingElement: any;
+
+  isModalOpen = false;
+
+
+private userMarker: L.Marker | null = null;
+
+  
   constructor(
     private locationService: LocationService,
     private authService: Auth,
@@ -40,14 +49,43 @@ export class HomePage implements AfterViewInit, OnInit, OnDestroy, ViewDidEnter 
     private reportesService: Reporte,
     private modalCtrl: ModalController,
     private platform: Platform,
-    private alertController: AlertController
+    private alertController: AlertController,
+    
   ) {}
+  
+
+  openModal() {
+  this.isModalOpen = true;
+}
+
+
+private async escucharCambiosPermisos() {
+  // Solo funciona en dispositivos móviles con Capacitor
+  if (Capacitor.getPlatform() !== 'web') {
+    try {
+      // Este listener se activa cuando el usuario cambia los permisos en ajustes
+      await Geolocation.requestPermissions();
+      // Si llegamos aquí, el permiso fue concedido
+      await this.verificarUbicacion();
+    } catch (error) {
+      // Permiso aún denegado
+      console.log('Permiso de ubicación aún denegado');
+    }
+  }
+}
+
+
+
 
   async ngOnInit() {
+
+    
+    this.presentingElement = document.querySelector('ion-tabs');
     const userData = await this.authService.getCurrentUserData();
     this.usuarioNombre = userData?.firstName || '';
     this.usuarioApellido = userData?.lastName || '';
     this.rango = userData?.rango || '';
+
 
     this.platform.backButton.subscribeWithPriority(10, async () => {
       const currentPath = window.location.pathname;
@@ -68,16 +106,10 @@ export class HomePage implements AfterViewInit, OnInit, OnDestroy, ViewDidEnter 
     });
   }
 
-  ngAfterViewInit() {
-    this.subscribeToLocation();
-    this.verificarUbicacion(); // 🔹 Ahora llamamos a verificarUbicacion, no getUserLocation
-    this.startRefreshingReportes(10000);
-  }
 
-  ngOnDestroy() {
-    this.locSub?.unsubscribe();
-    this.stopRefreshingReportes();
-  }
+
+
+ 
 
   ionViewDidEnter() {
     if (this.map && this.ubicacionHabilitada) {
@@ -85,26 +117,50 @@ export class HomePage implements AfterViewInit, OnInit, OnDestroy, ViewDidEnter 
     }
   }
 
-  private subscribeToLocation() {
-    this.locSub = this.locationService.location$.subscribe((loc: Ubicacion | null) => {
-      this.ubicacionDisplay = loc?.display ?? 'Ubicación no disponible';
-
-      if (this.map && loc && this.ubicacionHabilitada) {
-        const userIcon = L.icon({
-          iconUrl: 'assets/icono-usuario.png',
-          iconSize: [50, 50],
-          iconAnchor: [25, 45],
-          popupAnchor: [0, -45]
-        });
-
-        const marker = L.marker([loc.lat!, loc.lng!], { icon: userIcon })
-          .bindPopup(this.ubicacionDisplay)
-          .openPopup();
-
-        marker.addTo(this.map);
-      }
-    });
+    private subscribeToLocation() {
+  // ✅ Cancela la suscripción anterior para evitar duplicados
+  if (this.locSub) {
+    this.locSub.unsubscribe();
   }
+
+  this.locSub = this.locationService.location$.subscribe((loc: Ubicacion | null) => {
+    this.ubicacionDisplay = loc?.display ?? 'Ubicación no disponible';
+
+    if (this.map && loc && this.ubicacionHabilitada) {
+      // ✅ Elimina el marcador anterior SI EXISTE
+      if (this.userMarker) {
+        this.map.removeLayer(this.userMarker);
+        this.userMarker = null; // 👈 Importante: resetea la referencia
+      }
+
+      const userIcon = L.icon({
+        iconUrl: '/assets/icono-usuario2.png',
+       iconSize: [60, 60],
+        iconAnchor: [30, 60],
+        popupAnchor: [0, -60]    // el popup aparece justo encima
+      });
+
+      this.userMarker = L.marker([loc.lat!, loc.lng!], { icon: userIcon })
+        .bindPopup(this.ubicacionDisplay)
+        .openPopup();
+
+      this.userMarker.addTo(this.map);
+    }
+  });
+}
+
+
+ngOnDestroy() {
+  if (this.userMarker && this.map) {
+    this.map.removeLayer(this.userMarker);
+    this.userMarker = null; // 👈 Reset
+  }
+  if (this.locSub) {
+    this.locSub.unsubscribe();
+    this.locSub = undefined;
+  }
+  this.stopRefreshingReportes();
+}
 
   // 🔹 Nueva función: verifica si la ubicación está disponible
   private async verificarUbicacion() {
@@ -138,68 +194,75 @@ export class HomePage implements AfterViewInit, OnInit, OnDestroy, ViewDidEnter 
   }
 
   private async initMap(lat: number, lng: number) {
-    if (!this.map) {
-      this.map = L.map('mapId').setView([lat, lng], 16);
+      if (!this.map) {
+        // ✅ Aumentamos el zoom a 18 para ver más detalles
+        this.map = L.map('mapId').setView([lat, lng], 16);
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
-      }).addTo(this.map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap contributors',
+        }).addTo(this.map);
 
-      const userIcon = L.icon({
-        iconUrl: 'assets/icono-usuario.png',
-        iconSize: [50, 50],
-        iconAnchor: [25, 45],
-        popupAnchor: [0, -45]
-      });
+        const userIcon = L.icon({
+          iconUrl: 'assets/icono-usuario2.png',
+          iconSize: [60, 60],
+        iconAnchor: [30, 65],
+        popupAnchor: [0, -60]  
+        });
 
-      L.marker([lat, lng], { icon: userIcon })
-        .addTo(this.map)
-        .bindPopup(this.ubicacionDisplay)
-        .openPopup();
+        L.marker([lat, lng], { icon: userIcon })
+          .addTo(this.map)
+          .bindPopup(this.ubicacionDisplay)
+          .openPopup();
 
-      const response = await fetch('assets/PRC_San_Bernardo.geojson');
-      const comunaGeoJson = await response.json();
+        const response = await fetch('assets/PRC_San_Bernardo.geojson');
+        const comunaGeoJson = await response.json();
 
-      const comunaLayer = L.geoJSON(comunaGeoJson, {
-        style: {
-          color: '#40ff00ff',
-          weight: 0,
-          fillColor: '#ffffff',
-          fillOpacity: 0.0
-        }
-      }).addTo(this.map);
+        const comunaLayer = L.geoJSON(comunaGeoJson, {
+          style: {
+            color: '#40ff00ff',
+            weight: 0,
+            fillColor: '#ffffff',
+            fillOpacity: 0.0
+          }
+        }).addTo(this.map);
 
-      this.map.fitBounds(comunaLayer.getBounds());
+        // ✅ Ajustamos el fitBounds para que no sobrescriba el zoom
+        // Solo usamos fitBounds si no queremos forzar el zoom
+        // this.map.fitBounds(comunaLayer.getBounds());
 
-      const worldBounds: L.LatLngExpression[] = [
-        [-90, -180], [-90, 180], [90, 180], [90, -180], [-90, -180]
-      ];
+        const worldBounds: L.LatLngExpression[] = [
+          [-90, -180], [-90, 180], [90, 180], [90, -180], [-90, -180]
+        ];
 
-      const comunaPolygons: L.LatLngTuple[][] = [];
-
-      comunaLayer.getLayers().forEach((layer: any) => {
-        const latlngs = layer.getLatLngs();
-        latlngs.forEach((multi: any) => {
-          multi.forEach((poly: L.LatLng[]) => {
-            const hole: L.LatLngTuple[] = poly.map(p => [p.lat, p.lng]);
-            comunaPolygons.push(hole);
+        const comunaPolygons: L.LatLngTuple[][] = [];
+        comunaLayer.getLayers().forEach((layer: any) => {
+          const latlngs = layer.getLatLngs();
+          latlngs.forEach((multi: any) => {
+            multi.forEach((poly: L.LatLng[]) => {
+              const hole: L.LatLngTuple[] = poly.map(p => [p.lat, p.lng]);
+              comunaPolygons.push(hole);
+            });
           });
         });
-      });
 
-      L.polygon([worldBounds, ...comunaPolygons], {
-        color: 'gray',
-        fillColor: 'gray',
-        fillOpacity: 0.5,
-        stroke: false
-      }).addTo(this.map);
+        L.polygon([worldBounds, ...comunaPolygons], {
+          color: 'gray',
+          fillColor: 'gray',
+          fillOpacity: 0.5,
+          stroke: false
+        }).addTo(this.map);
 
-    } else {
-      this.map.setView([lat, lng], 16);
+      } else {
+        // ✅ También ajustamos el zoom al volver a cargar
+        this.map.setView([lat, lng], 18);
+      }
+
+      this.cargarReportes();
     }
 
-    this.cargarReportes();
-  }
+
+
+
 
   private cargarReportes() {
     if (!this.ubicacionHabilitada) return;
@@ -233,14 +296,14 @@ export class HomePage implements AfterViewInit, OnInit, OnDestroy, ViewDidEnter 
           });
 
           const marker = L.marker([lat, lng], { icon: reporteIcon }).addTo(this.map);
-          marker.bindPopup(`<b>${reporte.categoria} </b>`);
+          marker.bindPopup(`<b>${reporte.categoria || 'Sin Categoria'}</b>`);
           this.reportMarkers.push(marker);
 
           marker.on('click', async () => {
             const modal = await this.modalCtrl.create({
               component: ReporteModalComponent,
               componentProps: { reporte },
-              cssClass: 'custom-modal',
+              cssClass: 'modal-no-fullscreen',
               backdropDismiss: true
             });
             await modal.present();
@@ -263,4 +326,18 @@ export class HomePage implements AfterViewInit, OnInit, OnDestroy, ViewDidEnter 
       this.reportRefreshInterval = undefined;
     }
   }
+
+
+
+
+  ngAfterViewInit() {
+  // ✅ Solo suscríbete una vez
+  if (!this.locSub) {
+    this.subscribeToLocation();
+  }
+  this.verificarUbicacion();
+  this.startRefreshingReportes(10000);
+}
+
+  
 }

@@ -1,5 +1,6 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <div *ngIf="!(auth.authStatusReady$ | async)" class="loading-screen">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+  <ion-router-outlet *ngIf="auth.authStatusReady$ | async"></ion-router-outlet>
 </ion-app>
-
-

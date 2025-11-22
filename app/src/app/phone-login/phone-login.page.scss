@@ -1,18 +1,51 @@
+/* Fondo con imagen + overlay */
 .phone-login-bg {
-  --background: linear-gradient(135deg, #074aad, #9abef5, #074aad);
+  --background: transparent;
+  position: relative;
+  background: url('/assets/fondo-login.jpg') no-repeat center center fixed;
+  background-size: cover;
   padding: 0;
 }
 
-.phone-login-container {
-  padding: 30px;
-  min-height: 100%;
-  position: relative;
-  box-sizing: border-box;
-
-  /* ✅ Esto empuja todo el contenido debajo del safe area superior */
-  padding-top: calc(30px + env(safe-area-inset-top, 0px));
+.phone-login-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 0;
 }
 
+/* Contenedor glass (igual que login y register) */
+.glass-container {
+  background: rgba(255, 255, 255, 0.397);
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 24px;
+  margin: 30px auto;
+  padding: 24px 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  max-width: 480px;
+  width: 90%;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+/* Contenido interno */
+.phone-login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  /* No necesitas padding-top con env() porque ion-header ya lo maneja */
+}
+
+/* Botón de retroceso */
 .back-button-wrapper {
   position: absolute;
   top: 0;
@@ -27,7 +60,7 @@
   height: 44px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgb(255, 255, 255);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,40 +71,57 @@
 .back-icon {
   font-size: 24px;
   color: white;
+  text-shadow: 
+    -1px -1px 0 black,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black;
 }
 
+/* Logos y títulos */
 .logo-section {
   text-align: center;
   margin-bottom: 30px;
 }
 
 .app-icon {
-  width: clamp(80px, 20vw, 100px);
-  height: clamp(80px, 20vw, 100px);
+  width: clamp(200px, 50vw, 200px);
+  height: clamp(150px, 32px, 2000px);
   margin: 0 auto 15px;
   display: block;
+  border-radius: 24px;
+  object-fit: cover;
+  padding: 8px;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
 }
 
 .app-title {
   color: white;
-  font-size: clamp(24px, 6vw, 28px);
+  font-size: clamp(37px, 8vw, 47px);
   font-weight: 700;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   margin: 0;
+  text-shadow: 
+    -1px -1px 0 rgb(112, 112, 112),
+    1px -1px 0 rgb(112, 112, 112),
+    -1px 1px 0 rgb(112, 112, 112),
+    1px 1px 0 rgb(112, 112, 112);
 }
-
 .app-subtitle {
-  color: rgba(255, 255, 255, 0.8);
+  color: white;
   font-size: clamp(14px, 4vw, 16px);
   margin-bottom: 20px;
+  text-shadow: 
+    -1px -1px 0 black,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black;
 }
 
+/* Formulario */
 .phone-login-form {
   width: 100%;
+  max-width: 400px;
 }
-
-/* --- Estilos de formulario (igual que en register) --- */
 
 .form-group {
   margin-bottom: 20px;
@@ -79,41 +129,54 @@
 
 .form-label {
   display: block;
-  color: white;
+  color: rgb(255, 255, 255);
   margin-bottom: 8px;
   font-weight: 500;
   font-size: 14px;
+  text-shadow: 
+    -1px -1px 0 rgb(46, 46, 46),
+    1px -1px 0 rgb(46, 46, 46),
+    -1px 1px 0 rgb(46, 46, 46),
+    1px 1px 0 rgb(46, 46, 46);
 }
 
 .form-input {
   width: 100%;
   padding: 15px;
   border-radius: 10px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
+  border: 2px solid white;
+  background-color: rgba(255, 255, 255, 0.795);
+  color: rgb(0, 0, 0);
   font-size: 16px;
   box-sizing: border-box;
-
-  &:focus {
-    outline: none;
-    border-color: rgba(255, 255, 255, 0.7);
-    background-color: rgba(255, 255, 255, 0.15);
-  }
-
-  &::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-  }
 }
 
+.form-input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+  opacity: 1;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+/* Ayudas */
 .phone-hint,
 .otp-hint {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 12px;
   margin-top: 8px;
   line-height: 1.4;
+  text-shadow: 
+    -1px -1px 0 black,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black;
 }
 
+/* Botones */
 .btn {
   width: 100%;
   padding: 15px;
@@ -125,25 +188,26 @@
   margin-bottom: 15px;
   min-height: 50px;
   box-sizing: border-box;
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
 }
 
 .btn-primary {
   background-color: white;
   color: #000;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-
-  &:active:not(:disabled) {
-    background-color: #f0f0f0;
-    transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  }
 }
 
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary:active:not(:disabled) {
+  background-color: #f0f0f0;
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Sección OTP */
 .otp-section {
   margin-top: 25px;
   padding-top: 25px;
@@ -154,12 +218,17 @@
   text-align: center;
   margin-top: 20px;
   padding: 15px 0;
+}
 
-  p {
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 10px;
-    font-size: 14px;
-  }
+.resend-section p {
+  color: white;
+  margin-bottom: 10px;
+  font-size: 14px;
+  text-shadow: 
+    -1px -1px 0 black,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black;
 }
 
 .btn-resend {
@@ -171,36 +240,43 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  &:active:not(:disabled) {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.5);
-  }
 }
 
+.btn-resend:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-resend:active:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Enlace alternativo */
 .alternative-login {
   text-align: center;
   margin-top: 20px;
   padding-top: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
-
-  a {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    font-size: 14px;
-
-    &:active {
-      color: white;
-      text-decoration: underline;
-    }
-  }
 }
 
+.alternative-login a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  text-shadow: 
+    -1px -1px 0 black,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black;
+}
+
+.alternative-login a:active {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Recaptcha */
 .recaptcha-container {
   margin-bottom: 20px;
   display: flex;
@@ -220,7 +296,6 @@
     width: 40px;
     height: 40px;
   }
-
   .back-icon {
     font-size: 20px;
   }
@@ -232,12 +307,10 @@
     background: rgba(255, 255, 255, 0.25);
     border-color: rgba(255, 255, 255, 0.5);
   }
-
   .btn-primary:hover:not(:disabled),
   .btn-resend:hover:not(:disabled) {
     transform: translateY(-2px);
   }
-
   .alternative-login a:hover {
     color: white;
     text-decoration: underline;

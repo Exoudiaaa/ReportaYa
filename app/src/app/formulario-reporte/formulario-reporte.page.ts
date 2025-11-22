@@ -10,6 +10,9 @@ import { Auth } from '@angular/fire/auth';
 import { Geolocation } from '@capacitor/geolocation';
 import { ModalController } from '@ionic/angular';
 import { AyudaReporteModalComponent } from '../ayuda-reporte-modal/ayuda-reporte-modal.component';
+import { doc, getDoc } from '@angular/fire/firestore';
+import { ComunaService } from '../services/comuna';
+
 @Component({
   selector: 'app-formulario-reporte',
   templateUrl: './formulario-reporte.page.html',
@@ -31,6 +34,7 @@ export class FormularioReportePage implements OnInit, OnDestroy {
   latitud: number | null = null;      // latitud GPS
   longitud: number | null = null;       // longitud GPS
   private locSub?: Subscription;
+  usuarioBloqueado = false;
 
   constructor(
     private route: ActivatedRoute, 
@@ -42,6 +46,7 @@ export class FormularioReportePage implements OnInit, OnDestroy {
     private router: Router,  
     private auth: Auth,
     private modalCtrl: ModalController,
+    private comunaService: ComunaService
     
   
   ) {}
@@ -110,6 +115,59 @@ export class FormularioReportePage implements OnInit, OnDestroy {
   // Guardar reporte en Firestore
   async submitReport() {
     const usuarioActual = this.auth.currentUser;
+
+
+      // ✅ Validar que esté dentro de la comuna
+  // ✅ Si no hay coordenadas, no se puede validar
+  if (this.latitud === null || this.longitud === null) {
+    const alert = await this.alertCtrl.create({
+      header: 'Ubicación no disponible',
+      message: 'No se pudo obtener tu ubicación. Activa el GPS e intenta nuevamente.',
+      buttons: ['OK']
+    });
+    await alert.present();
+    return;
+  }
+
+  // ✅ Validar que esté dentro de la comuna
+const dentroDeComuna = await this.comunaService.puntoEnComuna(this.latitud, this.longitud);
+
+if (dentroDeComuna === null) {
+  const alert = await this.alertCtrl.create({
+    header: 'Error con la geolocalización',
+    message: 'No se pudo verificar la comuna. Intenta nuevamente.',
+    buttons: ['OK']
+  });
+  await alert.present();
+  return;
+}
+
+if (!dentroDeComuna) {
+  const alert = await this.alertCtrl.create({
+    header: 'Fuera de la comuna',
+    message: 'Solo puedes reportar incidentes dentro de la comuna de San Bernardo.',
+    buttons: ['OK']
+  });
+  await alert.present();
+  return;
+}
+
+
+
+
+
+
+
+        if (this.usuarioBloqueado) {
+      const alert = await this.alertCtrl.create({
+        header: 'Acceso denegado',
+        message: 'Tu cuenta está bloqueada. No puedes enviar reportes.',
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }
+
 
     if (!usuarioActual) {
       const alert = await this.alertCtrl.create({
@@ -184,6 +242,31 @@ export class FormularioReportePage implements OnInit, OnDestroy {
 
   // 🔹 ngOnInit actualizado para obtener ubicación resumida automáticamente
   async ngOnInit() {
+
+
+
+
+    const user = this.auth.currentUser;
+
+        if (user) {
+          const ref = doc(this.firestore, 'users', user.uid);
+          const snap = await getDoc(ref);
+
+          if (snap.exists()) {
+            const data: any = snap.data();
+
+            // ← SI FIRESTORE DICE QUE ESTÁ BLOQUEADO
+            this.usuarioBloqueado = data.blocked === true;
+          }
+        }
+
+        if (this.usuarioBloqueado) {
+          return; // NO cargar formulario, solo se mostrará la vista bloqueada
+        }
+
+
+
+
     // Suscripción al BehaviorSubject
     this.locSub = this.locationService.location$.subscribe((loc: Ubicacion | null) => {
       this.ubicacionDisplay = loc?.display ?? 'Ubicación no disponible';
@@ -200,6 +283,9 @@ export class FormularioReportePage implements OnInit, OnDestroy {
       console.error('Error obteniendo GPS:', err);
       this.ubicacionDisplay = 'Ubicación no disponible';
     }
+
+
+
   }
 
   ngOnDestroy() {

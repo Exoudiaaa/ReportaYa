@@ -1,22 +1,76 @@
 .login-bg {
-  --background: linear-gradient(135deg, #074aad, #9abef5, #074aad);
+  --background: transparent;
+  position: relative;
+  background: url('/assets/fondo-login.jpg') no-repeat center center fixed;
+  background-size: cover;
   display: flex;
   flex-direction: column;
   padding: 0;
 }
 
+/* Overlay oscuro suave */
+.login-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* Ajusta la opacidad aquí (0.2 a 0.5) */
+  z-index: 0;
+}
+
+/* Contenido encima del overlay */
+/* Ajuste del contenedor interno */
 .login-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  
-  min-height: 100%;
-  box-sizing: border-box;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 50px;
-  padding-top: 50px;
+  width: 100%;
 }
+
+
+
+.form-input.error {
+  border: 2px solid #ff0000 !important;
+  background-color: #ffeeee !important;
+}
+
+.password-field {
+  position: relative;
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+
+
+
+/* Contenedor glass effect */
+.glass-container {
+  background: rgba(255, 255, 255, 0.397);
+  backdrop-filter: blur(1px);           /* ← Corregí también el blur principal */
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 24px;
+
+  margin: 30px auto 0px; /* ← Cambiado: auto = centrado horizontalmente */
+  padding: 24px 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  max-width: 480px;
+  width: 90%; /* ← Asegura que no se estire al 100% en pantallas grandes */
+  box-sizing: border-box;
+}
+
+
 
 .logo-section {
   text-align: center;
@@ -35,17 +89,21 @@
 }
 
 .app-icon {
-  width: clamp(80px, 20vw, 100px);
+  width: clamp(50px, 20vw, 70px);
   height: auto;
   border-radius: 16px;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
 }
 
 .app-title {
-  color: white;
-  font-size: clamp(40px, 8vw, 50px);
-  font-weight: 700;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  color: #ffffff;                /* Color del relleno */
+  text-shadow: 
+    -1px -1px 0 rgb(0, 0, 0),
+    1px -1px 0 rgb(0, 0, 0),
+    -1px 1px 0 rgb(0, 0, 0),
+    1px 1px 0 rgb(0, 0, 0);            /* ← Simula un borde blanco */
+  font-size: clamp(40px, 7vw, 50px);
+  font-weight: 800;
   margin: 0;
 }
 
@@ -63,15 +121,20 @@
   margin-bottom: 8px;
   font-size: 14px;
   display: block;
+  text-shadow: 
+    -1px -1px 0 rgb(46, 46, 46),
+    1px -1px 0 rgb(46, 46, 46),
+    -1px 1px 0 rgb(46, 46, 46),
+    1px 1px 0 rgb(46, 46, 46);  
 }
 
 .form-input {
   width: 100%;
   padding: 15px;
   border-radius: 10px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
+  border: 2px solid rgb(255, 255, 255);
+  background-color: rgba(255, 255, 255, 0.795);
+  color: rgb(0, 0, 0);
   font-size: 16px;
   box-sizing: border-box;
 }
@@ -142,4 +205,30 @@
 .toggle-password-btn:hover {
   color: white;
   background: rgba(255, 255, 255, 0.1);
+}
+
+.footer-credit {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7); /* Blanco suave si el fondo es oscuro */
+  font-size: 14px;
+  padding: 20px 0 30px;
+  font-family: 'Quicksand', 'League Spartan', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+
+
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: white;
+  font-size: 16px;
+}
+
+ion-spinner {
+  margin-bottom: 16px;
 }

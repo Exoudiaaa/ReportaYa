@@ -6,26 +6,46 @@ import { set } from 'firebase/database';
 import { Capacitor } from '@capacitor/core';
 import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
 import { RecaptchaVerifier } from '@angular/fire/auth';
+
+
+
+import {  onAuthStateChanged} from '@angular/fire/auth';
+import { BehaviorSubject, Observable } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class Auth {
+
+  getCurrentUser(): User | null {
+  return this.currentUserSubject.value;
+}
+
+
   private auth: FirebaseAuth = inject(FirebaseAuth);
   private firestore: Firestore = inject(Firestore);
+
+
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  private authStatusReady = new BehaviorSubject<boolean>(false);
+
+  public currentUser$ = this.currentUserSubject.asObservable();
+  public authStatusReady$ = this.authStatusReady.asObservable();
+
+
+
+
+
+
+
   constructor(private router: Router) {
-    this.setPersistence();
+      onAuthStateChanged(this.auth, (user) => {
+      this.currentUserSubject.next(user);
+      this.authStatusReady.next(true);
+    });
   }
 
-  setPersistence() {
-    const auth = getAuth();
-    setPersistence(auth, browserLocalPersistence)
-      .then(() => {
-        console.log('Persistencia establecida en local');
-      })
-      .catch((error) => {
-        console.error('Error al establecer persistencia:', error);
-      });
-  }
+
   async registerUser(data: {
     firstName: string;
     lastName: string;
@@ -44,7 +64,8 @@ export class Auth {
         email: data.email,
         phone: data.phone,
         createdAt: new Date(),
-        rango: data.rango
+        rango: data.rango,
+        blocked: false
       });
 
       console.log('Usuario registrado y guardado en Firestore:', user.uid);
@@ -92,6 +113,7 @@ export class Auth {
 
     return user;
   }
+
   async registerPhoneUserWeb(phone: string, recaptchaVerifier: RecaptchaVerifier) {
     try {
       console.log("Registrando usuario web con número:", phone);
@@ -128,6 +150,8 @@ export class Auth {
       throw error;
     }
   }
+
+  
   async getCurrentUserData(): Promise<any | null> {
     try {
       const currentUser = this.auth.currentUser;

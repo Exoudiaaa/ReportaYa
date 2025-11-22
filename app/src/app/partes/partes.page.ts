@@ -37,8 +37,11 @@ export class PartesPage implements OnInit, OnDestroy {
     tipo: '',
     marca: '',
     color: ''
+    
   };
 
+  usuarioBloqueado = false;
+  
   constructor(
     private locationService: LocationService,
     private firestore: Firestore,
@@ -46,6 +49,8 @@ export class PartesPage implements OnInit, OnDestroy {
     private router: Router,
     private alertController: AlertController
   ) {}
+
+  
 
   async ngOnInit() {
     this.locSub = this.locationService.location$.subscribe((loc: Ubicacion | null) => {

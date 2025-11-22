@@ -1,101 +1,119 @@
-<ion-header>
+<ion-header style="padding-top: env(safe-area-inset-top, 0);">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
   <ion-toolbar class="toolbar-header" style="padding-top:22px;">
     <ion-buttons slot="start" class="back-button">
       <ion-back-button defaultHref="/home" text="" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
 
     <div style="display:flex; align-items:center; width:100%;">
-        <span style="font-size: clamp(26px, 6vw, 40px); font-weight: bold; color:black; font-family:'Quicksand',sans-serif;">
+        <span style="font-size: clamp(26px, 6vw, 40px); font-weight: bold; color:black; font-family:'Poppins',sans-serif;">
           Reporte
         </span>
 
+
         <img src="assets/icono-app.png" alt="Logo" 
-            style="height:50px; margin-left:auto;">
-      </div>
-
-
-    
+             style="height:50px; margin-left:auto;">
+    </div>
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content fullscreen="false" style="padding-bottom: 50px;" class="ion-padding content-bg">
 
+  <div class="container">
 
-
-
-
-  <div class="ayuda-trigger-container">
-  <div class="ayuda-trigger" (click)="mostrarAyuda()">
-    <ion-icon name="help-circle-outline"></ion-icon>
-    <span>¿Cómo reportar? Click acá</span>
-  </div>
-  </div>
-  
-  <div style="background: #ffffffbe; border-radius: 20px;display: flex; flex-direction: column; padding: 0px 10px 0px; border: solid 2px white;">
-      <h3 style="color: rgb(34, 34, 34); font-size: 19px; font-size: 18px; text-align: center;" class="subtitulo">Que es esto?</h3>
-      <p style="color: rgb(34, 34, 34);">La funcion de este apartado es reportar un incidente dentro de la comuna, Dependiendo de la sensibilidad del reporte este se mostrará o no en el mapa.</p>
-      <p style="color: rgb(34, 34, 34);">IMPORTANTE: El reporte es anonimo, ningun residente podrá ver tus datos.</p>
-      
+    <!-- 🔒 VISTA USUARIO BLOQUEADO -->
+    <div *ngIf="usuarioBloqueado" class="bloqueado-container">
+      <ion-icon name="lock-closed" class="bloqueado-icon"></ion-icon>
+      <h2 style="font-weight: bold; margin-top: 10px;">Has sido bloqueado temporalmente</h2>
+      <p style="margin-top: 10px;">No puedes realizar nuevos reportes debido a un uso incorrecto del sistema.</p>
+      <p>Serás desbloqueado luego de 24 horas.</p>
+      <ion-button expand="block" color="danger" routerLink="/home">
+        Volver al inicio
+      </ion-button>
     </div>
 
 
-  <ion-row style="padding-top: 10px;" class="top-row">
-    <!-- Botón Cámara -->
-    <ion-col size="3" class="camera-col">
-      <div 
-        (click)="abrirCamara()" 
-        class="camera-btn" 
-        [class.disabled]="foto" 
-        [style.pointer-events]="foto ? 'none' : 'auto'"
-        [style.opacity]="foto ? '0.5' : '1'">
-        <ion-icon name="camera" class="camera-icon"></ion-icon>
+    <!-- 📝 FORMULARIO COMPLETO SOLO SI NO ESTÁ BLOQUEADO -->
+    <div *ngIf="!usuarioBloqueado">
+      <!-- Ayuda -->
+      <div class="ayuda-trigger-container">
+        <div class="ayuda-trigger" (click)="mostrarAyuda()">
+          <span>¿Qué es esto?</span>
+          <span>¿Cómo reportar?</span>
+        </div>
       </div>
-    </ion-col>
 
-    <!-- Botón Ubicación -->
-    <ion-col size="9">
-      <div class="location-container">
-        <ion-icon name="location" class="location-icon"></ion-icon>
-        <span class="location-text">{{ ubicacionDisplay }}</span>
+      <!-- CARD -->
+      <div class="card" style="background:#ffffff; padding:20px 15px 25px;">
+
+        <!-- Ubicación -->
+        <div style="margin-bottom: 20px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <ion-icon name="location" style="color:#ff0000; font-size:18px;"></ion-icon>
+            <span style="font-weight:700; color:#000; font-size:16px;">1. Ubicación (Automática)</span>
+          </div>
+          <div class="ubicacion-display">{{ ubicacionDisplay }}</div>
+        </div>
+
+        <!-- Foto -->
+        <div style="margin-bottom: 20px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <ion-icon name="camera" style="color:#ff0000; font-size:18px;"></ion-icon>
+            <span style="font-weight:700; color:#000; font-size:16px;">2. Foto del incidente</span>
+          </div>
+
+          <div *ngIf="!foto"
+               (click)="abrirCamara()"
+               class="camera-placeholder"
+               style="text-align:center; padding:30px 0; background:#f9fafb; border:1px solid #868686; border-radius:12px; cursor:pointer;">
+            <ion-icon name="camera-outline" style="font-size:36px; color:#000; margin-bottom:10px;"></ion-icon>
+            <div style="color:#303030; font-size:15px;">Presiona para tomar una foto</div>
+          </div>
+
+          <div *ngIf="foto" style="text-align:center; margin-top:14px;">
+            <ion-img [src]="foto" 
+                     style="width:100%; border-radius:12px; border:1px solid #ddd; box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+            </ion-img>
+            <ion-button color="danger" fill="outline" size="small"
+                        (click)="confirmarEliminarFoto()"
+                        style="margin-top:14px;">
+              Eliminar foto
+            </ion-button>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <ion-icon name="document-text" style="color:#ff0000; font-size:18px;"></ion-icon>
+            <span style="font-weight:700; color:#000; font-size:16px;">3. Descripción</span>
+          </div>
+
+          <div class="textarea-container">
+            <ion-textarea placeholder="Ej: Vehículo estacionado en doble fila..."
+                          autoGrow="true"
+                          maxlength="300"
+                          [(ngModel)]="descripcion"
+                          class="textarea-input"></ion-textarea>
+            <div style="text-align:right; font-size:12px; color:#303030; margin-top:4px;">
+              {{ descripcion.length }}/300
+            </div>
+          </div>
+        </div>
+
       </div>
-    </ion-col>
 
-  </ion-row>
+      <!-- Botón Reportar -->
+      <div style="padding-bottom:50px;" class="report-btn-container">
+        <ion-button expand="block" (click)="submitReport()" class="btn-reportar">
+          Reportar
+        </ion-button>
+      </div>
 
-  <!-- Botón eliminar foto -->
-  <ion-button *ngIf="foto"  color="danger" expand="block" (click)="confirmarEliminarFoto()" class="btn-eliminar">
-    Eliminar Foto
-  </ion-button>
+    </div> <!-- FIN *ngIf="!usuarioBloqueado" -->
 
-  <!-- Mostrar la foto tomada -->
-  <ion-img *ngIf="foto" [src]="foto" class="foto-tomada"></ion-img>
-
-
-
-  
-
-
-  <!-- Cuadro blanco tipo textarea -->
-  <div class="textarea-container">
-  <ion-textarea
-    placeholder="Escribe qué está pasando..."
-    autoGrow="true"
-    class="textarea-input"
-    [(ngModel)]="descripcion">
-  </ion-textarea>
   </div>
-
-
-
-
-  
-
-  <!-- Botón Reportar fijo -->
-  <div class="report-btn-container">
-  <ion-button style="padding-bottom: 30px; padding-top: 20px;" expand="block" class="btn-reportar" (click)="submitReport()">
-    Reportar
-  </ion-button>
-</div>
 
 </ion-content>

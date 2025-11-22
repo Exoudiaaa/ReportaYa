@@ -1,58 +1,61 @@
-<ion-header class="ion-no-border">
-</ion-header>
-
 <ion-content class="login-bg" fullscreen="true">
-  <div class="login-container">
-    <div class="logo-section">
-      <h1 class="app-title">ReportaYa</h1>
-      <div class="logos-container">
-        <img src="assets/icono-app.png" alt="Icono de ReportaYa" class="app-icon" />
-        <img src="assets/logo_muni.png" alt="Logo Municipalidad" class="app-icon" />
-      </div>
-    </div>
-
-    <form (ngSubmit)="onSubmit($event)" class="login-form">
-      <div class="form-group">
-        <label class="form-label" for="email">Correo Electrónico</label>
-        <input
-          type="email"
-          id="email"
-          class="form-input"
-          placeholder="Ingresa tu correo electrónico"
-          required
-          [(ngModel)]="email"
-          name="email" />
+  
+  <div class="glass-container">
+    <div class="login-container">
+      <div>
+        <img src="assets/logo_muni.png" alt="Logo Municipalidad" />
       </div>
 
-      <div class="form-group password-field">
-        <label class="form-label" for="password">Contraseña</label>
-        <input
-          [type]="passwordType"
-          id="password"
-          class="form-input"
-          placeholder="Ingresa tu contraseña"
-          required
-          [(ngModel)]="password"
-          name="password" />
-        <button type="button" class="toggle-password-btn" (click)="togglePassword()" aria-label="Mostrar contraseña">
-        <ion-icon [name]="passwordVisible ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
-      </button>
+      <form (ngSubmit)="onSubmit($event)" class="login-form">
+        <div class="form-group">
+          <label class="form-label" for="email">Correo Electrónico</label>
+          <input
+            type="email"
+            id="email"
+            class="form-input"
+            placeholder="Ingresa tu correo electrónico"
+            [(ngModel)]="email"
+            name="email"
+            [class.error]="errores.email"
+            required />
+        </div>
+
+        <div class="form-group password-field">
+          <label class="form-label" for="password">Contraseña</label>
+          <input
+            [type]="passwordType"
+            id="password"
+            class="form-input"
+            placeholder="Ingresa tu contraseña"
+            [(ngModel)]="password"
+            name="password"
+            [class.error]="errores.password"
+            required />
+          <button type="button" class="toggle-password-btn" (click)="togglePassword()" aria-label="Mostrar contraseña">
+            <ion-icon style="color: rgb(100, 100, 100);" [name]="passwordVisible ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+          </button>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+        <button class="btn btn-secondary" routerLink="/register">Crear Cuenta</button>
+        <button class="btn btn-secondary" routerLink="/phone-login">Inicio con Número</button>
+      </form>
+
+      <div class="alternative-login">
+        <span>También puedes iniciar sesión con</span>
       </div>
 
-      <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
-    </form>
-
-    <button class="btn btn-secondary" routerLink="/register">Crear Cuenta</button>
-    <button class="btn btn-secondary" routerLink="/phone-login">Inicio con Número</button>
-
-    <div class="alternative-login">
-      <span>También puedes iniciar sesión con</span>
-    </div>
-
-    <div class="google-login">
-      <a (click)="loginGoogle()">
-        <img src="assets/google-logo.png" alt="Logo de Google" />
-      </a>
+      <div class="google-login">
+        <a (click)="loginGoogle()">
+          <img src="assets/google-logo.png" alt="Logo de Google" />
+        </a>
+      </div>
     </div>
   </div>
+
+  <div class="footer-credit">
+  By ReportaYa
+    </div>
+
+
 </ion-content>

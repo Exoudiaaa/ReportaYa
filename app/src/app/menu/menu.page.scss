@@ -89,7 +89,7 @@ ion-label {
 
 /* Ítem especial para cerrar sesión */
 ion-item[color="danger"] {
-  --color: #b71c1c;
+  --color: #e08383;
   
   ion-label {
     color: #e9e9e9;
@@ -117,4 +117,15 @@ ion-content::part(scroll) {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+
+.footer-credit {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7); /* Blanco suave si el fondo es oscuro */
+  font-size: 14px;
+  padding: 20px 0 30px;
+  font-family: 'Quicksand', 'League Spartan', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }

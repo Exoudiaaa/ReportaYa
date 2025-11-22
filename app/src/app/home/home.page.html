@@ -1,17 +1,26 @@
 <ion-tabs>
+
+  <!-- =========================== -->
+  <!--          TAB HOME           -->
+  <!-- =========================== -->
   <ion-tab tab="home">
-    <ion-header  fullscreen="false">
+    <ion-header style="padding-top: env(safe-area-inset-top, 0);">
       <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-      <ion-toolbar style="--background: white; --color: black; border-bottom: 1px solid #ccc;">
-        <div style="display:flex; align-items:center; width:100%; padding-top:25px;">
-          <span style="font-size: clamp(32px, 7vw, 48px); font-weight: bold; color:black; font-family:'Quicksand',sans-serif; padding-left: 5px;">
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+
+      <ion-toolbar style="--background: white; --color: black; border-bottom: 1px solid #ccc; padding-top:22px;">
+        <div style="display:flex; align-items:center; width:100%; padding-top: 5px;">
+
+          <span style="font-size: clamp(32px, 7vw, 48px); font-weight: 800; color: black; font-family: 'Poppins', sans-serif; padding-left: 5px;">
             ReportaYa
           </span>
+
           <img src="assets/icono-app.png" alt="Logo" style="height:50px; margin-left:auto;">
         </div>
+
         <div style="border-top: 2px solid #dcdcdc; padding-top: 6px; margin-top: 4px; padding-left: 5px;">
           <span style="font-size:15px; color:#444444; font-weight:600;"> 
-            Bienvenido/a {{ usuarioNombre }}
+            Bienvenido/a {{ usuarioNombre }} 
           </span>
         </div>
       </ion-toolbar>
@@ -20,70 +29,83 @@
     <ion-content scrollY="false" style="--background: transparent;">
 
       <div *ngIf="!ubicacionHabilitada" class="location-disabled-overlay">
-      <div class="location-message">
-        <ion-icon name="location-outline" class="location-icon"></ion-icon>
-        <h3>Ubicación desactivada</h3>
-        <p>Activa la ubicación en tu dispositivo para ver el mapa y reportar incidentes.</p>
-        <ion-button fill="outline" (click)="solicitarUbicacion()">
-          Intentar nuevamente
-        </ion-button>
+        <div class="location-message">
+          <ion-icon name="location-outline" class="location-icon"></ion-icon>
+          <h3>Ubicación desactivada</h3>
+          <p>Activa la ubicación en tu dispositivo para ver el mapa y reportar incidentes.</p>
+          <ion-button fill="outline" (click)="solicitarUbicacion()">
+            Intentar nuevamente
+          </ion-button>
+        </div>
       </div>
-    </div>
 
+      <div *ngIf="ubicacionHabilitada" id="mapId" class="map-container"></div>
 
-      <!-- Mapa: ahora ocupa todo el contenido disponible -->
-      <div id="mapId" class="map-container"></div>
-
-      <!-- Botón flotante con clase segura -->
-      <div class="report-btn-container fixed-bottom" style="position: fixed; left: 0; right: 0; display: flex; justify-content: center; z-index: 10; pointer-events: none;">
+      <div class="report-btn-container fixed-bottom"
+        style="position: fixed; left: 0; right: 0; display: flex; justify-content: center; z-index: 10; pointer-events: none;">
         <ion-button expand="block"
           style="border-radius: 12px; min-width: 270px; --background: #ff3131; --color: #ffffff; font-weight: bolder; text-transform: uppercase; pointer-events: auto; padding-bottom: 15px;"
           routerLink="/formulario-reporte">
           Reportar
         </ion-button>
       </div>
+
     </ion-content>
   </ion-tab>
 
-  <!-- Tab Bar -->
-  <ion-tab-bar slot="bottom" style="--background: white; --color: black; border-top: 1px solid #ccc;">
+
+
+
+  <!-- =========================== -->
+  <!--          TAB BAR            -->
+  <!-- =========================== -->
+  <ion-tab-bar slot="bottom" class="custom-tab-bar">
+
+    <!-- INSPECTOR -->
     <ng-container *ngIf="rango === 'inspector'">
-      <ion-tab-button tab="partes" routerLink="/partes" style="--color: #000000; --color-selected: #ff0000; border-right: 1px solid black;">
+      <ion-tab-button tab="partes" routerLink="/partes" class="tab-item">
         <ion-icon name="clipboard-outline"></ion-icon>
         <ion-label>Partes</ion-label>
       </ion-tab-button>
 
-      <ion-tab-button tab="asignaciones" routerLink="/asignaciones"
-        style="--color: #000000; --color-selected: #ff0000; border-right: 1px solid black;">
+      <div class="divider"></div>
+
+      <ion-tab-button tab="asignaciones" routerLink="/asignaciones" class="tab-item">
         <ion-icon name="map-outline"></ion-icon>
         <ion-label>Asignaciones</ion-label>
       </ion-tab-button>
 
-      <ion-tab-button tab="menu" routerLink="/menu" style="--color: #000000; --color-selected: #ff0000;">
+      <div class="divider"></div>
+
+      <ion-tab-button tab="menu" routerLink="/menu" class="tab-item">
         <ion-icon name="person-outline"></ion-icon>
-        <ion-label>Menu</ion-label>
+        <ion-label>Menú</ion-label>
       </ion-tab-button>
     </ng-container>
 
-    
+
+    <!-- CIUDADANO -->
     <ng-container *ngIf="rango === 'ciudadano'">
-      <ion-tab-button tab="home" routerLink="/home"
-        style="--color: #000000; --color-selected: #ff0000; border-right: 1px solid black;">
+      <ion-tab-button tab="home" routerLink="/home" class="tab-selected">
         <ion-icon name="map-outline"></ion-icon>
-        <ion-label style="font-size: 80%;">Inicio</ion-label>
+        <ion-label>Inicio</ion-label>
       </ion-tab-button>
 
-      <ion-tab-button tab="cameras" routerLink="/camaras"
-        style="--color: #000000; --color-selected: #ff0000;  border-right: 1px solid black;">
-        <span class="material-symbols-outlined">speed_camera</span>
-        <ion-label style="font-size: 80%;">Solicitar Grabaciones </ion-label>
+      <div class="divider"></div>
+
+      <ion-tab-button tab="cameras" routerLink="/camaras" class="tab-item">
+        <span class="material-symbols-outlined cam-icon">speed_camera</span>
+        <ion-label>Solicitar<br>Grabación</ion-label>
       </ion-tab-button>
 
-      <ion-tab-button tab="menu" routerLink="/menu" style="--color: #000000; --color-selected: #ff0000;">
+      <div class="divider"></div>
+
+      <ion-tab-button tab="menu" routerLink="/menu" class="tab-item">
         <ion-icon name="menu-outline"></ion-icon>
-        <ion-label style="font-size: 80%;">Menú</ion-label>
+        <ion-label>Menú</ion-label>
       </ion-tab-button>
     </ng-container>
+
   </ion-tab-bar>
 
 </ion-tabs>

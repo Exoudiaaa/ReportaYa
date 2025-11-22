@@ -1,121 +1,111 @@
-.toolbar-header {
-  --background: white;
-  --color: black;
-  border-bottom: 1px solid #000;
-  padding-top: 5px;
+/* =============================
+   ESTILOS COHERENTES CON TU DISEÑO
+============================= */
+
+/* Tarjeta de pasos: igual que tus otras .card */
+.card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px 15px 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  transition: all 0.25s ease-in-out;
 }
 
-.back-button {
-  margin-left: 10px;
+
+ion-textarea {
+  --highlight-color-focused: #007bff;   /* Azul al enfocar */
+  --highlight-color: #007bff;
+  --border-color: #007bff;
+  --background: #fff;
+
+  /* Para evitar que quede verde cuando es "valid" */
+  --highlight-color-valid: #007bff;
 }
 
+
+
+.subtitulo {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 5px;
+  padding-bottom: 10px;
+}
+
+/* Ubicación: estilo como un input deshabilitado */
+.ubicacion-display {
+  background: #f9fafb;
+  color: #111827;
+  border: 1px solid #868686;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 15px;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+/* Textarea dentro de contenedor con borde */
+.textarea-container {
+  background: #f9fafb;
+  border: 1px solid #868686;
+  border-radius: 12px;
+  padding: 2px;
+}
+
+.textarea-input {
+  --background: transparent;
+  --color: #111827;
+  --placeholder-color: #323233;
+  font-size: 15px;
+  padding: 4px 0 0 4px;
+}
+
+.textarea-input::part(native) {
+  background: transparent;
+}
+
+/* Fondo general: degradado azul */
 .content-bg {
   --background: linear-gradient(135deg, #074aad, #9abef5, #074aad);
 }
 
-/* =============================
-   ENCABEZADO Y FILA SUPERIOR
-============================= */
-.top-row {
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.camera-col {
+ion-content {
+  --background: #f4f6fb;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding: 25px 0;
 }
 
-.camera-btn {
-  background: #ff3131;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease;
-
-  &:not(.disabled):active {
-    transform: scale(0.95);
-  }
-}
-
-.camera-icon {
-  color: white;
-  font-size: 28px;
-}
-
-.location-container {
-  background: rgb(255, 255, 255);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding-bottom: 5px;
-  padding-top: 5px;
-  display: flex;
-  align-items: center;
-  color: rgb(0, 0, 0);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.location-icon {
-  color: rgb(255, 0, 0);
-  font-size: 40px;
- 
-}
-
-.location-text {
-  color: rgb(0, 0, 0);
-  font-size: 16px;
-  font-weight: 500;
-  flex: 1;
-  word-break: break-word;
-}
-
-/* =============================
-   FOTO Y BOTÓN ELIMINAR
-============================= */
-.btn-eliminar {
-  margin: 6px auto;
-  padding-top: 5px;
-  --background: #e53935;
-  --color: white;
-  max-width: 200px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.foto-tomada {
-  margin: 0 auto 24px;
+.container {
   width: 100%;
-  max-width: 300px;
-  border: 2px solid white;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-  display: block;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
-/* =============================
-   TEXTAREA
-============================= */
-.textarea-container {
-  background: white;
-  border-radius: 16px;
-
-  margin: 0 0px 30px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* Botón reportar */
+.report-btn-container {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
 }
 
-.textarea-input {
-  font-size: 16px;
-  color: #333;
-  --placeholder-color: #777;
-  margin-left: 5px;
-  padding-bottom: 5px;
-  padding-right: 10px;
-  padding-top: 0px;
+.btn-reportar {
+  width: 100%;
+  max-width: 500px;
+  --background: #ff3131;
+  --color: #ffffff;
+  font-weight: bolder;
+  text-transform: uppercase;
 }
+
 
 /* =============================
    SECCIÓN DE AYUDA
@@ -171,65 +161,38 @@
   line-height: 1.4;
 }
 
-/* =============================
-   BOTÓN FIJO
-============================= */
-.report-btn-container {
-
-  left: 0;
-  right: 0;
-  bottom: 30px;
-  display: flex;
-  justify-content: center;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.btn-reportar {
-  border-radius: 50px;
-  width: 90%;
-  max-width: 350px;
-  --background: #ff3131;
-  --color: white;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  pointer-events: auto;
-
-  font-family: 'League Spartan', 'Quicksand', sans-serif;
-}
-
-ion-toolbar {
-  --background: white;
-  --color: black;
-}
-
-
-
-.subtitulo {
-  margin-bottom: 12px;
-  font-weight: 600;
-}
-
-
-
 
 
 .ayuda-trigger {
-  display: inline-flex;
-  align-items: center;
+
+
   gap: 6px;
   background: rgba(255, 255, 255, 0.3);
   color: white;
   padding: 8px 16px;
+  width: 100%;
   border-radius: 20px;
   font-size: 15px;
   font-weight: 600;
-  margin: 0 16px 20px;
+  margin: 0 0px 20px;
   cursor: pointer;
   transition: all 0.2s ease;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.4);
+  
+   /* coloca los spans uno debajo del otro */
+  text-align: center;         /* centra el texto */
+  gap: 4px;   
+  
+  
+  display: flex;
+  flex-direction: row;      /* uno al lado del otro */
+  justify-content: center;
+  align-items: center;
+               /* separación entre textos */
+  flex-wrap: wrap;          /* permite que se apilen si no entra */
+
+/* separación entre las líneas */
 }
 
 .ayuda-trigger ion-icon {
@@ -244,4 +207,30 @@ ion-toolbar {
 
 .ayuda-trigger-container {
   text-align: center;
+  justify-content: center;   /* centra horizontal */
+  align-items: center;        /* centra vertical */
 }
+
+
+
+
+.ayuda-trigger span {
+  white-space: nowrap;      /* evita que se corten a la mitad */
+}
+
+.bloqueado-container {
+  text-align: center;
+  margin-top: 40px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* centra horizontal */
+}
+
+.bloqueado-icon {
+  font-size: 90px;
+  color: #b90000;
+  margin-bottom: 20px;
+}
+

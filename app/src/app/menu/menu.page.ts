@@ -28,7 +28,7 @@ export class MenuPage implements OnInit {
 
     if (user) {
       // Nombre (si no hay displayName, usamos parte del correo)
-      this.username = user.displayName || user.email?.split('@')[0] || 'Usuario';
+      this.userEmail = user.displayName || user.email?.split('@')[0] || 'Correo';
 
       // Correo
       this.userEmail = user.email || '';

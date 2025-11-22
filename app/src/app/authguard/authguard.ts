@@ -1,28 +1,43 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
-import { Auth } from '@angular/fire/auth';
-import { inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { CanLoad, CanActivate, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { Observable, of, switchMap, first } from 'rxjs';
+import { Auth } from '../services/auth'; // 👈 Ajusta la ruta según tu estructura
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
-  private auth: Auth = inject(Auth);
-  
-  constructor(private router: Router) {}
+export class AuthGuard implements CanLoad, CanActivate {
 
-  canActivate(): Observable<boolean> | Promise<boolean> | boolean {
-    return new Promise((resolve) => {
-      this.auth.onAuthStateChanged((user) => {
+  constructor(private authService: Auth, private router: Router) {}
+
+  // Para rutas con loadChildren
+  canLoad(
+    route: Route,
+    segments: UrlSegment[]
+  ): Observable<boolean> {
+    return this.checkAuth();
+  }
+
+  // Para rutas con component
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
+    return this.checkAuth();
+  }
+
+  private checkAuth(): Observable<boolean> {
+    return this.authService.authStatusReady$.pipe(
+      first(),
+      switchMap(() => {
+        const user = this.authService.getCurrentUser();
         if (user) {
-          resolve(true)
+          return of(true);
         } else {
-          // Usuario NO autenticado - redirigir al login
           this.router.navigate(['/login']);
-          resolve(false)
+          return of(false);
         }
-      });
-    });
+      })
+    );
   }
 }

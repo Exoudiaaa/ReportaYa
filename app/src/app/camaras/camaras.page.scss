@@ -4,19 +4,35 @@
   --placeholder-color: #777;
   --color: #000;
   font-size: 16px;
+
 }
+
+
+ion-input {
+  --highlight-color-focused: #007bff;   /* Azul al enfocar */
+  --highlight-color: #007bff;
+  --border-color: #007bff;
+  --background: #fff;
+
+  /* Para evitar que quede verde cuando es "valid" */
+  --highlight-color-valid: #007bff;
+}
+
+ion-textarea {
+  --highlight-color-focused: #007bff;   /* Azul al enfocar */
+  --highlight-color: #007bff;
+  --border-color: #007bff;
+  --background: #fff;
+
+  /* Para evitar que quede verde cuando es "valid" */
+  --highlight-color-valid: #007bff;
+}
+
+
 
 .subtitulo {
   margin-bottom: 12px;
   font-weight: 600;
-}
-
-.datetime-container {
-  margin-top: 12px;
-}
-
-.datetime-input {
-  margin-bottom: 8px;
 }
 
 
@@ -28,7 +44,7 @@
   --background: white;
   --color: black;
   border-bottom: 1px solid #000;
-  padding-top: 5px;
+
 }
 
 .back-button {
@@ -192,38 +208,37 @@ ion-datetime::part(time-button) {
 /* =============================
    RESPONSIVE
 ============================= */
-@media (max-width: 480px) {
-  .card {
-    padding: 15px 12px 20px;
-  }
-
-  .header-title {
-    font-size: 1.3rem;
-  }
-
-  .datetime-centro {
-    width: 100%;
-  }
 
 
 
 
 
 .ayuda-trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+
+
+
   background: rgba(255, 255, 255, 0.3);
   color: white;
   padding: 8px 16px;
+  width: 100%;
   border-radius: 20px;
   font-size: 15px;
   font-weight: 600;
-  margin: 0 16px 20px;
   cursor: pointer;
   transition: all 0.2s ease;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.4);
+
+  text-align: center;         /* centra el texto */
+  gap: 4px;   
+  
+  
+  display: flex;
+  flex-direction: row;      /* uno al lado del otro */
+  justify-content: center;
+  align-items: center;
+               /* separación entre textos */
+  flex-wrap: wrap;          /* permite que se apilen si no entra */
 }
 
 .ayuda-trigger ion-icon {
@@ -238,7 +253,34 @@ ion-datetime::part(time-button) {
 
 .ayuda-trigger-container {
   text-align: center;
+  justify-content: center;   /* centra horizontal */
+  align-items: center;        /* centra vertical */
 }
 
+
+.ayuda-trigger span {
+  white-space: nowrap;      /* evita que se corten a la mitad */
+}
+
+
   
+
+
+/* =============================
+   POPOVER DE FECHA Y HORA
+============================= */
+ion-popover {
+  --width: 320px;
+  --height: auto;
+  --min-height: auto;
+  --max-height: 80vh;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+ion-popover ion-datetime {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  padding: 12px;
 }
