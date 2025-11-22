@@ -1,47 +1,28 @@
 /* ============================
-   MAPA / PAGE / CONTENT
+   MAPA Y CONTENIDO PRINCIPAL
 ============================ */
-ion-content,
-#Map-page,
-#mapId {
-  height: 100% !important;
-  width: 100% !important;
+ion-content.home-content {
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --background: transparent;
 }
 
-#mapId {
+/* ============================
+   MAPA CORRECTAMENTE POSICIONADO
+============================ */
+#mapId.map-container {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
   height: 100%;
+  left: 0;
+  right: 0;
   z-index: 1;
 }
-
-.material-symbols-outlined {
-  font-size: 220%;
-  font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 0;
-}
-
-.page-content {
-  padding-top: 0;
-  padding-bottom: calc(16px + var(--app-safe-area-bottom));
-}
-
-.map-container {
-  width: 100%;
-  height: calc(100vh - var(--app-safe-area-top, 0px) - 140px);
-}
-
 /* ============================
    UBICACIÓN DESACTIVADA
 ============================ */
 .location-disabled-overlay {
   position: absolute;
-  top: 0;
+  top: var(--ion-safe-area-top);
   left: 0;
   right: 0;
   bottom: 0;
@@ -64,36 +45,19 @@ ion-content,
   margin-bottom: 16px;
 }
 
-.location-message h3 {
-  margin: 0 0 12px;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.location-message p {
-  margin: 0 0 20px;
-  color: #bdbdbd;
-  font-size: 16px;
-  line-height: 1.4;
-}
-
-/* Ocultar mapa */
-#mapId.hidden {
-  display: none;
-}
-
 /* ============================
-   BOTÓN FLOTANTE
+   BOTÓN FLOTANTE — POSICIONADO CORRECTAMENTE
 ============================ */
-.fixed-bottom {
+.report-btn-container {
   position: fixed;
   left: 0;
   right: 0;
-  bottom: calc(16px + env(safe-area-inset-bottom, 0));
+  bottom: calc(var(--ion-safe-area-bottom) + 12px); /* Margen de 12px sobre el tab bar */
   display: flex;
   justify-content: center;
   z-index: 10;
   pointer-events: none;
+  padding: 0 16px; /* Márgenes laterales para que no toque los bordes */
 }
 
 .btn-reportar {
@@ -105,11 +69,12 @@ ion-content,
   font-weight: bolder;
   text-transform: uppercase;
   pointer-events: auto;
+  width: 100%;
+  max-width: 300px; /* Limita el ancho máximo */
 }
 
 /* ============================
-   TAB BAR — NUEVO DISEÑO
-   CON DIVISORES Y SELECCIÓN
+   TAB BAR — ADAPTADO A SAFE AREA
 ============================ */
 .custom-tab-bar {
   --background: #ffffff;
@@ -117,10 +82,10 @@ ion-content,
   display: flex;
   align-items: stretch;
   height: 60px;
-  padding: 0;
+  padding-bottom: max(env(safe-area-inset-bottom), 8px);
 }
 
-/* cada tab ocupa el mismo ancho */
+/* Cada tab ocupa lo mismo */
 ion-tab-button {
   flex: 1;
   --color: #3b3b3b;
@@ -139,7 +104,6 @@ ion-tab-button .material-symbols-outlined {
   margin-bottom: 2px;
 }
 
-/* texto adaptativo */
 ion-tab-button ion-label {
   font-size: 11.5px;
   white-space: normal;
@@ -148,25 +112,20 @@ ion-tab-button ion-label {
   padding: 0 4px;
 }
 
-/* TAB seleccionado */
 ion-tab-button.tab-selected {
   color: #e94b4b !important;
   font-weight: 600;
 }
 
-/* ============================
-   LÍNEAS DIVISORAS ENTRE ICONOS
-============================ */
+/* Divisores */
 .divider {
   width: 1px;
   background: black;
   opacity: 0.35;
   height: 100%;
-
 }
 
-/* para material symbols pequeñas (speed_camera) */
+/* Icono cámara pequeño */
 .cam-icon {
   font-size: 23px !important;
 }
-

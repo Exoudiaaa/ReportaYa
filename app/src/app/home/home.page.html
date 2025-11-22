@@ -4,11 +4,11 @@
   <!--          TAB HOME           -->
   <!-- =========================== -->
   <ion-tab tab="home">
-    <ion-header style="padding-top: env(safe-area-inset-top, 0);">
+    <ion-header>
       <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
 
-      <ion-toolbar style="--background: white; --color: black; border-bottom: 1px solid #ccc; padding-top:22px;">
+      <ion-toolbar style="--background: white; --color: black; border-bottom: 1px solid #ccc;">
         <div style="display:flex; align-items:center; width:100%; padding-top: 5px;">
 
           <span style="font-size: clamp(32px, 7vw, 48px); font-weight: 800; color: black; font-family: 'Poppins', sans-serif; padding-left: 5px;">
@@ -26,7 +26,7 @@
       </ion-toolbar>
     </ion-header>
 
-    <ion-content scrollY="false" style="--background: transparent;">
+    <ion-content scrollY="false" class="home-content">
 
       <div *ngIf="!ubicacionHabilitada" class="location-disabled-overlay">
         <div class="location-message">
@@ -41,20 +41,15 @@
 
       <div *ngIf="ubicacionHabilitada" id="mapId" class="map-container"></div>
 
-      <div class="report-btn-container fixed-bottom"
-        style="position: fixed; left: 0; right: 0; display: flex; justify-content: center; z-index: 10; pointer-events: none;">
-        <ion-button expand="block"
-          style="border-radius: 12px; min-width: 270px; --background: #ff3131; --color: #ffffff; font-weight: bolder; text-transform: uppercase; pointer-events: auto; padding-bottom: 15px;"
-          routerLink="/formulario-reporte">
+      <!-- BOTÓN FLOTANTE — USANDO CLASES CSS -->
+      <div class="report-btn-container">
+        <ion-button expand="block" class="btn-reportar" routerLink="/formulario-reporte">
           Reportar
         </ion-button>
       </div>
 
     </ion-content>
   </ion-tab>
-
-
-
 
   <!-- =========================== -->
   <!--          TAB BAR            -->
@@ -82,7 +77,6 @@
         <ion-label>Menú</ion-label>
       </ion-tab-button>
     </ng-container>
-
 
     <!-- CIUDADANO -->
     <ng-container *ngIf="rango === 'ciudadano'">

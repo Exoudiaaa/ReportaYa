@@ -37,30 +37,30 @@ export class FormularioReportePage implements OnInit, OnDestroy {
   usuarioBloqueado = false;
 
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private locationService: LocationService,
     private alertCtrl: AlertController,
     private firestore: Firestore,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
-    private router: Router,  
+    private router: Router,
     private auth: Auth,
     private modalCtrl: ModalController,
     private comunaService: ComunaService
-    
-  
-  ) {}
+
+
+  ) { }
 
 
 
 
   async mostrarAyuda() {
-  const modal = await this.modalCtrl.create({
-    component: AyudaReporteModalComponent,
-    cssClass: 'custom-modal'
-  });
-  await modal.present();
-}
+    const modal = await this.modalCtrl.create({
+      component: AyudaReporteModalComponent,
+      cssClass: 'custom-modal'
+    });
+    await modal.present();
+  }
 
 
   // Abrir cámara y guardar base64
@@ -78,15 +78,43 @@ export class FormularioReportePage implements OnInit, OnDestroy {
         source: CameraSource.Camera
       });
 
-      if (photo && photo.base64String) {
+      // 👉 SI EL USUARIO CANCELA LA FOTO, photo será null
+      if (!photo || !photo.base64String) {
+        console.warn('Foto cancelada por el usuario');
+      }
+
+      // 🔥 RECUPERAR NUEVAMENTE LA UBICACIÓN DESPUÉS DE SALIR DE LA CÁMARA
+      try {
+        const coords = await Geolocation.getCurrentPosition({
+          enableHighAccuracy: true,
+          timeout: 10000
+        });
+
+        this.latitud = coords.coords.latitude;
+        this.longitud = coords.coords.longitude;
+
+        await this.locationService.fetchAddress(this.latitud, this.longitud);
+
+        const loc = this.locationService.getCurrentSnapshot();
+        this.ubicacionDisplay = loc?.display ??
+          `Lat: ${this.latitud?.toFixed(5)}, Lng: ${this.longitud?.toFixed(5)}`;
+
+      } catch (geoError) {
+        console.warn('Error refrescando ubicación tras cámara:', geoError);
+        this.ubicacionDisplay = 'Ubicación no disponible';
+      }
+
+
+      // 👉 SI LA FOTO EXISTE, LA GUARDAMOS
+      if (photo.base64String) {
         this.fotoBase64 = photo.base64String;
         this.foto = 'data:image/jpeg;base64,' + photo.base64String;
       }
+
     } catch (err) {
       console.error('Error cámara', err);
     }
   }
-
   // Confirmar eliminación de foto
   async confirmarEliminarFoto() {
     const alert = await this.alertCtrl.create({
@@ -117,48 +145,48 @@ export class FormularioReportePage implements OnInit, OnDestroy {
     const usuarioActual = this.auth.currentUser;
 
 
-      // ✅ Validar que esté dentro de la comuna
-  // ✅ Si no hay coordenadas, no se puede validar
-  if (this.latitud === null || this.longitud === null) {
-    const alert = await this.alertCtrl.create({
-      header: 'Ubicación no disponible',
-      message: 'No se pudo obtener tu ubicación. Activa el GPS e intenta nuevamente.',
-      buttons: ['OK']
-    });
-    await alert.present();
-    return;
-  }
+    // ✅ Validar que esté dentro de la comuna
+    // ✅ Si no hay coordenadas, no se puede validar
+    if (this.latitud === null || this.longitud === null) {
+      const alert = await this.alertCtrl.create({
+        header: 'Ubicación no disponible',
+        message: 'No se pudo obtener tu ubicación. Activa el GPS e intenta nuevamente.',
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }
 
-  // ✅ Validar que esté dentro de la comuna
-const dentroDeComuna = await this.comunaService.puntoEnComuna(this.latitud, this.longitud);
+    // ✅ Validar que esté dentro de la comuna
+    const dentroDeComuna = await this.comunaService.puntoEnComuna(this.latitud, this.longitud);
 
-if (dentroDeComuna === null) {
-  const alert = await this.alertCtrl.create({
-    header: 'Error con la geolocalización',
-    message: 'No se pudo verificar la comuna. Intenta nuevamente.',
-    buttons: ['OK']
-  });
-  await alert.present();
-  return;
-}
+    if (dentroDeComuna === null) {
+      const alert = await this.alertCtrl.create({
+        header: 'Error con la geolocalización',
+        message: 'No se pudo verificar la comuna. Intenta nuevamente.',
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }
 
-if (!dentroDeComuna) {
-  const alert = await this.alertCtrl.create({
-    header: 'Fuera de la comuna',
-    message: 'Solo puedes reportar incidentes dentro de la comuna de San Bernardo.',
-    buttons: ['OK']
-  });
-  await alert.present();
-  return;
-}
-
-
+    if (!dentroDeComuna) {
+      const alert = await this.alertCtrl.create({
+        header: 'Fuera de la comuna',
+        message: 'Solo puedes reportar incidentes dentro de la comuna de San Bernardo.',
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }
 
 
 
 
 
-        if (this.usuarioBloqueado) {
+
+
+    if (this.usuarioBloqueado) {
       const alert = await this.alertCtrl.create({
         header: 'Acceso denegado',
         message: 'Tu cuenta está bloqueada. No puedes enviar reportes.',
@@ -248,21 +276,21 @@ if (!dentroDeComuna) {
 
     const user = this.auth.currentUser;
 
-        if (user) {
-          const ref = doc(this.firestore, 'users', user.uid);
-          const snap = await getDoc(ref);
+    if (user) {
+      const ref = doc(this.firestore, 'users', user.uid);
+      const snap = await getDoc(ref);
 
-          if (snap.exists()) {
-            const data: any = snap.data();
+      if (snap.exists()) {
+        const data: any = snap.data();
 
-            // ← SI FIRESTORE DICE QUE ESTÁ BLOQUEADO
-            this.usuarioBloqueado = data.blocked === true;
-          }
-        }
+        // ← SI FIRESTORE DICE QUE ESTÁ BLOQUEADO
+        this.usuarioBloqueado = data.blocked === true;
+      }
+    }
 
-        if (this.usuarioBloqueado) {
-          return; // NO cargar formulario, solo se mostrará la vista bloqueada
-        }
+    if (this.usuarioBloqueado) {
+      return; // NO cargar formulario, solo se mostrará la vista bloqueada
+    }
 
 
 

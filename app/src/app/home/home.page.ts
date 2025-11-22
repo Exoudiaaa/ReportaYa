@@ -22,7 +22,7 @@ export class HomePage implements AfterViewInit, OnInit, OnDestroy, ViewDidEnter 
   rango: string = "";
   usuarioNombre: string = '';
   usuarioApellido: string = '';
-
+  hasOverlayNavigation = false;
   private map!: L.Map;
   private reportMarkers: L.Marker[] = [];
   
@@ -51,7 +51,14 @@ private userMarker: L.Marker | null = null;
     private platform: Platform,
     private alertController: AlertController,
     
-  ) {}
+  ) {
+     this.platform.ready().then(() => {
+      setInterval(() => {
+        const tabBar = document.querySelector('ion-tab-bar');
+        this.hasOverlayNavigation = tabBar?.classList.contains('has-overlay-navigation') || false;
+      }, 1000);
+    });
+  }
   
 
   openModal() {
@@ -79,13 +86,12 @@ private async escucharCambiosPermisos() {
 
   async ngOnInit() {
 
-    
     this.presentingElement = document.querySelector('ion-tabs');
     const userData = await this.authService.getCurrentUserData();
     this.usuarioNombre = userData?.firstName || '';
     this.usuarioApellido = userData?.lastName || '';
     this.rango = userData?.rango || '';
-
+    console.log(this.rango)
 
     this.platform.backButton.subscribeWithPriority(10, async () => {
       const currentPath = window.location.pathname;
