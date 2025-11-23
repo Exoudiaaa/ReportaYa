@@ -92,24 +92,6 @@ private async escucharCambiosPermisos() {
     this.usuarioApellido = userData?.lastName || '';
     this.rango = userData?.rango || '';
     console.log(this.rango)
-
-    this.platform.backButton.subscribeWithPriority(10, async () => {
-      const currentPath = window.location.pathname;
-      if (currentPath === '/home') {
-        const alert = await this.alertController.create({
-          header: 'Salir',
-          message: '¿Estás seguro de que deseas salir de la aplicación?',
-          buttons: [
-            { text: 'Cancelar', role: 'cancel' },
-            {
-              text: 'Salir',
-              handler: () => { (navigator as any).app.exitApp(); }
-            }
-          ],
-        });
-        await alert.present();
-      }
-    });
   }
 
 
