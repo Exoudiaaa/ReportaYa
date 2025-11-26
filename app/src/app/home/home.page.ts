@@ -25,23 +25,22 @@ export class HomePage implements AfterViewInit, OnInit, OnDestroy, ViewDidEnter 
   hasOverlayNavigation = false;
   private map!: L.Map;
   private reportMarkers: L.Marker[] = [];
-  
+
   usuarioDisplay: string = '';
   ubicacionDisplay: string = 'Ubicación no disponible';
-  
+
   private locSub?: Subscription;
   private reportRefreshInterval?: any;
 
-  ubicacionHabilitada = false; // 🔹 Nuevo: control de estado de ubicación
-
+  ubicacionHabilitada = false; // control de estado de ubicación
   presentingElement: any;
-
   isModalOpen = false;
 
+  private userMarker: L.Marker | null = null;
 
-private userMarker: L.Marker | null = null;
+  // id del watch (puede ser string en Capacitor o number en navigator)
+  private watchId: any = undefined;
 
-  
   constructor(
     private locationService: LocationService,
     private authService: Auth,
@@ -50,54 +49,29 @@ private userMarker: L.Marker | null = null;
     private modalCtrl: ModalController,
     private platform: Platform,
     private alertController: AlertController,
-    
   ) {
-     this.platform.ready().then(() => {
+    this.platform.ready().then(() => {
       setInterval(() => {
         const tabBar = document.querySelector('ion-tab-bar');
         this.hasOverlayNavigation = tabBar?.classList.contains('has-overlay-navigation') || false;
       }, 1000);
     });
   }
-  
 
   openModal() {
-  this.isModalOpen = true;
-}
-
-
-private async escucharCambiosPermisos() {
-  // Solo funciona en dispositivos móviles con Capacitor
-  if (Capacitor.getPlatform() !== 'web') {
-    try {
-      // Este listener se activa cuando el usuario cambia los permisos en ajustes
-      await Geolocation.requestPermissions();
-      // Si llegamos aquí, el permiso fue concedido
-      await this.verificarUbicacion();
-    } catch (error) {
-      // Permiso aún denegado
-      console.log('Permiso de ubicación aún denegado');
-    }
+    this.isModalOpen = true;
   }
-}
-
-
-
 
   async ngOnInit() {
-
     this.presentingElement = document.querySelector('ion-tabs');
     const userData = await this.authService.getCurrentUserData();
     this.usuarioNombre = userData?.firstName || '';
     this.usuarioApellido = userData?.lastName || '';
     this.rango = userData?.rango || '';
-    console.log(this.rango)
+
+    // Nos suscribimos inmediatamente para mostrar marcador si ya hay ubicación
+    this.subscribeToLocation();
   }
-
-
-
-
- 
 
   ionViewDidEnter() {
     if (this.map && this.ubicacionHabilitada) {
@@ -105,52 +79,60 @@ private async escucharCambiosPermisos() {
     }
   }
 
-    private subscribeToLocation() {
-  // ✅ Cancela la suscripción anterior para evitar duplicados
-  if (this.locSub) {
-    this.locSub.unsubscribe();
-  }
+  // ----------------------------------------------------
+  // Suscripción al LocationService (actualiza marcador)
+  // ----------------------------------------------------
+  private subscribeToLocation() {
+    if (this.locSub) this.locSub.unsubscribe();
 
-  this.locSub = this.locationService.location$.subscribe((loc: Ubicacion | null) => {
-    this.ubicacionDisplay = loc?.display ?? 'Ubicación no disponible';
+    this.locSub = this.locationService.location$.subscribe((loc: Ubicacion | null) => {
+      this.ubicacionDisplay = loc?.display ?? 'Ubicación no disponible';
 
-    if (this.map && loc && this.ubicacionHabilitada) {
-      // ✅ Elimina el marcador anterior SI EXISTE
-      if (this.userMarker) {
-        this.map.removeLayer(this.userMarker);
-        this.userMarker = null; // 👈 Importante: resetea la referencia
-      }
+      if (!this.map || !loc || !this.ubicacionHabilitada) return;
+
+      const { lat, lng } = loc;
 
       const userIcon = L.icon({
         iconUrl: '/assets/icono-usuario2.png',
-       iconSize: [60, 60],
+        iconSize: [60, 60],
         iconAnchor: [30, 60],
-        popupAnchor: [0, -60]    // el popup aparece justo encima
+        popupAnchor: [0, -60]
       });
 
-      this.userMarker = L.marker([loc.lat!, loc.lng!], { icon: userIcon })
-        .bindPopup(this.ubicacionDisplay)
-        .openPopup();
+      // Si ya existe marcador, solo mover y actualizar popup
+      if (this.userMarker) {
+        this.userMarker.setLatLng([lat!, lng!]);
+        this.userMarker.bindPopup(this.ubicacionDisplay);
+        return;
+      }
 
-      this.userMarker.addTo(this.map);
+      // Primera vez: crear el marcador
+      this.userMarker = L.marker([lat!, lng!], { icon: userIcon })
+        .addTo(this.map)
+        .bindPopup(this.ubicacionDisplay);
+    });
+  }
+
+  ngOnDestroy() {
+    // limpiar marcador
+    if (this.userMarker && this.map) {
+      try { this.map.removeLayer(this.userMarker); } catch (e) { }
+      this.userMarker = null;
     }
-  });
-}
 
+    if (this.locSub) {
+      this.locSub.unsubscribe();
+      this.locSub = undefined;
+    }
 
-ngOnDestroy() {
-  if (this.userMarker && this.map) {
-    this.map.removeLayer(this.userMarker);
-    this.userMarker = null; // 👈 Reset
+    // detener watch y refresco de reportes
+    this.stopWatchingPosition();
+    this.stopRefreshingReportes();
   }
-  if (this.locSub) {
-    this.locSub.unsubscribe();
-    this.locSub = undefined;
-  }
-  this.stopRefreshingReportes();
-}
 
-  // 🔹 Nueva función: verifica si la ubicación está disponible
+  // ----------------------------------------------------
+  // permisos y verificación de ubicación + iniciar watch
+  // ----------------------------------------------------
   private async verificarUbicacion() {
     try {
       const perm = await Geolocation.checkPermissions();
@@ -166,9 +148,17 @@ ngOnDestroy() {
       this.ubicacionHabilitada = true;
       const lat = coords.coords.latitude;
       const lng = coords.coords.longitude;
+
+      // actualizamos el servicio y pedimos reverse geocoding
       this.locationService.setLocation({ lat, lng });
       await this.locationService.fetchAddress(lat, lng);
-      this.initMap(lat, lng);
+
+      // inicializamos/centramos mapa
+      await this.initMap(lat, lng);
+
+      // iniciamos el watch para actualizar la posición en tiempo real
+      this.startWatchingPosition();
+
     } catch (err) {
       console.error('Ubicación no disponible:', err);
       this.ubicacionHabilitada = false;
@@ -176,32 +166,101 @@ ngOnDestroy() {
     }
   }
 
-  // 🔹 Nueva función: para el botón "Intentar nuevamente"
+  // botón "Intentar nuevamente"
   async solicitarUbicacion() {
     await this.verificarUbicacion();
   }
 
-  private async initMap(lat: number, lng: number) {
-      if (!this.map) {
-        // ✅ Aumentamos el zoom a 18 para ver más detalles
-        this.map = L.map('mapId').setView([lat, lng], 16);
+  // ----------------------------------------------------
+  // Watch position (Capacitor + fallback web)
+  // ----------------------------------------------------
+  private startWatchingPosition() {
+    // si ya hay uno, no crear otro
+    if (this.watchId) return;
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '© OpenStreetMap contributors',
-        }).addTo(this.map);
+    const options: any = { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 };
 
-        const userIcon = L.icon({
-          iconUrl: 'assets/icono-usuario2.png',
-          iconSize: [60, 60],
-        iconAnchor: [30, 65],
-        popupAnchor: [0, -60]  
+    // Móvil: Capacitor
+    if (Capacitor.getPlatform() !== 'web') {
+      try {
+        // Geolocation.watchPosition devuelve un id (string) en Capacitor
+        this.watchId = Geolocation.watchPosition(options, (pos: any, err: any) => {
+          if (err) {
+            console.warn('watchPosition error (capacitor):', err);
+            return;
+          }
+          if (!pos || !pos.coords) return;
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          this.locationService.setLocation({ lat, lng });
+          this.locationService.fetchAddress(lat, lng).catch(() => { });
         });
+      } catch (e) {
+        console.warn('No fue posible usar Geolocation.watchPosition (capacitor). Fallback a navigator.', e);
+      }
+    }
 
-        L.marker([lat, lng], { icon: userIcon })
-          .addTo(this.map)
-          .bindPopup(this.ubicacionDisplay)
-          .openPopup();
+    // Web fallback o si no se obtuvo watchId
+    if (!this.watchId && 'geolocation' in navigator) {
+      const id = navigator.geolocation.watchPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          this.locationService.setLocation({ lat, lng });
+          this.locationService.fetchAddress(lat, lng);
+        },
+        (error) => {
+          console.warn('watchPosition error (navigator):', error);
+        },
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
+      );
+      this.watchId = id; // number
+    }
+  }
 
+  private async stopWatchingPosition() {
+    if (!this.watchId) return;
+
+    // Intentar clear para Capacitor
+    try {
+      // algunos bindings requieren objeto { id: string }
+      if (Capacitor.getPlatform() !== 'web') {
+        // Algunos Capacitor usan Geolocation.clearWatch({ id }); otras versiones usan clearWatch(id) -> manejamos ambos
+        try {
+          // @ts-ignore - método puede variar entre versiones
+          await Geolocation.clearWatch({ id: this.watchId });
+        } catch (e) {
+          try {
+            // @ts-ignore fallback
+            await Geolocation.clearWatch(this.watchId);
+          } catch (err) {
+            console.warn('No se pudo clearWatch vía Geolocation API:', err);
+          }
+        }
+      } else {
+        // web
+        if (typeof this.watchId === 'number') navigator.geolocation.clearWatch(this.watchId);
+      }
+    } catch (e) {
+      console.warn('Error al limpiar watchId:', e);
+    } finally {
+      this.watchId = undefined;
+    }
+  }
+
+  // ----------------------------------------------------
+  // Inicializar mapa (no crea marcador de usuario — lo hace la suscripción)
+  // ----------------------------------------------------
+  private async initMap(lat: number, lng: number) {
+    if (!this.map) {
+      this.map = L.map('mapId').setView([lat, lng], 16);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+      }).addTo(this.map);
+
+      // agregamos capa comuna y máscara como antes
+      try {
         const response = await fetch('assets/PRC_San_Bernardo.geojson');
         const comunaGeoJson = await response.json();
 
@@ -213,10 +272,6 @@ ngOnDestroy() {
             fillOpacity: 0.0
           }
         }).addTo(this.map);
-
-        // ✅ Ajustamos el fitBounds para que no sobrescriba el zoom
-        // Solo usamos fitBounds si no queremos forzar el zoom
-        // this.map.fitBounds(comunaLayer.getBounds());
 
         const worldBounds: L.LatLngExpression[] = [
           [-90, -180], [-90, 180], [90, 180], [90, -180], [-90, -180]
@@ -239,19 +294,22 @@ ngOnDestroy() {
           fillOpacity: 0.5,
           stroke: false
         }).addTo(this.map);
-
-      } else {
-        // ✅ También ajustamos el zoom al volver a cargar
-        this.map.setView([lat, lng], 18);
+      } catch (e) {
+        console.warn('No se pudo cargar geojson de comuna:', e);
       }
 
-      this.cargarReportes();
+    } else {
+      // solo centra/ajusta vista
+      this.map.setView([lat, lng], 18);
     }
 
+    // cargar reportes después de tener mapa listo
+    this.cargarReportes();
+  }
 
-
-
-
+  // ----------------------------------------------------
+  // Cargar reportes (igual que tu lógica)
+  // ----------------------------------------------------
   private cargarReportes() {
     if (!this.ubicacionHabilitada) return;
 
@@ -315,17 +373,12 @@ ngOnDestroy() {
     }
   }
 
-
-
-
+  // ----------------------------------------------------
+  // Ciclo de vida
+  // ----------------------------------------------------
   ngAfterViewInit() {
-  // ✅ Solo suscríbete una vez
-  if (!this.locSub) {
-    this.subscribeToLocation();
+    // Ya nos suscribimos en ngOnInit; aquí solicitamos permisos / ubicación inicial
+    this.verificarUbicacion();
+    this.startRefreshingReportes(10000);
   }
-  this.verificarUbicacion();
-  this.startRefreshingReportes(10000);
-}
-
-  
 }

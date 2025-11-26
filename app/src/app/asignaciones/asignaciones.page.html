@@ -8,22 +8,23 @@
 
 
     <div style="display:flex; align-items:center; width:100%; ">
-        <span style="font-size: clamp(26px, 6vw, 40px); font-weight: bold; color:black;font-family: 'Poppins',sans-serif; ">
-          Asignaciones
-        </span>
+      <span
+        style="font-size: clamp(26px, 6vw, 40px); font-weight: bold; color:black;font-family: 'Poppins',sans-serif; ">
+        Asignaciones
+      </span>
 
-        <img src="assets/icono-app.png" alt="Logo" 
-            style="height:50px; margin-left:auto;">
-      </div>
+      <img src="assets/icono-app.png" alt="Logo" style="height:50px; margin-left:auto;">
+    </div>
 
 
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="false" style="padding-top: 0; padding-bottom: calc(16px + var(--app-safe-area-bottom));" class="ion-padding content-bg">
+<ion-content fullscreen="false" class="content-bg"
+  style="--padding-top: 0; --padding-bottom: calc(16px + var(--ion-safe-area-bottom));">
 
   <ion-list *ngIf="reportes.length > 0; else sinReportes" class="reportes-list">
-    <ion-item *ngFor="let reporte of reportes" class="reporte-item"  (click)="verDetalle(reporte)">
+    <ion-item *ngFor="let reporte of reportes" class="reporte-item" (click)="verDetalle(reporte)">
       <ion-label class="reporte-label">
         <h2 class="reporte-descripcion">{{ reporte.descripcion }}</h2>
         <div class="reporte-details">

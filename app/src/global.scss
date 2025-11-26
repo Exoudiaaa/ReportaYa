@@ -29,7 +29,10 @@
 .safe-top {
   padding-top: calc(var(--ion-safe-area-top) + 12px);
 }
-
+ion-content {
+  --padding-top: var(--ion-safe-area-top);
+  --padding-bottom: calc(16px + var(--ion-safe-area-bottom));
+}
 /* ==================================================================
    BODY RESET
 ================================================================== */

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-
+import { Geolocation } from '@capacitor/geolocation';
 export interface Ubicacion {
   lat?: number;
   lng?: number;
@@ -14,7 +14,7 @@ export interface Ubicacion {
 export class LocationService {
   private locationSubject = new BehaviorSubject<Ubicacion | null>(null);
   location$ = this.locationSubject.asObservable();
-
+  private watchId: number | null = null;
   private LOCATIONIQ_KEY = 'pk.5b6df700376c8e94f79168a449497666'; // 🔹 reemplaza con tu key de LocationIQ
 
   constructor() {}
@@ -88,4 +88,33 @@ private simplifyAddress(addr: any): string {
 
   return simple.trim();
 }
+startWatching() {
+  if ('geolocation' in navigator) {
+    this.watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+
+        this.setLocation({ lat, lng });
+        this.fetchAddress(lat, lng);
+      },
+      (err) => {
+        console.error('Error al obtener ubicación continua:', err);
+      },
+      {
+        enableHighAccuracy: true,
+        maximumAge: 0,
+        timeout: 10000
+      }
+    );
+  }
+}
+
+stopWatching() {
+  if (this.watchId !== null) {
+    navigator.geolocation.clearWatch(this.watchId);
+    this.watchId = null;
+  }
+}
+
 }
