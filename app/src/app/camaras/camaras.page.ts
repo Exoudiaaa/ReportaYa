@@ -39,8 +39,7 @@ export class CamarasPage implements OnInit,  AfterViewInit {
   resuelto: boolean = false;
 
   // Fecha y hora seleccionada
-  // ✅ Eliminamos displayFechaHora (ya no se usa)
-  fechaLocal: string = ''; // ← Guarda directamente el valor ISO
+  fechaLocal: string = ''; // Guarda directamente el valor ISO
 
   fechaFormateada: string = ''; // valor legible (para mostrar)
   popoverAbierto = false;
@@ -68,7 +67,6 @@ export class CamarasPage implements OnInit,  AfterViewInit {
     private router: Router,
     private auth: Auth,
     private modalCtrl: ModalController,
-    // ✅ Eliminamos PopoverController
     // private popoverCtrl: PopoverController 
   ) {}
 
@@ -82,10 +80,9 @@ export class CamarasPage implements OnInit,  AfterViewInit {
 
   ngOnInit() {}
 
-  // ✅ Eliminamos: abrirSelectorFecha, procesarFechaSeleccionada
 
   // ———————————————————————————————————————
-  // 🔒 BLOQUEO DE TECLAS - SOLO TEXTO (nombre, apellido, motivo)
+  // BLOQUEO DE TECLAS - SOLO TEXTO (nombre, apellido, motivo)
   // ———————————————————————————————————————
   onTextoKeyPress(event: KeyboardEvent) {
     const allowedKeys = [
@@ -103,7 +100,7 @@ export class CamarasPage implements OnInit,  AfterViewInit {
   }
 
   // ———————————————————————————————————————
-  // 🔒 BLOQUEO DE TECLAS - SOLO NÚMEROS (teléfono, nRegistro)
+  // BLOQUEO DE TECLAS - SOLO NÚMEROS (teléfono, nRegistro)
   // ———————————————————————————————————————
   onNumeroKeyPress(event: KeyboardEvent) {
     const allowedKeys = [
@@ -120,7 +117,7 @@ export class CamarasPage implements OnInit,  AfterViewInit {
   }
 
   // ———————————————————————————————————————
-  // 🔒 BLOQUEO DE TECLAS - DIRECCIÓN (letras, números, # . - y espacios)
+  // BLOQUEO DE TECLAS - DIRECCIÓN (letras, números, # . - y espacios)
   // ———————————————————————————————————————
   onDireccionKeyPress(event: KeyboardEvent) {
     const allowedKeys = [
@@ -138,8 +135,8 @@ export class CamarasPage implements OnInit,  AfterViewInit {
   }
 
   // ——————————————————————————————————————————————————————————————
-  // ✅ AYUDA MODAL
-  // ——————————————————————————————————————————————————————————————
+  //  AYUDA MODAL
+  // —————————————————————————————————————————————————————————————
   async mostrarAyuda() {
     const modal = await this.modalCtrl.create({
       component: AyudaCamaraModalComponent,
@@ -149,7 +146,7 @@ export class CamarasPage implements OnInit,  AfterViewInit {
   }
 
   // ——————————————————————————————————————————————————————————————
-  // ✅ VALIDACIÓN DE TEXTO: Nombre, Apellido, Motivo
+  // VALIDACIÓN DE TEXTO: Nombre, Apellido, Motivo
   // ——————————————————————————————————————————————————————————————
   validarTexto(event: any, campo: string) {
     const valor = event.target.value;
@@ -163,7 +160,7 @@ export class CamarasPage implements OnInit,  AfterViewInit {
   }
 
   // ——————————————————————————————————————————————————————————————
-  // ✅ VALIDACIÓN DEL RUT (sin cambios, solo comentarios claros)
+  // VALIDACIÓN DEL RUT (sin cambios, solo comentarios claros)
   // ——————————————————————————————————————————————————————————————
   onRutKeyPress(event: KeyboardEvent) {
     const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight', 'Home', 'End'];
@@ -228,16 +225,27 @@ export class CamarasPage implements OnInit,  AfterViewInit {
     }
 
   // ——————————————————————————————————————————————————————————————
-  // ✅ VALIDACIÓN DE TELÉFONO (máx 8 dígitos, con puntos: 9123.4567)
+  // VALIDACIÓN DE TELÉFONO (máx 8 dígitos, con puntos: 9123.4567)
   // ——————————————————————————————————————————————————————————————
   formatearTelefono(event: any) {
-    let value = event.target.value.replace(/[^0-9]/g, '');
-    if (value.length > 8) value = value.substring(0, 8);
-    this.telefono = value.replace(/(\d{4})(\d+)/, '$1.$2');
-  }
+  let value = event.target.value.replace(/[^0-9]/g, '');
 
+  // Limpiar prefijos repetidos (ej: 569569...)
+  value = value.replace(/^56/, ''); 
+  value = value.replace(/^9?/, ''); 
+
+  // Limitar a 8 dígitos (número móvil en Chile)
+  if (value.length > 8) value = value.substring(0, 8);
+
+  // Formato final +56 9 XXXX XXXX
+  if (value.length > 4) {
+    this.telefono = `+56 9 ${value.substring(0,4)} ${value.substring(4)}`;
+  } else {
+    this.telefono = `+56 9 ${value}`;
+  }
+}
   // ——————————————————————————————————————————————————————————————
-  // ✅ VALIDACIÓN DE NÚMERO DE REGISTRO (solo 7 dígitos)
+  // VALIDACIÓN DE NÚMERO DE REGISTRO (solo 7 dígitos)
   // ——————————————————————————————————————————————————————————————
   validarNumeroRegistro(event: any) {
     // 1. Obtener el valor actual del input
@@ -251,7 +259,7 @@ export class CamarasPage implements OnInit,  AfterViewInit {
   }
 
   // ——————————————————————————————————————————————————————————————
-  // ✅ VALIDACIÓN DE DIRECCIÓN (letras, números, espacios, # . -)
+  //  VALIDACIÓN DE DIRECCIÓN (letras, números, espacios, # . -)
   // ——————————————————————————————————————————————————————————————
   validarDireccion(event: any) {
     const valor = event.target.value;
@@ -260,7 +268,7 @@ export class CamarasPage implements OnInit,  AfterViewInit {
   }
 
   // ——————————————————————————————————————————————————————————————
-  // ✅ VALIDACIÓN GLOBAL ANTES DE ENVIAR
+  //  VALIDACIÓN GLOBAL ANTES DE ENVIAR
   // ——————————————————————————————————————————————————————————————
   camposValidos(): boolean {
     // Validaciones individuales con límites de longitud
@@ -287,12 +295,12 @@ export class CamarasPage implements OnInit,  AfterViewInit {
       nRegistroValido &&
       calleValida &&
       motivoValido &&
-      fechaValida // ✅ Usamos fechaLocal
+      fechaValida // Usamos fechaLocal
     );
   }
 
   // ——————————————————————————————————————————————————————————————
-  // ✅ ENVÍO DE SOLICITUD
+  //  ENVÍO DE SOLICITUD
   // ——————————————————————————————————————————————————————————————
   async guardarSolicitud() {
       const usuario = await this.auth.currentUser;
@@ -316,7 +324,7 @@ export class CamarasPage implements OnInit,  AfterViewInit {
       const motivoValido = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{1,200}$/.test(this.motivo);
       const calleValida = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s.#-]{1,100}$/.test(this.calle);
       const nRegistroValido = /^[0-9]{1,7}$/.test(this.nRegistro);
-      const telefonoValido = /^([0-9]{8}|[0-9]{4}\.[0-9]{4})$/.test(this.telefono);
+      const telefonoValido = /^\+56 9 [0-9]{4} [0-9]{4}$/.test(this.telefono);
       const rutLimpio = this.rut.replace(/\./g, '').replace(/-/g, '').toUpperCase();
       const rutValido = /^[0-9]{7,8}[0-9K]$/.test(rutLimpio) && /^[0-9K]+$/.test(rutLimpio);
       const fechaValida = this.fechaLocal.trim() !== '';

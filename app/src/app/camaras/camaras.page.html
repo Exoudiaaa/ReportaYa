@@ -1,13 +1,14 @@
 <ion-header>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
-  <ion-toolbar  class="toolbar-header" style="padding-top:22px;">
+  <ion-toolbar class="toolbar-header" style="padding-top:22px;">
     <ion-buttons slot="start" class="back-button">
       <ion-back-button defaultHref="/home" text="" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
 
     <div style="display:flex; align-items:center; width:100%;">
-      <span style="font-size: clamp(20px, 6vw, 40px); font-weight: bold; color:black; font-family:'Poppins',sans-serif;">
+      <span
+        style="font-size: clamp(20px, 6vw, 40px); font-weight: bold; color:black; font-family:'Poppins',sans-serif;">
         Solicitar Grabación
       </span>
       <img src="assets/icono-app.png" alt="Logo" style="height:50px; margin-left:auto;" />
@@ -15,165 +16,94 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="false" style="padding-top: 0; padding-bottom:calc(16px + var(--ion-safe-area-bottom));" class="ion-padding content-bg">
+<ion-content fullscreen="false" style="padding-top: 0; padding-bottom:calc(16px + var(--ion-safe-area-bottom));"
+  class="ion-padding content-bg">
   <div class="container">
-  <div class="ayuda-trigger-container">
-    <div class="ayuda-trigger" (click)="mostrarAyuda()">
-      <span>¿Que es esto?</span>
-      <span>¿Cómo Solicitar Grabaciones?</span>
-    </div>
-  </div>
-
-  <div class="container" style="padding-bottom: 100px;">
-
-
-    <!-- 🧍‍♂️ Datos Personales -->
-    <div class="card">
-      <h3 class="subtitulo">Datos Personales</h3>
-
-      <!-- Nombre -->
-      <ion-input
-      type="text"
-      [(ngModel)]="nombre"
-      label="Nombre"
-      labelPlacement="stacked"
-      placeholder="Ej: Juan"
-      fill="outline"
-      maxlength="50"
-      (ionInput)="validarTexto($event, 'nombre')"
-      [class.error]="errores.nombre"
-    ></ion-input>
-
-      <!-- Apellido -->
-      <ion-input
-      type="text"
-      [(ngModel)]="apellido"
-      label="Apellido"
-      labelPlacement="stacked"
-      placeholder="Ej: Pérez"
-      fill="outline"
-      maxlength="50"
-      (ionInput)="validarTexto($event, 'apellido')"
-      [class.error]="errores.apellido"
-    ></ion-input>
-
-
-      <!-- Rut -->
-      <ion-input
-  type="text"
-  [(ngModel)]="rut"
-  label="RUT"
-  labelPlacement="stacked"
-  placeholder="Ej: 12.345.678-K"
-  fill="outline"
-  (ionInput)="formatearRut($event)"
-  maxlength="12"
-  [class.error]="errores.rut"
-></ion-input>
-
-
-      <!-- Teléfono (solo números) -->
-      <ion-input
-  type="tel"
-  [(ngModel)]="telefono"
-  label="Teléfono"
-  labelPlacement="stacked"
-  placeholder="Ej: 93123.4567"
-  fill="outline"
-  maxlength="8"
-  (ionInput)="formatearTelefono($event)"
-  [class.error]="errores.telefono"
-></ion-input>
+    <div class="ayuda-trigger-container">
+      <div class="ayuda-trigger" (click)="mostrarAyuda()">
+        <span>¿Que es esto?</span>
+        <span>¿Cómo Solicitar Grabaciones?</span>
+      </div>
     </div>
 
-    <!-- 📷 Datos de Solicitud -->
-    <div class="card">
-      <h3 class="subtitulo">Datos Necesarios y Legales</h3>
+    <div class="container" style="padding-bottom: 100px;">
 
-      <!-- Número de registro (solo números) -->
-        <ion-input
-  type="tel"
-  [(ngModel)]="nRegistro"
-  label="Número de registro PDI/Carabineros"
-  labelPlacement="stacked"
-  placeholder="Ej: 2387456"
-  fill="outline"
-  maxlength="7"
-  (ionInput)="validarNumeroRegistro($event)"
-  [class.error]="errores.nRegistro"
-></ion-input>
 
-      <!-- Calle (letras, números, # . -) -->
-      <ion-input
-  type="text"
-  [(ngModel)]="calle"
-  label="Calle / Referencias"
-  labelPlacement="stacked"
-  placeholder="Ej: Av. Principal 123, cerca de la plaza"
-  fill="outline"
-  maxlength="100"
-  (ionInput)="validarDireccion($event)"
-  [class.error]="errores.calle"
-></ion-input>
+      <!-- 🧍‍♂️ Datos Personales -->
+      <div class="card">
+        <h3 class="subtitulo">Datos Personales</h3>
 
-      <!-- Motivo (textarea: solo texto) -->
-      <ion-textarea
-  [(ngModel)]="motivo"
-  label="Motivo de la petición"
-  labelPlacement="stacked"
-  placeholder="Describe brevemente el motivo"
-  fill="outline"
-  autoGrow="true"
-  maxlength="200"
-  (ionInput)="validarTexto($event, 'motivo')"
-  [class.error]="errores.motivo"
-></ion-textarea>
+        <!-- Nombre -->
+        <ion-input type="text" [(ngModel)]="nombre" label="Nombre" labelPlacement="stacked" placeholder="Ej: Juan"
+          fill="outline" maxlength="50" (ionInput)="validarTexto($event, 'nombre')"
+          [class.error]="errores.nombre"></ion-input>
 
-    
+        <!-- Apellido -->
+        <ion-input type="text" [(ngModel)]="apellido" label="Apellido" labelPlacement="stacked" placeholder="Ej: Pérez"
+          fill="outline" maxlength="50" (ionInput)="validarTexto($event, 'apellido')"
+          [class.error]="errores.apellido"></ion-input>
+
+
+        <!-- Rut -->
+        <ion-input type="text" [(ngModel)]="rut" label="RUT" labelPlacement="stacked" placeholder="Ej: 12.345.678-K"
+          fill="outline" (ionInput)="formatearRut($event)" maxlength="12" [class.error]="errores.rut"></ion-input>
+
+
+        <!-- Teléfono (solo números) -->
+        <ion-input type="tel" [(ngModel)]="telefono" label="Teléfono" labelPlacement="stacked"
+          placeholder="Ej: +56 9 1234 5678" fill="outline" (ionInput)="formatearTelefono($event)"
+          [class.error]="errores.telefono"></ion-input>
+      </div>
+
+      <!-- 📷 Datos de Solicitud -->
+      <div class="card">
+        <h3 class="subtitulo">Datos Necesarios y Legales</h3>
+
+        <!-- Número de registro (solo números) -->
+        <ion-input type="tel" [(ngModel)]="nRegistro" label="Número de registro PDI/Carabineros"
+          labelPlacement="stacked" placeholder="Ej: 2387456" fill="outline" maxlength="7"
+          (ionInput)="validarNumeroRegistro($event)" [class.error]="errores.nRegistro"></ion-input>
+
+        <!-- Calle (letras, números, # . -) -->
+        <ion-input type="text" [(ngModel)]="calle" label="Calle / Referencias" labelPlacement="stacked"
+          placeholder="Ej: Av. Principal 123, cerca de la plaza" fill="outline" maxlength="100"
+          (ionInput)="validarDireccion($event)" [class.error]="errores.calle"></ion-input>
+
+        <!-- Motivo (textarea: solo texto) -->
+        <ion-textarea [(ngModel)]="motivo" label="Motivo de la petición" labelPlacement="stacked"
+          placeholder="Describe brevemente el motivo" fill="outline" autoGrow="true" maxlength="200"
+          (ionInput)="validarTexto($event, 'motivo')" [class.error]="errores.motivo"></ion-textarea>
+
+
         <!-- Input que luce como los demás, pero abre un popover con ion-datetime -->
-      <!-- Input que luce como los demás -->
-          <!-- Contenedor para el input y el botón invisible -->
+        <!-- Input que luce como los demás -->
+        <!-- Contenedor para el input y el botón invisible -->
         <div style="position: relative; width: 100%;">
-        <ion-input
-          readonly
-          label="Fecha y hora de solicitud"
-          labelPlacement="stacked"
-          [value]="fechaFormateada || 'Seleccionar fecha y hora'"
-          fill="outline"
-          placeholder="Seleccionar fecha y hora"
-          style="pointer-events: none;"
-          [class.error]="errores.fecha"
-        ></ion-input>
-        <div
-          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;"
-          (click)="abrirDatetimePopover($event)"
-        ></div>
+          <ion-input readonly label="Fecha y hora de solicitud" labelPlacement="stacked"
+            [value]="fechaFormateada || 'Seleccionar fecha y hora'" fill="outline"
+            placeholder="Seleccionar fecha y hora" style="pointer-events: none;"
+            [class.error]="errores.fecha"></ion-input>
+          <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2;"
+            (click)="abrirDatetimePopover($event)"></div>
 
-        <!-- Popover -->
-        <ion-popover #fechaPopover [keepContentsMounted]="true">
-          <ng-template>
-            <ion-datetime
-              presentation="date-time"
-              locale="es-ES"
-              hour-cycle="h23"
-              [value]="fechaLocal"
-              (ionChange)="onFechaChange($event)"
-              [showDefaultButtons]="true"
-              style="width: 320px; padding: 16px;"
-            ></ion-datetime>
-          </ng-template>
-        </ion-popover>
-    
-    </div>
+          <!-- Popover -->
+          <ion-popover #fechaPopover [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime presentation="date-time" locale="es-ES" hour-cycle="h23" [value]="fechaLocal"
+                (ionChange)="onFechaChange($event)" [showDefaultButtons]="true"
+                style="width: 320px; padding: 16px;"></ion-datetime>
+            </ng-template>
+          </ion-popover>
 
-    <!-- Botón Reportar -->
-    <div class="report-btn-container">
-      <ion-button expand="block" (click)="guardarSolicitud()" class="btn-reportar">
-        Solicitar Grabación
-      </ion-button>
+        </div>
+
+        <!-- Botón Reportar -->
+        <div class="report-btn-container">
+          <ion-button expand="block" (click)="guardarSolicitud()" class="btn-reportar">
+            Solicitar Grabación
+          </ion-button>
+        </div>
+      </div>
     </div>
   </div>
-  </div>
-   </div>
 </ion-content>
-
