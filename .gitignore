@@ -1,6 +1,3 @@
-app/src/environments/environment.ts
-app/src/environments/environment.prod.ts
-app/src/environments/environment.ts
-app/src/environments/environment.prod.ts
+node_modules/
 app/src/environments/environment.ts
 app/src/environments/environment.prod.ts
